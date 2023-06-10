@@ -1,0 +1,22 @@
+<resources>
+
+    <style name="style_title_large">
+        <item name="android:textSize">32sp</item>
+    </style>
+
+    <style name="style_title">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="style_button">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="style_body">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="style_subhead">
+        <item name="android:textSize">14sp</item>
+    </style>
+</resources>
