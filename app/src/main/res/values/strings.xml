@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">ToDo App</string>
+
+    <string name="todo_list_title">Мои дела</string>
+    <string name="todo_list_no_todos_title">Нет завершенных дел</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="todo_list_visibility_title">Показать завершенные</string>
+    <string name="todo_list_visibility_off_title">Скрыть завершенные</string>
+    <string name="todo_list_add_todo_title">Добавить дело</string>
+    <string name="todo_list_completed_count" formatted="false">Выполнено - %d</string>
 </resources>

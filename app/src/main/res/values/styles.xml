@@ -19,4 +19,9 @@
     <style name="style_subhead">
         <item name="android:textSize">14sp</item>
     </style>
+
+    <style name="CheckBoxStyle" parent="Theme.MaterialComponents.Light">
+        <item name="colorControlNormal">@color/color_gray</item>
+        <item name="colorControlActivated">@color/color_blue</item>
+    </style>
 </resources>
