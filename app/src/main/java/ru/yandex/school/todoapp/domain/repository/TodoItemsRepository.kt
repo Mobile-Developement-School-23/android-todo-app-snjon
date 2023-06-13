@@ -1,10 +1,13 @@
 package ru.yandex.school.todoapp.domain.repository
 
+import kotlinx.coroutines.flow.StateFlow
 import ru.yandex.school.todoapp.domain.model.TodoItem
 
 interface TodoItemsRepository {
 
-    fun getTodoItems(): List<TodoItem>
+    fun getTodoItems(): StateFlow<Map<String, TodoItem>>
 
-    fun addTodoItem(item: TodoItem)
+    fun saveTodoItem(item: TodoItem)
+
+    fun deleteTodoItem(item: TodoItem)
 }
