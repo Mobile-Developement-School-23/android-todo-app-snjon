@@ -6,6 +6,6 @@ data class TodoItem(
     val priority: TodoItemPriority,
     val isCompleted: Boolean,
     val createDate: String,
-    val deadLineDate: String?,
-    val changeDate: String?
+    val deadLineDate: String? = null,
+    val changeDate: String? = null
 )
