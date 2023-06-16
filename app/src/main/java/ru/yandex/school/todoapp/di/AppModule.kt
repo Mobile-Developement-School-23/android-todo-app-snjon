@@ -10,7 +10,7 @@ import ru.yandex.school.todoapp.presentation.navigation.AppNavigator
 
 val appModule = module {
 
-    viewModel { (todoId: String) -> TodoItemViewModel(todoId, get()) }
+    viewModel { (todoId: String) -> TodoItemViewModel(todoId, get(), get()) }
     viewModel { TodoListViewModel(get(), get()) }
     single { AppNavigator() }
     single<TodoItemsRepository> { TodoItemsRepositoryImpl() }

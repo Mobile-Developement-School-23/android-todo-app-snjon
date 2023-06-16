@@ -25,4 +25,8 @@ class AppNavigator {
             bundleOf(KEY_TODO_ITEM_ID to todoItem?.id)
         )
     }
+
+    fun openTodoList() {
+        appNavController?.navigateUp()
+    }
 }
