@@ -22,6 +22,53 @@
 
     <style name="CheckBoxStyle" parent="Theme.MaterialComponents.Light">
         <item name="colorControlNormal">@color/color_gray</item>
-        <item name="colorControlActivated">@color/color_blue</item>
+        <item name="colorControlActivated">@color/color_green</item>
     </style>
+
+    <style name="SwitchStyle" parent="Theme.MaterialComponents.Light">
+        <item name="colorOnSurface">@color/support_overlay</item>
+        <item name="colorSecondary">@color/color_blue</item>
+    </style>
+
+    <style name="DatePickerStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/color_blue</item>
+        <item name="colorSecondary">@color/color_blue</item>
+        <item name="colorControlActivated">@color/color_blue</item>
+        <item name="colorControlHighlight">@color/color_blue</item>
+        <item name="android:windowBackground">@color/back_secondary</item>
+        <item name="android:textColor">@color/color_white</item>
+        <item name="android:colorPrimary">@color/color_blue</item>
+        <item name="android:textColorSecondary">@color/label_tertiary</item>
+        <item name="android:textColorPrimary">@color/label_primary</item>
+        <item name="android:textColorPrimaryInverse">@color/color_white</item>
+        <item name="android:textColorSecondaryInverse">@color/color_white</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/DatePickerTheme.ButtonBarButton
+        </item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/DatePickerTheme.ButtonBarButton
+        </item>
+    </style>
+
+    <style name="DatePickerTheme.ButtonBarButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/color_blue</item>
+    </style>
+
+    <style name="DeleteButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:textColor">@color/color_red</item>
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="iconTint">@color/color_red</item>
+        <item name="iconSize">24dp</item>
+        <item name="iconPadding">4dp</item>
+        <item name="backgroundTint">@drawable/button_bg_color_selector</item>
+        <item name="rippleColor">@drawable/button_ripple_color_selector</item>
+        <item name="android:textAppearance">@style/DeleteButtonTextAppearance</item>
+    </style>
+
+    <style name="DeleteButtonTextAppearance" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textAllCaps">false</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
 </resources>

@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">ToDo App</string>
+
+    <string name="todo_list_title">Мои дела</string>
+    <string name="todo_list_no_todos_title">Нет активных дел</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="todo_list_visibility_title">Показать завершенные</string>
+    <string name="todo_list_visibility_off_title">Скрыть завершенные</string>
+    <string name="todo_list_add_todo_title">Добавить дело</string>
+    <string name="todo_list_completed_count" formatted="false">Выполнено - %d</string>
+    <string name="todo_item_view_hint">Что надо сделать…</string>
+    <string name="todo_item_view_save">СОХРАНИТЬ</string>
+    <string name="todo_item_view_priority">Важность</string>
+    <string name="todo_item_view_before">Сделать до</string>
+    <string name="todo_item_view_delete">Удалить</string>
+    <string name="todo_item_view_priority_default">Нет</string>
+    <string name="todo_item_view_priority_low">Низкий</string>
+    <string name="todo_item_view_priority_high">Высокий</string>
+</resources>

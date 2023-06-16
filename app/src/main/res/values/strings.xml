@@ -1,11 +1,19 @@
 <resources>
     <string name="app_name">ToDo App</string>
 
-    <string name="todo_list_title">Мои дела</string>
-    <string name="todo_list_no_todos_title">Нет завершенных дел</string>
+    <string name="todo_list_title">Todos</string>
+    <string name="todo_list_no_todos_title">No active todos</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
-    <string name="todo_list_visibility_title">Показать завершенные</string>
-    <string name="todo_list_visibility_off_title">Скрыть завершенные</string>
-    <string name="todo_list_add_todo_title">Добавить дело</string>
-    <string name="todo_list_completed_count" formatted="false">Выполнено - %d</string>
+    <string name="todo_list_visibility_title">Show completed</string>
+    <string name="todo_list_visibility_off_title">Hide completed</string>
+    <string name="todo_list_add_todo_title">Add todo</string>
+    <string name="todo_list_completed_count" formatted="false">Done - %d</string>
+    <string name="todo_item_view_hint">What need to do…</string>
+    <string name="todo_item_view_save">SAVE</string>
+    <string name="todo_item_view_priority">Priority</string>
+    <string name="todo_item_view_before">Make before</string>
+    <string name="todo_item_view_delete">Delete</string>
+    <string name="todo_item_view_priority_default">No</string>
+    <string name="todo_item_view_priority_low">Low</string>
+    <string name="todo_item_view_priority_high">High</string>
 </resources>
