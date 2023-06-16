@@ -49,6 +49,11 @@ class TodoListFragment : Fragment(R.layout.fragment_todo_list) {
         subscribeOnViewModel()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshList()
+    }
+
     private fun bindViews() {
         appBar.addOnOffsetChangedListener(createAppBarOnOffsetChangedListener())
         recyclerView.apply {

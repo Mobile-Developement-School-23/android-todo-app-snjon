@@ -21,7 +21,7 @@ class TodoListViewModel(
         refreshList()
     }
 
-    private fun refreshList() {
+    fun refreshList() {
         viewModelScope.launch {
             todoListItemsState.update { previousState ->
                 val completedCount: Int
