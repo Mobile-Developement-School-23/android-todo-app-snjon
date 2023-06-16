@@ -7,6 +7,8 @@ interface TodoItemsRepository {
 
     fun getTodoItems(): StateFlow<Map<String, TodoItem>>
 
+    fun getTodoById(id: String): TodoItem?
+
     fun saveTodoItem(item: TodoItem)
 
     fun deleteTodoItem(item: TodoItem)
