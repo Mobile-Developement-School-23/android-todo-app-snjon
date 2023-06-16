@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center|start"
-            android:paddingHorizontal="16dp"
+            android:paddingHorizontal="@dimen/common_spacing"
             android:src="@drawable/ic_done"
             app:tint="@color/color_white" />
 
@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center|end"
-            android:paddingHorizontal="16dp"
+            android:paddingHorizontal="@dimen/common_spacing"
             android:src="@drawable/ic_delete"
             app:tint="@color/color_white" />
 
@@ -62,10 +62,9 @@
             android:id="@+id/todo_item_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="5dp"
             android:clickable="false"
             android:gravity="center"
-            android:theme="@style/CheckBoxStyle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -80,7 +79,7 @@
             android:maxLines="3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/todo_item_info"
-            app:layout_constraintStart_toEndOf="@id/todo_item_check"
+            app:layout_constraintStart_toEndOf="@id/todo_item_priority"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Купить что-то, где-то, зачем-то, но зачем не очень понятно, но точно чтобы показать как отображается текст нашего дела" />
 
@@ -88,7 +87,7 @@
             android:id="@+id/todo_item_info"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="@dimen/common_spacing"
             android:src="@drawable/ic_info"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

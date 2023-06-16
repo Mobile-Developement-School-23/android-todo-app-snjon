@@ -45,14 +45,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="60dp"
-                    android:textColor="@color/label_primary"
+                    android:textColor="@color/label_tertiary"
                     app:layout_constraintBottom_toTopOf="@+id/todo_list_app_bar_spacing"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <Space
                     android:id="@+id/todo_list_app_bar_spacing"
                     android:layout_width="0dp"
-                    android:layout_height="16dp"
+                    android:layout_height="@dimen/common_spacing"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
@@ -62,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/todo_list_visibility_title"
                     android:paddingHorizontal="24dp"
-                    android:paddingVertical="16dp"
+                    android:paddingVertical="@dimen/common_spacing"
                     android:src="@drawable/ic_visibility"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -154,7 +154,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/common_spacing"
         android:contentDescription="@string/todo_list_add_todo_title"
         android:src="@drawable/ic_add"
         app:backgroundTint="@color/color_blue"
