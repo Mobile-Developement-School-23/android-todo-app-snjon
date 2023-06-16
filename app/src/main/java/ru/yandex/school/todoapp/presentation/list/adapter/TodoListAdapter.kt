@@ -1,7 +1,9 @@
 package ru.yandex.school.todoapp.presentation.list.adapter
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.ListAdapter
 import ru.yandex.school.todoapp.R
 import ru.yandex.school.todoapp.domain.model.TodoItem
@@ -23,6 +25,7 @@ class TodoListAdapter(
         )
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: TodoItemViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
