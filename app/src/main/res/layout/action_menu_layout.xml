@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:backgroundTint="@color/back_elevated"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/menu_action_completed"
+        style="@style/style_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_effect"
+        android:padding="16dp"
+        android:text="@string/todo_list_action_complete"
+        android:textColor="@color/label_primary" />
+
+    <TextView
+        android:id="@+id/menu_action_edit"
+        style="@style/style_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_effect"
+        android:padding="16dp"
+        android:text="@string/todo_list_action_edit"
+        android:textColor="@color/label_primary" />
+
+    <TextView
+        android:id="@+id/menu_action_delete"
+        style="@style/style_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_effect"
+        android:padding="16dp"
+        android:text="@string/todo_list_action_delete"
+        android:textColor="@color/label_primary" />
+
+</LinearLayout>

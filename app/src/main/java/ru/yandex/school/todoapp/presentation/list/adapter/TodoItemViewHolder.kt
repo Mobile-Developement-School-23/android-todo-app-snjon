@@ -1,10 +1,13 @@
 package ru.yandex.school.todoapp.presentation.list.adapter
 
+import android.annotation.SuppressLint
 import android.graphics.Paint
 import android.os.Build
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.CheckBox
 import android.widget.ImageView
+import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -20,6 +23,7 @@ import ru.yandex.school.todoapp.presentation.util.visibleOrGone
 class TodoItemViewHolder(
     itemView: View,
     private val onInfoClick: ((TodoItem) -> Unit)? = null,
+    private val onLongClick: ((TodoItem, Int) -> Unit)? = null,
     private val onSwipeToCheck: ((TodoItem) -> Unit)? = null,
     private val onSwipeToDelete: ((TodoItem) -> Unit)? = null,
 ) : RecyclerView.ViewHolder(itemView), Swipeable {
@@ -30,8 +34,13 @@ class TodoItemViewHolder(
     private val priority by bind<ImageView>(R.id.todo_item_priority)
     private val itemText by bind<TextView>(R.id.todo_item_text)
 
+    private var lastTouchX: Float = 0f
+    private var lastTouchY: Float = 0f
+
     private var item: TodoItem? = null
 
+
+    @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(Build.VERSION_CODES.O)
     fun bind(todoItem: TodoItem) {
         card.translationX = 0f
@@ -47,6 +56,54 @@ class TodoItemViewHolder(
         todoItem.priority.imageRes?.let { priority.setImageResource(it) }
 
         card.setOnClickListener { onInfoClick?.invoke(todoItem) }
+
+        card.setOnTouchListener(View.OnTouchListener { _, event ->
+            lastTouchX = event.x
+            lastTouchY = event.y
+            return@OnTouchListener false
+        })
+
+        card.setOnLongClickListener {
+            showActionMenu(card, lastTouchX.toInt(), lastTouchY.toInt(), todoItem)
+            true
+        }
+
+    }
+
+
+    private fun showActionMenu(view: View, x: Int, y: Int, todoItem: TodoItem) {
+        val layoutInflater = LayoutInflater.from(view.context)
+        val popupWindow = PopupWindow(view.context)
+        val menuView = layoutInflater.inflate(R.layout.action_menu_layout, card, false)
+        popupWindow.contentView = menuView
+        popupWindow.isFocusable = true
+
+        val completeItem = menuView.findViewById<TextView>(R.id.menu_action_completed)
+        val editItem = menuView.findViewById<TextView>(R.id.menu_action_edit)
+        val deleteItem = menuView.findViewById<TextView>(R.id.menu_action_delete)
+
+        var selectedItemResId: Int? = null
+
+        completeItem.setOnClickListener { itemView ->
+            selectedItemResId = itemView.id
+            popupWindow.dismiss()
+        }
+
+        editItem.setOnClickListener { itemView ->
+            selectedItemResId = itemView.id
+            popupWindow.dismiss()
+        }
+
+        deleteItem.setOnClickListener { itemView ->
+            selectedItemResId = itemView.id
+            popupWindow.dismiss()
+        }
+
+        popupWindow.setOnDismissListener {
+            selectedItemResId?.let { onLongClick?.invoke(todoItem, it) }
+        }
+
+        popupWindow.showAsDropDown(view, x, y)
     }
 
     override fun onChildDraw(dX: Float, dY: Float) {

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.yandex.school.todoapp.R
 import ru.yandex.school.todoapp.domain.model.TodoItem
 import ru.yandex.school.todoapp.domain.repository.TodoItemsRepository
 import ru.yandex.school.todoapp.presentation.list.model.TodoListScreenState
@@ -80,5 +81,22 @@ class TodoListViewModel(
             )
         }
         refreshList()
+    }
+
+    fun actionOnItem(todoItem: TodoItem, resId: Int) {
+
+        when (resId) {
+            R.id.menu_action_completed -> {
+                checkTodoItem(todoItem)
+            }
+
+            R.id.menu_action_edit -> {
+                openTodoItemInfo(todoItem)
+            }
+
+            R.id.menu_action_delete -> {
+                deleteTodoItem(todoItem)
+            }
+        }
     }
 }
