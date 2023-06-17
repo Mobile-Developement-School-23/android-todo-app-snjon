@@ -29,7 +29,7 @@ class TodoItemViewModel(
             TodoItemScreenState(
                 text = todoItem.text,
                 priorityRes = todoItem.priority.titleRes,
-                deadlineDate = todoItem.deadlineDate
+                deadlineDate = todoItem.deadline
             )
         }
     }
@@ -44,13 +44,13 @@ class TodoItemViewModel(
     }
 
     fun updateTodoItemDate(currentDate: String, deadLineDate: String?) {
-        if (todoItem.createDate.isNullOrBlank()) {
-            todoItem = todoItem.copy(createDate = currentDate)
+        if (todoItem.createAt.isNullOrBlank()) {
+            todoItem = todoItem.copy(createAt = currentDate)
         }
 
         todoItem = todoItem.copy(
-            deadlineDate = deadLineDate,
-            changeDate = currentDate
+            deadline = deadLineDate,
+            modifiedAt = currentDate
         )
     }
 

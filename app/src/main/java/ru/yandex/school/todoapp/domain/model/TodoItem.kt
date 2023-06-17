@@ -7,9 +7,9 @@ data class TodoItem(
     val text: String,
     val priority: TodoItemPriority,
     val isCompleted: Boolean,
-    val createDate: String? = null,
-    val deadlineDate: String? = null,
-    val changeDate: String? = null
+    val createAt: String? = null,
+    val deadline: String? = null,
+    val modifiedAt: String? = null
 ) {
 
     fun getIndicatorColorRes(): Int {

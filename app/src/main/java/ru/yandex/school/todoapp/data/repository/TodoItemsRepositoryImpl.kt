@@ -16,47 +16,47 @@ class TodoItemsRepositoryImpl : TodoItemsRepository {
                 text = "Сделать что-то",
                 priority = TodoItemPriority.DEFAULT,
                 isCompleted = false,
-                createDate = "01.05.2023"
+                createAt = "01.05.2023"
             ),
             "2" to TodoItem(
                 id = "2",
                 text = "Купить что-то, где-то, зачем-то, но зачем не очень понятно, но точно чтобы показать как отображается текст нашего дела",
                 priority = TodoItemPriority.HIGH,
                 isCompleted = false,
-                deadlineDate = "02.06.2023",
-                createDate = "02.05.2023"
+                deadline = "02.06.2023",
+                createAt = "02.05.2023"
             ),
             "3" to TodoItem(
                 id = "3",
                 text = "Сделать что-то",
                 priority = TodoItemPriority.DEFAULT,
                 isCompleted = false,
-                deadlineDate = "01.06.2023",
-                createDate = "03.05.2023"
+                deadline = "01.06.2023",
+                createAt = "03.05.2023"
             ),
             "4" to TodoItem(
                 id = "4",
                 text = "Сделать что-то",
                 priority = TodoItemPriority.LOW,
                 isCompleted = false,
-                deadlineDate = "05.06.2023",
-                createDate = "04.05.2023"
+                deadline = "05.06.2023",
+                createAt = "04.05.2023"
             ),
             "5" to TodoItem(
                 id = "5",
                 text = "Сделать что-то",
                 priority = TodoItemPriority.DEFAULT,
                 isCompleted = false,
-                deadlineDate = "10.06.2023",
-                createDate = "05.05.2023"
+                deadline = "10.06.2023",
+                createAt = "05.05.2023"
             ),
             "6" to TodoItem(
                 id = "6",
                 text = "Сделать что-то",
                 priority = TodoItemPriority.DEFAULT,
                 isCompleted = true,
-                deadlineDate = "10.06.2023",
-                createDate = "06.05.2023"
+                deadline = "10.06.2023",
+                createAt = "06.05.2023"
             ),
         )
     )
