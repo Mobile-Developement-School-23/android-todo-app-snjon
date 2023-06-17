@@ -112,19 +112,19 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
 
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
-                    R.id.menu_action_done -> {
+                    R.id.menu_priority_default -> {
                         priority.text = menuItem.title
                         viewModel.updateTodoItemPriority(TodoItemPriority.DEFAULT)
                         true
                     }
 
-                    R.id.menu_action_edit -> {
+                    R.id.menu_priority_low -> {
                         priority.text = menuItem.title
                         viewModel.updateTodoItemPriority(TodoItemPriority.LOW)
                         true
                     }
 
-                    R.id.menu_action_delete -> {
+                    R.id.menu_priority_high -> {
                         priority.text = menuItem.title
                         viewModel.updateTodoItemPriority(TodoItemPriority.HIGH)
                         true
