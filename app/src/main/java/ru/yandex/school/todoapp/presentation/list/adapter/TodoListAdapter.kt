@@ -10,7 +10,7 @@ import ru.yandex.school.todoapp.domain.model.TodoItem
 
 class TodoListAdapter(
     private val onInfoClick: ((TodoItem) -> Unit)? = null,
-    private val onLongClick: ((TodoItem, Int) -> Unit)? = null,
+    private val onActionLongClick: ((TodoItem, Int) -> Unit)? = null,
     private val onSwipeToCheck: ((TodoItem) -> Unit)? = null,
     private val onSwipeToDelete: ((TodoItem) -> Unit)? = null,
 ) : ListAdapter<TodoItem, TodoItemViewHolder>(TodoListDiffUtil()) {
@@ -21,7 +21,7 @@ class TodoListAdapter(
         return TodoItemViewHolder(
             itemView = inflater.inflate(R.layout.view_todo_item, parent, false),
             onInfoClick = onInfoClick,
-            onLongClick = onLongClick,
+            onActionLongClick = onActionLongClick,
             onSwipeToCheck = onSwipeToCheck,
             onSwipeToDelete = onSwipeToDelete
         )

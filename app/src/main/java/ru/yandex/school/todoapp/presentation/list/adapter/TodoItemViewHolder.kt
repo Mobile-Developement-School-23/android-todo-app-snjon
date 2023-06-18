@@ -23,7 +23,7 @@ import ru.yandex.school.todoapp.presentation.util.visibleOrGone
 class TodoItemViewHolder(
     itemView: View,
     private val onInfoClick: ((TodoItem) -> Unit)? = null,
-    private val onLongClick: ((TodoItem, Int) -> Unit)? = null,
+    private val onActionLongClick: ((TodoItem, Int) -> Unit)? = null,
     private val onSwipeToCheck: ((TodoItem) -> Unit)? = null,
     private val onSwipeToDelete: ((TodoItem) -> Unit)? = null,
 ) : RecyclerView.ViewHolder(itemView), Swipeable {
@@ -103,7 +103,7 @@ class TodoItemViewHolder(
         }
 
         popupWindow.setOnDismissListener {
-            selectedItemResId?.let { onLongClick?.invoke(todoItem, it) }
+            selectedItemResId?.let { onActionLongClick?.invoke(todoItem, it) }
         }
 
         popupWindow.showAsDropDown(view, x, y)

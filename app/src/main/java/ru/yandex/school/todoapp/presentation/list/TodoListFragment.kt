@@ -100,7 +100,7 @@ class TodoListFragment : Fragment(R.layout.fragment_todo_list) {
     private fun createAdapter(): TodoListAdapter {
         return TodoListAdapter(
             onInfoClick = { viewModel.openTodoItemInfo(it) },
-            onLongClick = {todoItem: TodoItem, resId: Int -> viewModel.actionOnItem(todoItem, resId) },
+            onActionLongClick = { todoItem: TodoItem, resId: Int -> viewModel.actionOnItem(todoItem, resId) },
             onSwipeToCheck = { viewModel.checkTodoItem(it) },
             onSwipeToDelete = { viewModel.deleteTodoItem(it) }
         )
