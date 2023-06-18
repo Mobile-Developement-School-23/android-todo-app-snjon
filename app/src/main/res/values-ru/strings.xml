@@ -17,6 +17,7 @@
     <string name="todo_item_view_priority_low">Низкий</string>
     <string name="todo_item_view_priority_high">Высокий</string>
     <string name="todo_list_action_complete">Выполнено</string>
+    <string name="todo_list_action_not_complete">Не ыполнено</string>
     <string name="todo_list_action_edit">Редактировать</string>
     <string name="todo_list_action_delete">Удалить</string>
 </resources>

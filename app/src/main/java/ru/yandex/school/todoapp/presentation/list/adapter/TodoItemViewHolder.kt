@@ -85,6 +85,12 @@ class TodoItemViewHolder(
         val editItem = menuView.findViewById<TextView>(R.id.menu_action_edit)
         val deleteItem = menuView.findViewById<TextView>(R.id.menu_action_delete)
 
+        if (todoItem.isCompleted) {
+            completeItem.setText(R.string.todo_list_action_not_complete)
+        } else {
+            completeItem.setText(R.string.todo_list_action_complete)
+        }
+
         var selectedItemResId: Int? = null
 
         completeItem.setOnClickListener { itemView ->

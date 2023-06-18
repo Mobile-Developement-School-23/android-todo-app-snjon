@@ -17,6 +17,7 @@
     <string name="todo_item_view_priority_low">Low</string>
     <string name="todo_item_view_priority_high">High</string>
     <string name="todo_list_action_complete">Todo completed</string>
+    <string name="todo_list_action_not_complete">Todo not completed</string>
     <string name="todo_list_action_edit">Edit</string>
     <string name="todo_list_action_delete">Delete</string>
 </resources>
