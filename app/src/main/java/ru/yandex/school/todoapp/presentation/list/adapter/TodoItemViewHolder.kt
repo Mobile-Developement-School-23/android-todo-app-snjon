@@ -68,6 +68,9 @@ class TodoItemViewHolder(
             true
         }
 
+        checkbox.setOnClickListener {
+            onSwipeToCheck?.invoke(todoItem)
+        }
     }
 
 
