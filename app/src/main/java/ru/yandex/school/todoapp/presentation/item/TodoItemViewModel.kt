@@ -29,7 +29,8 @@ class TodoItemViewModel(
             TodoItemScreenState(
                 text = todoItem.text,
                 priorityRes = todoItem.priority.titleRes,
-                deadlineDate = todoItem.deadline
+                deadlineDate = todoItem.deadline,
+                createDate = todoItem.createAt
             )
         }
     }

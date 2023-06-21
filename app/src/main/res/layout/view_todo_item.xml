@@ -72,7 +72,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/todo_item_priority"
+            android:id="@+id/todo_item_priority_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="-5dp"
@@ -93,7 +93,7 @@
             app:layout_constraintBottom_toTopOf="@+id/deadline_date"
             app:layout_constraintEnd_toStartOf="@id/todo_item_info"
             android:layout_marginEnd="5dp"
-            app:layout_constraintStart_toEndOf="@id/todo_item_priority"
+            app:layout_constraintStart_toEndOf="@id/todo_item_priority_subtitle"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Купить что-то, где-то, зачем-то, но зачем не очень понятно, но точно чтобы показать как отображается текст нашего дела" />
 

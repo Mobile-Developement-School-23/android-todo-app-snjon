@@ -3,9 +3,11 @@ package ru.yandex.school.todoapp.presentation.item
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
@@ -36,10 +38,15 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
     }
 
     private val editText by bind<TextView>(R.id.todo_item_text)
-    private val priority by bind<TextView>(R.id.todo_item_priority)
     private val saveButton by bind<TextView>(R.id.todo_item_save)
-    private val deadlineDate by bind<TextView>(R.id.todo_item_date)
-    private val todoBeforeSwitch by bind<SwitchMaterial>(R.id.todo_item_switch)
+
+    private val priorityCard by bind<LinearLayout>(R.id.todo_item_priority_item)
+    private val priority by bind<TextView>(R.id.todo_item_priority_subtitle)
+
+    private val deadlineCard by bind<ConstraintLayout>(R.id.todo_item_deadline_item)
+    private val deadlineDate by bind<TextView>(R.id.todo_item_deadline_subtitle)
+    private val deadlineSwitch by bind<SwitchMaterial>(R.id.todo_item_deadline_switch)
+
     private val deleteButton by bind<MaterialButton>(R.id.todo_item_delete_button)
     private val toolbar by bind<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
 
@@ -63,14 +70,17 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
 
         editText.text = content.text
         saveButton.isEnabled = editText.text.isNotEmpty()
-        deleteButton.isEnabled = editText.text.isNotEmpty()
-        deleteButton.setButtonColor(editText.text.isNotEmpty())
 
         priority.text = getString(content.priorityRes)
 
-        content.deadlineDate?.let { date ->
-            deadlineDate.text = date.toLocalizedDate()
-            todoBeforeSwitch.isChecked = true
+        content.createDate.let { createDate ->
+            deleteButton.isEnabled = createDate.isNullOrBlank().not()
+            deleteButton.setButtonColor(createDate.isNullOrEmpty().not())
+        }
+
+        content.deadlineDate?.let { deadline ->
+            deadlineDate.text = deadline.toLocalizedDate()
+            deadlineSwitch.isChecked = true
         }
     }
 
@@ -97,12 +107,10 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
         editText.doOnTextChanged { text, _, _, _ ->
             val newText = text.toString()
             saveButton.isEnabled = newText.isNotEmpty()
-            deleteButton.isEnabled = newText.isNotEmpty()
-            deleteButton.setButtonColor(newText.isNotEmpty())
             viewModel.updateTodoItemText(newText)
         }
 
-        priority.setOnClickListener { view ->
+        priorityCard.setOnClickListener { view ->
             val popupMenu = PopupMenu(view.context, view)
             popupMenu.menuInflater.inflate(R.menu.priority_menu, popupMenu.menu)
 
@@ -136,7 +144,7 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
             popupMenu.show()
         }
 
-        todoBeforeSwitch.setOnCheckedChangeListener { _, isChecked ->
+        deadlineSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 deadlineDate.visibleOrInvisible(true)
                 if (deadlineDate.text == "") {
@@ -154,7 +162,7 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
             viewModel.closeTodoItem()
         }
 
-        deadlineDate.setOnClickListener {
+        deadlineCard.setOnClickListener {
             showDatePickerDialog(deadlineDate)
         }
 

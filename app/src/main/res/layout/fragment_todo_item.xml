@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginEnd="@dimen/common_spacing"
+            android:padding="16dp"
             android:background="@drawable/ripple_effect"
             android:gravity="start"
             android:text="@string/todo_item_view_save"
@@ -56,85 +57,114 @@
                 <EditText
                     android:id="@+id/todo_item_text"
                     style="@style/style_body"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autofillHints="none"
+                    android:gravity="start|top"
                     android:background="@android:color/transparent"
                     android:hint="@string/todo_item_view_hint"
                     android:inputType="none"
+                    android:minHeight="100dp"
                     android:padding="@dimen/common_spacing"
                     tools:text="Android — популярная операционная система, построенная на ядре Linux. Используется в смартфонах, планшетах, электронных книгах, цифровых проигрывателях, наручных часах, фитнес-браслетах, игровых приставках, ноутбуках, нетбуках, телевизорах и других устройствах." />
 
             </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/todo_item_priority_text"
-                style="@style/style_body"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/todo_item_priority_item"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/common_spacing"
-                android:text="@string/todo_item_view_priority"
-                app:layout_constraintStart_toStartOf="@id/todo_item_card"
-                app:layout_constraintTop_toBottomOf="@id/todo_item_card"
-                tools:text="Важность" />
-
-            <TextView
-                android:id="@+id/todo_item_priority"
-                style="@style/style_body"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/ripple_effect"
-                android:text="@string/todo_item_view_priority_default"
-                android:textColor="@color/label_tertiary"
-                app:layout_constraintStart_toStartOf="@id/todo_item_card"
-                app:layout_constraintTop_toBottomOf="@+id/todo_item_priority_text"
-                tools:text="Нет" />
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/todo_item_card">
+
+                <TextView
+                    android:id="@+id/todo_item_priority_title"
+                    style="@style/style_body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:text="@string/todo_item_view_priority"
+                    tools:text="Важность" />
+
+                <TextView
+                    android:id="@+id/todo_item_priority_subtitle"
+                    style="@style/style_body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:lines="1"
+                    android:text="@string/todo_item_view_priority_default"
+                    android:textColor="@color/label_tertiary"
+                    tools:text="Нет" />
+
+            </LinearLayout>
 
             <View
                 android:id="@+id/todo_item_separator_up"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginStart="@dimen/common_spacing"
                 android:layout_marginTop="@dimen/common_spacing"
                 android:layout_marginEnd="@dimen/common_spacing"
                 android:background="@color/support_separator"
-                app:layout_constraintTop_toBottomOf="@+id/todo_item_priority" />
-
-            <TextView
-                android:id="@+id/todo_item_before"
-                style="@style/style_body"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/common_spacing"
-                android:text="@string/todo_item_view_before"
-                app:layout_constraintStart_toStartOf="@id/todo_item_card"
-                app:layout_constraintTop_toBottomOf="@id/todo_item_separator_up"
-                tools:text="Сделать до" />
-
-            <TextView
-                android:id="@+id/todo_item_date"
-                style="@style/style_subhead"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/ripple_effect"
-                android:textColor="@color/color_blue"
-                android:visibility="invisible"
-                app:layout_constraintStart_toStartOf="@id/todo_item_card"
-                app:layout_constraintTop_toBottomOf="@id/todo_item_before"
-                tools:text="17 июня" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/todo_item_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                app:layout_constraintBottom_toBottomOf="@id/todo_item_before"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/todo_item_before"
-                app:thumbTint="@drawable/switch_thumb_selector"
-                app:trackTint="@drawable/switch_track_selector" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/todo_item_priority_item" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/todo_item_deadline_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/ripple_effect"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/todo_item_separator_up">
+
+                <TextView
+                    android:id="@+id/todo_item_deadline_title"
+                    style="@style/style_body"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+
+                    android:text="@string/todo_item_view_before"
+                    app:layout_constraintEnd_toStartOf="@id/todo_item_deadline_switch"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Сделать до" />
+
+                <TextView
+                    android:id="@+id/todo_item_deadline_subtitle"
+                    style="@style/style_subhead"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/color_blue"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/todo_item_deadline_switch"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/todo_item_deadline_title"
+                    tools:text="17 июня" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/todo_item_deadline_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:thumbTint="@drawable/switch_thumb_selector"
+                    app:trackTint="@drawable/switch_track_selector" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
                 android:id="@+id/todo_item_separator_down"
@@ -142,7 +172,7 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="40dp"
                 android:background="@color/support_separator"
-                app:layout_constraintTop_toBottomOf="@+id/todo_item_switch" />
+                app:layout_constraintTop_toBottomOf="@id/todo_item_deadline_item" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/todo_item_delete_button"
