@@ -20,4 +20,5 @@
     <string name="todo_list_action_not_complete">Не ыполнено</string>
     <string name="todo_list_action_edit">Редактировать</string>
     <string name="todo_list_action_delete">Удалить</string>
+    <string name="todo_list_date_before">до %s</string>
 </resources>

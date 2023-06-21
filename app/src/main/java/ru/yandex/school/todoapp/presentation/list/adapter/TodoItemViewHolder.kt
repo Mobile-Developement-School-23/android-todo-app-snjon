@@ -18,6 +18,7 @@ import ru.yandex.school.todoapp.domain.model.TodoItem
 import ru.yandex.school.todoapp.presentation.util.Swipeable
 import ru.yandex.school.todoapp.presentation.util.bind
 import ru.yandex.school.todoapp.presentation.util.setColor
+import ru.yandex.school.todoapp.presentation.util.toLocalizedDate
 import ru.yandex.school.todoapp.presentation.util.visibleOrGone
 
 class TodoItemViewHolder(
@@ -33,6 +34,7 @@ class TodoItemViewHolder(
     private val text by bind<TextView>(R.id.todo_item_text)
     private val priority by bind<ImageView>(R.id.todo_item_priority)
     private val itemText by bind<TextView>(R.id.todo_item_text)
+    private val deadline by bind<TextView>(R.id.deadline_date)
 
     private var lastTouchX: Float = 0f
     private var lastTouchY: Float = 0f
@@ -50,6 +52,8 @@ class TodoItemViewHolder(
         text.paintFlags =
             if (todoItem.isCompleted) text.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG else text.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
 
+        deadline.visibleOrGone(todoItem.deadline.isNullOrEmpty().not())
+        deadline.text = deadline.context.getString(R.string.todo_list_date_before, todoItem.deadline?.toLocalizedDate())
         itemText.setColor(if (todoItem.isCompleted) R.color.label_tertiary else R.color.label_primary)
         checkbox.setColor(todoItem.getIndicatorColorRes())
         priority.visibleOrGone(todoItem.priority.imageRes != null)

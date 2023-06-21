@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
     android:layout_height="wrap_content"
     android:minHeight="48dp">
 
@@ -88,7 +90,9 @@
             android:gravity="center|start"
             android:maxLines="3"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/deadline_date"
             app:layout_constraintEnd_toStartOf="@id/todo_item_info"
+            android:layout_marginEnd="5dp"
             app:layout_constraintStart_toEndOf="@id/todo_item_priority"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Купить что-то, где-то, зачем-то, но зачем не очень понятно, но точно чтобы показать как отображается текст нашего дела" />
@@ -104,6 +108,16 @@
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/color_gray"
             tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/deadline_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/todo_item_text"
+            app:layout_constraintTop_toBottomOf="@+id/todo_item_text"
+            tools:text="10.10.2100" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
