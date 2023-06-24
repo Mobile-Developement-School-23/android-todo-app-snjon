@@ -1,4 +1,4 @@
-package ru.yandex.school.todoapp.presentation.list
+package ru.yandex.school.todoapp.presentation.list.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,10 +9,12 @@ import ru.yandex.school.todoapp.R
 import ru.yandex.school.todoapp.domain.model.TodoItem
 import ru.yandex.school.todoapp.domain.repository.TodoItemsRepository
 import ru.yandex.school.todoapp.presentation.list.model.TodoListScreenState
+import ru.yandex.school.todoapp.presentation.list.viewmodel.mapper.TodoListItemMapper
 import ru.yandex.school.todoapp.presentation.navigation.AppNavigator
 
 class TodoListViewModel(
     private val repository: TodoItemsRepository,
+    private val todoListItemMapper: TodoListItemMapper,
     private val navigator: AppNavigator
 ) : ViewModel() {
 
@@ -32,13 +34,8 @@ class TodoListViewModel(
                     .value
                     .map { it.value }
                     .also { completedCount = it.filter { it.isCompleted }.size }
-                    .filter {
-                        if (shouldShowCompleted) {
-                            true
-                        } else {
-                            it.isCompleted.not()
-                        }
-                    }
+                    .filter { item -> filterVisibleItem(shouldShowCompleted, item) }
+                    .map { todoListItemMapper.map(it) }
 
                 TodoListScreenState(
                     listItems = items,
@@ -46,6 +43,14 @@ class TodoListViewModel(
                     isCompletedShowed = previousState.isCompletedShowed
                 )
             }
+        }
+    }
+
+    private fun filterVisibleItem(shouldShowCompleted: Boolean, item: TodoItem): Boolean {
+        return if (shouldShowCompleted) {
+            true
+        } else {
+            item.isCompleted.not()
         }
     }
 

@@ -1,15 +1,15 @@
 package ru.yandex.school.todoapp.presentation.list.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import ru.yandex.school.todoapp.domain.model.TodoItem
+import ru.yandex.school.todoapp.presentation.list.model.TodoItemListModel
 
-class TodoListDiffUtil : DiffUtil.ItemCallback<TodoItem>() {
+class TodoListDiffUtil : DiffUtil.ItemCallback<TodoItemListModel>() {
 
-    override fun areItemsTheSame(oldItem: TodoItem, newItem: TodoItem): Boolean {
-        return oldItem.id == newItem.id
+    override fun areItemsTheSame(oldItem: TodoItemListModel, newItem: TodoItemListModel): Boolean {
+        return oldItem.payload.id == newItem.payload.id
     }
 
-    override fun areContentsTheSame(oldItem: TodoItem, newItem: TodoItem): Boolean {
+    override fun areContentsTheSame(oldItem: TodoItemListModel, newItem: TodoItemListModel): Boolean {
         return oldItem == newItem
     }
 }

@@ -1,24 +1,21 @@
 package ru.yandex.school.todoapp.presentation.list.adapter
 
 import android.annotation.SuppressLint
-import android.graphics.Paint
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import ru.yandex.school.todoapp.R
 import ru.yandex.school.todoapp.domain.model.TodoItem
+import ru.yandex.school.todoapp.presentation.list.model.TodoItemListModel
 import ru.yandex.school.todoapp.presentation.util.Swipeable
 import ru.yandex.school.todoapp.presentation.util.bind
 import ru.yandex.school.todoapp.presentation.util.setColor
-import ru.yandex.school.todoapp.presentation.util.toLocalizedDate
 import ru.yandex.school.todoapp.presentation.util.visibleOrGone
 
 class TodoItemViewHolder(
@@ -39,27 +36,39 @@ class TodoItemViewHolder(
     private var lastTouchX: Float = 0f
     private var lastTouchY: Float = 0f
 
-    private var item: TodoItem? = null
-
+    private var item: TodoItemListModel? = null
 
     @SuppressLint("ClickableViewAccessibility")
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun bind(todoItem: TodoItem) {
+    fun bind(todoItem: TodoItemListModel) {
         card.translationX = 0f
         item = todoItem
-        checkbox.isChecked = todoItem.isCompleted
-        text.text = todoItem.text
-        text.paintFlags =
-            if (todoItem.isCompleted) text.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG else text.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
 
-        deadline.visibleOrGone(todoItem.deadline.isNullOrEmpty().not())
-        deadline.text = deadline.context.getString(R.string.todo_list_date_before, todoItem.deadline?.toLocalizedDate())
-        itemText.setColor(if (todoItem.isCompleted) R.color.label_tertiary else R.color.label_primary)
-        checkbox.setColor(todoItem.getIndicatorColorRes())
-        priority.visibleOrGone(todoItem.priority.imageRes != null)
-        todoItem.priority.imageRes?.let { priority.setImageResource(it) }
+        text.apply {
+            text = todoItem.text
+            setTextColor(todoItem.textColor)
+            paintFlags = if (todoItem.isChecked) {
+                paintFlags or todoItem.textPaintFlags
+            } else {
+                paintFlags and todoItem.textPaintFlags
+            }
+        }
 
-        card.setOnClickListener { onInfoClick?.invoke(todoItem) }
+        checkbox.apply {
+            isChecked = todoItem.isChecked
+            buttonTintList = todoItem.checkboxTint
+        }
+
+        deadline.apply {
+            deadline.visibleOrGone(todoItem.deadlineDate.isNullOrEmpty().not())
+            deadline.text =
+                deadline.context.getString(R.string.todo_list_date_before, todoItem.deadlineDate)
+        }
+
+        itemText.setColor(if (todoItem.payload.isCompleted) R.color.label_tertiary else R.color.label_primary)
+        priority.visibleOrGone(todoItem.priorityImage != null)
+        priority.setImageDrawable(todoItem.priorityImage)
+
+        card.setOnClickListener { onInfoClick?.invoke(todoItem.payload) }
 
         card.setOnTouchListener(View.OnTouchListener { _, event ->
             lastTouchX = event.x
@@ -68,12 +77,12 @@ class TodoItemViewHolder(
         })
 
         card.setOnLongClickListener {
-            showActionMenu(card, lastTouchX.toInt(), lastTouchY.toInt(), todoItem)
+            showActionMenu(card, lastTouchX.toInt(), lastTouchY.toInt(), todoItem.payload)
             true
         }
 
         checkbox.setOnClickListener {
-            onSwipeToCheck?.invoke(todoItem)
+            onSwipeToCheck?.invoke(todoItem.payload)
         }
     }
 
@@ -127,8 +136,8 @@ class TodoItemViewHolder(
         val todoItem = item ?: return
 
         when (direction) {
-            ItemTouchHelper.LEFT -> onSwipeToDelete?.invoke(todoItem)
-            ItemTouchHelper.RIGHT -> onSwipeToCheck?.invoke(todoItem)
+            ItemTouchHelper.LEFT -> onSwipeToDelete?.invoke(todoItem.payload)
+            ItemTouchHelper.RIGHT -> onSwipeToCheck?.invoke(todoItem.payload)
         }
     }
 }

@@ -1,15 +1,16 @@
 package ru.yandex.school.todoapp.domain.model
 
 import ru.yandex.school.todoapp.R
+import java.time.LocalDate
 
 data class TodoItem(
     val id: String,
     val text: String,
     val priority: TodoItemPriority,
     val isCompleted: Boolean,
-    val createAt: String? = null,
-    val deadline: String? = null,
-    val modifiedAt: String? = null
+    val createAt: LocalDate? = null,
+    val deadline: LocalDate? = null,
+    val modifiedAt: LocalDate? = null
 ) {
 
     fun getIndicatorColorRes(): Int {
@@ -17,6 +18,10 @@ data class TodoItem(
             isCompleted -> R.color.color_green
             else -> priority.colorRes
         }
+    }
+
+    fun getTextColorRes(): Int {
+        return if (isCompleted) R.color.label_tertiary else R.color.label_primary
     }
 
     companion object {

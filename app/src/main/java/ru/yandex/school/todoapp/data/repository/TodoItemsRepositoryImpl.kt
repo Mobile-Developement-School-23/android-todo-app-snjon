@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.getAndUpdate
 import ru.yandex.school.todoapp.domain.model.TodoItem
 import ru.yandex.school.todoapp.domain.model.TodoItemPriority
 import ru.yandex.school.todoapp.domain.repository.TodoItemsRepository
+import java.time.LocalDate
 
 class TodoItemsRepositoryImpl : TodoItemsRepository {
     private var items = MutableStateFlow(
@@ -16,47 +17,47 @@ class TodoItemsRepositoryImpl : TodoItemsRepository {
                 text = "Сделать что-то",
                 priority = TodoItemPriority.DEFAULT,
                 isCompleted = false,
-                createAt = "01.05.2023"
+                createAt = LocalDate.of(2023, 5, 1)
             ),
             "2" to TodoItem(
                 id = "2",
                 text = "Купить что-то, где-то, зачем-то, но зачем не очень понятно, но точно чтобы показать как отображается текст нашего дела",
                 priority = TodoItemPriority.HIGH,
                 isCompleted = false,
-                deadline = "02.06.2023",
-                createAt = "02.05.2023"
+                deadline = LocalDate.of(2023, 6, 2),
+                createAt = LocalDate.of(2023, 5, 2)
             ),
             "3" to TodoItem(
                 id = "3",
                 text = "Сделать что-то",
                 priority = TodoItemPriority.DEFAULT,
                 isCompleted = false,
-                deadline = "01.06.2023",
-                createAt = "03.05.2023"
+                deadline = LocalDate.of(2023, 6, 1),
+                createAt = LocalDate.of(2023, 5, 3)
             ),
             "4" to TodoItem(
                 id = "4",
                 text = "Сделать что-то",
                 priority = TodoItemPriority.LOW,
                 isCompleted = false,
-                deadline = "05.06.2023",
-                createAt = "04.05.2023"
+                deadline = LocalDate.of(2023, 6, 5),
+                createAt = LocalDate.of(2023, 5, 4)
             ),
             "5" to TodoItem(
                 id = "5",
                 text = "Сделать что-то",
                 priority = TodoItemPriority.DEFAULT,
                 isCompleted = false,
-                deadline = "10.06.2023",
-                createAt = "05.05.2023"
+                deadline = LocalDate.of(2023, 6, 10),
+                createAt = LocalDate.of(2023, 5, 5)
             ),
             "6" to TodoItem(
                 id = "6",
                 text = "Сделать что-то",
                 priority = TodoItemPriority.DEFAULT,
                 isCompleted = true,
-                deadline = "10.06.2023",
-                createAt = "06.05.2023"
+                deadline = LocalDate.of(2023, 6, 10),
+                createAt = LocalDate.of(2023, 5, 6)
             ),
         )
     )

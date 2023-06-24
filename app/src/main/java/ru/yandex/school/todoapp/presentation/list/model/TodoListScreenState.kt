@@ -1,9 +1,7 @@
 package ru.yandex.school.todoapp.presentation.list.model
 
-import ru.yandex.school.todoapp.domain.model.TodoItem
-
 data class TodoListScreenState(
-    val listItems: List<TodoItem>,
+    val listItems: List<TodoItemListModel>,
     val completedCount: Int,
     val isCompletedShowed: Boolean
 ) {

@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -16,18 +15,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.yandex.school.todoapp.R
 import ru.yandex.school.todoapp.domain.model.TodoItemPriority
+ import ru.yandex.school.todoapp.presentation.datetime.DatePickerDialog
 import ru.yandex.school.todoapp.presentation.item.model.TodoItemScreenState
+import ru.yandex.school.todoapp.presentation.item.viewmodel.TodoItemViewModel
 import ru.yandex.school.todoapp.presentation.navigation.KEY_TODO_ITEM_ID
 import ru.yandex.school.todoapp.presentation.util.bind
-import ru.yandex.school.todoapp.presentation.util.convertFromLocalizedDateFormat
-import ru.yandex.school.todoapp.presentation.util.getCurrentDate
 import ru.yandex.school.todoapp.presentation.util.repeatOnCreated
 import ru.yandex.school.todoapp.presentation.util.setButtonColor
-import ru.yandex.school.todoapp.presentation.util.showDatePickerDialog
-import ru.yandex.school.todoapp.presentation.util.toLocalizedDate
-import ru.yandex.school.todoapp.presentation.util.visibleOrInvisible
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import ru.yandex.school.todoapp.presentation.util.show
 
 class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
 
@@ -50,7 +45,9 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
     private val deleteButton by bind<MaterialButton>(R.id.todo_item_delete_button)
     private val toolbar by bind<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
 
-    @RequiresApi(Build.VERSION_CODES.Q)
+    private val datePicker by lazy { createDatePicker() }
+    private val priorityPopup by lazy { createPriorityPopup() }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -58,14 +55,12 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
         subscribeOnViewModel()
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
     private fun subscribeOnViewModel() {
         viewModel.todoItemScreenState.repeatOnCreated(this) {
             showContent(it)
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
     private fun showContent(content: TodoItemScreenState) {
 
         editText.text = content.text
@@ -79,30 +74,15 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
         }
 
         content.deadlineDate?.let { deadline ->
-            deadlineDate.text = deadline.toLocalizedDate()
+            deadlineDate.text = deadline
             deadlineSwitch.isChecked = true
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun saveDate() {
-        val currentDate = getCurrentDate()
-        val deadlineDate = if (deadlineDate.text.toString().isNotEmpty()) {
-            deadlineDate.text.toString().convertFromLocalizedDateFormat()
-        } else {
-            null
-        }
 
-        viewModel.updateTodoItemDate(currentDate, deadlineDate)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.Q)
     private fun bindViews() {
 
-        saveButton.setOnClickListener {
-            saveDate()
-            viewModel.saveTodoItem()
-        }
+        saveButton.setOnClickListener { viewModel.saveTodoItem() }
 
         editText.doOnTextChanged { text, _, _, _ ->
             val newText = text.toString()
@@ -110,65 +90,59 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
             viewModel.updateTodoItemText(newText)
         }
 
-        priorityCard.setOnClickListener { view ->
-            val popupMenu = PopupMenu(view.context, view)
-            popupMenu.menuInflater.inflate(R.menu.priority_menu, popupMenu.menu)
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                popupMenu.setForceShowIcon(true)
-            }
-
-            popupMenu.setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.menu_priority_default -> {
-                        priority.text = menuItem.title
-                        viewModel.updateTodoItemPriority(TodoItemPriority.DEFAULT)
-                        true
-                    }
-
-                    R.id.menu_priority_low -> {
-                        priority.text = menuItem.title
-                        viewModel.updateTodoItemPriority(TodoItemPriority.LOW)
-                        true
-                    }
-
-                    R.id.menu_priority_high -> {
-                        priority.text = menuItem.title
-                        viewModel.updateTodoItemPriority(TodoItemPriority.HIGH)
-                        true
-                    }
-
-                    else -> false
-                }
-            }
-            popupMenu.show()
-        }
+        priorityCard.setOnClickListener { priorityPopup.show() }
 
         deadlineSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                deadlineDate.visibleOrInvisible(true)
-                if (deadlineDate.text == "") {
-                    val currentDate = LocalDate.now()
-                    val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-                    deadlineDate.text = currentDate.format(formatter).toLocalizedDate()
-                }
-            } else {
-                deadlineDate.visibleOrInvisible(false)
-                deadlineDate.text = ""
-            }
+            viewModel.onDeadlineDateActivate(isChecked)
         }
 
         toolbar.setNavigationOnClickListener {
             viewModel.closeTodoItem()
         }
 
-        deadlineCard.setOnClickListener {
-            showDatePickerDialog(deadlineDate)
-        }
+        deadlineCard.setOnClickListener { datePicker.show(this) }
 
         deleteButton.setOnClickListener {
             viewModel.deleteTodoItem()
             viewModel.closeTodoItem()
         }
+    }
+
+    private fun createDatePicker(): DatePickerDialog {
+        return DatePickerDialog.newInstance { viewModel.updateDeadlineDate(it) }
+    }
+
+    private fun createPriorityPopup(): PopupMenu {
+        val popupMenu = PopupMenu(priority.context, priority)
+        popupMenu.menuInflater.inflate(R.menu.priority_menu, popupMenu.menu)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            popupMenu.setForceShowIcon(true)
+        }
+
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.menu_priority_default -> {
+                    priority.text = menuItem.title
+                    viewModel.updateTodoItemPriority(TodoItemPriority.DEFAULT)
+                    true
+                }
+
+                R.id.menu_priority_low -> {
+                    priority.text = menuItem.title
+                    viewModel.updateTodoItemPriority(TodoItemPriority.LOW)
+                    true
+                }
+
+                R.id.menu_priority_high -> {
+                    priority.text = menuItem.title
+                    viewModel.updateTodoItemPriority(TodoItemPriority.HIGH)
+                    true
+                }
+
+                else -> false
+            }
+        }
+        return popupMenu
     }
 }

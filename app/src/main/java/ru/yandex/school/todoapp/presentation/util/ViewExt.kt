@@ -1,8 +1,6 @@
 package ru.yandex.school.todoapp.presentation.util
 
-import android.content.res.ColorStateList
 import android.view.View
-import android.widget.CheckBox
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -44,11 +42,6 @@ fun View.elevationOrNot(condition: Boolean) {
     } else {
         ViewCompat.setElevation(this, resources.getDimension(R.dimen.toolbar_elevation_off))
     }
-}
-
-fun CheckBox.setColor(colorResId: Int) {
-    val color = ContextCompat.getColor(this.context, colorResId)
-    this.buttonTintList = ColorStateList.valueOf(color)
 }
 
 fun TextView.setColor(colorResId: Int) {
