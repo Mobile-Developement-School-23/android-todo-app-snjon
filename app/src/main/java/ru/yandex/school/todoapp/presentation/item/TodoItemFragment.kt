@@ -15,7 +15,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.yandex.school.todoapp.R
 import ru.yandex.school.todoapp.domain.model.TodoItemPriority
- import ru.yandex.school.todoapp.presentation.datetime.DatePickerDialog
+import ru.yandex.school.todoapp.presentation.datetime.DatePickerDialog
 import ru.yandex.school.todoapp.presentation.item.model.TodoItemScreenState
 import ru.yandex.school.todoapp.presentation.item.viewmodel.TodoItemViewModel
 import ru.yandex.school.todoapp.presentation.navigation.KEY_TODO_ITEM_ID
@@ -23,6 +23,7 @@ import ru.yandex.school.todoapp.presentation.util.bind
 import ru.yandex.school.todoapp.presentation.util.repeatOnCreated
 import ru.yandex.school.todoapp.presentation.util.setButtonColor
 import ru.yandex.school.todoapp.presentation.util.show
+import ru.yandex.school.todoapp.presentation.util.visibleOrGone
 
 class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
 
@@ -93,6 +94,7 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
         priorityCard.setOnClickListener { priorityPopup.show() }
 
         deadlineSwitch.setOnCheckedChangeListener { _, isChecked ->
+            deadlineDate.visibleOrGone(isChecked)
             viewModel.onDeadlineDateActivate(isChecked)
         }
 
