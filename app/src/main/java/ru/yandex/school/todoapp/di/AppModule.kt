@@ -3,6 +3,9 @@ package ru.yandex.school.todoapp.di
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import ru.yandex.school.todoapp.data.database.AppDatabase
+import ru.yandex.school.todoapp.data.mapper.TodoEntityMapper
+import ru.yandex.school.todoapp.data.mapper.TodoItemMapper
 import ru.yandex.school.todoapp.data.repository.TodoItemsRepositoryImpl
 import ru.yandex.school.todoapp.domain.repository.TodoItemsRepository
 import ru.yandex.school.todoapp.presentation.item.viewmodel.TodoItemViewModel
@@ -20,5 +23,11 @@ val appModule = module {
     factory { TodoItemDateMapper(get()) }
 
     single { AppNavigator() }
-    single<TodoItemsRepository> { TodoItemsRepositoryImpl() }
+
+    single { AppDatabase.getInstance(androidContext()) }
+    single { get<AppDatabase>().todoDao() }
+
+    single<TodoItemsRepository> { TodoItemsRepositoryImpl(get(), get(), get()) }
+    factory { TodoEntityMapper() }
+    factory { TodoItemMapper() }
 }
