@@ -23,6 +23,7 @@ import ru.yandex.school.todoapp.presentation.util.elevationOrNot
 import ru.yandex.school.todoapp.presentation.util.makeGone
 import ru.yandex.school.todoapp.presentation.util.makeVisible
 import ru.yandex.school.todoapp.presentation.util.repeatOnCreated
+import ru.yandex.school.todoapp.presentation.util.repeatOnResumed
 import ru.yandex.school.todoapp.presentation.util.setRecyclerViewItemTouchListener
 import ru.yandex.school.todoapp.presentation.util.visibleOrGone
 import ru.yandex.school.todoapp.presentation.util.visibleOrInvisible
@@ -51,11 +52,6 @@ class TodoListFragment : Fragment(R.layout.fragment_todo_list) {
         subscribeOnViewModel()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.refreshList()
-    }
-
     private fun bindViews() {
         appBar.addOnOffsetChangedListener(createAppBarOnOffsetChangedListener())
         recyclerView.apply {
@@ -70,6 +66,9 @@ class TodoListFragment : Fragment(R.layout.fragment_todo_list) {
     }
 
     private fun subscribeOnViewModel() {
+        viewModel.todoItemsFlow.repeatOnResumed(this) { todoItems ->
+            viewModel.refreshList(todoItems)
+        }
         viewModel.todoListItemsState.repeatOnCreated(this) {
             showContent(it)
         }

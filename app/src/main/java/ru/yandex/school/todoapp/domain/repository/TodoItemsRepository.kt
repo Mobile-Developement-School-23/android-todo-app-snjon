@@ -1,10 +1,11 @@
 package ru.yandex.school.todoapp.domain.repository
 
+import kotlinx.coroutines.flow.Flow
 import ru.yandex.school.todoapp.domain.model.TodoItem
 
 interface TodoItemsRepository {
 
-    suspend fun getTodoItems(): List<TodoItem>
+    val todoItemsFlow: Flow<List<TodoItem>>
 
     suspend fun getTodoById(id: String): TodoItem?
 

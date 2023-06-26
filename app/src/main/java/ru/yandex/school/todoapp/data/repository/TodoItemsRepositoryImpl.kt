@@ -1,5 +1,8 @@
 package ru.yandex.school.todoapp.data.repository
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import ru.yandex.school.todoapp.data.database.dao.TodoDao
 import ru.yandex.school.todoapp.data.mapper.TodoEntityMapper
 import ru.yandex.school.todoapp.data.mapper.TodoItemMapper
@@ -12,11 +15,9 @@ class TodoItemsRepositoryImpl(
     private val itemsMapper: TodoItemMapper,
 ) : TodoItemsRepository {
 
-    override suspend fun getTodoItems(): List<TodoItem> {
-        val entity =  dao.getTodoItems()
-
-        return entityMapper.map(entity)
-    }
+    override val todoItemsFlow = dao.getTodoItems()
+        .map { entityMapper.map(it) }
+        .flowOn(Dispatchers.Default)
 
     override suspend fun getTodoById(id: String): TodoItem? {
         val entity = dao.getTodoById(id) ?: return null

@@ -18,9 +18,22 @@ fun <T> Flow<T>.repeatOnCreated(lifecycleOwner: LifecycleOwner) {
     }
 }
 
+fun <T> Flow<T>.repeatOnResumed(lifecycleOwner: LifecycleOwner) {
+    lifecycleOwner.lifecycleScope.launch {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            this@repeatOnResumed.collect()
+        }
+    }
+}
+
 fun <T> Flow<T>.repeatOnCreated(lifecycleOwner: LifecycleOwner, action: suspend (T) -> Unit) {
     onEach { action(it) }
         .repeatOnCreated(lifecycleOwner)
+}
+
+fun <T> Flow<T>.repeatOnResumed(lifecycleOwner: LifecycleOwner, action: suspend (T) -> Unit) {
+    onEach { action(it) }
+        .repeatOnResumed(lifecycleOwner)
 }
 
 suspend fun MutableSharedFlow<Unit>.emit() {

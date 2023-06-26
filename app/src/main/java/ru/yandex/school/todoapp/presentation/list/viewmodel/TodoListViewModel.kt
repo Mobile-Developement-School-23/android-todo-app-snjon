@@ -18,25 +18,25 @@ class TodoListViewModel(
     private val navigator: AppNavigator
 ) : ViewModel() {
 
+    val todoItemsFlow = repository.todoItemsFlow
+
     val todoListItemsState = MutableStateFlow(TodoListScreenState.empty)
+    private var todoItems: List<TodoItem> = emptyList()
 
-    init {
-        refreshList()
-    }
-
-    fun refreshList() {
+    fun refreshList(items: List<TodoItem>) {
+        todoItems = items
         viewModelScope.launch {
             todoListItemsState.update { previousState ->
                 val completedCount: Int
                 val shouldShowCompleted = previousState.isCompletedShowed
 
-                val items = repository.getTodoItems()
+                val itemsModels = items
                     .also { completedCount = it.filter { it.isCompleted }.size }
                     .filter { item -> filterVisibleItem(shouldShowCompleted, item) }
                     .map { todoListItemMapper.map(it) }
 
                 TodoListScreenState(
-                    listItems = items,
+                    listItems = itemsModels,
                     completedCount = completedCount,
                     isCompletedShowed = previousState.isCompletedShowed
                 )
@@ -64,26 +64,18 @@ class TodoListViewModel(
         val checkedItem = todoItem.copy(isCompleted = todoItem.isCompleted.not())
         viewModelScope.launch {
             repository.saveTodoItem(checkedItem)
-            refreshList()
         }
     }
 
     fun deleteTodoItem(todoItem: TodoItem) {
         viewModelScope.launch {
             repository.deleteTodoItem(todoItem)
-            refreshList()
         }
     }
 
     fun changeCompletedTodosVisibility() {
-        todoListItemsState.update {
-            TodoListScreenState(
-                listItems = it.listItems,
-                completedCount = it.completedCount,
-                isCompletedShowed = it.isCompletedShowed.not()
-            )
-        }
-        refreshList()
+        todoListItemsState.update { it.copy(isCompletedShowed = it.isCompletedShowed.not()) }
+        refreshList(todoItems)
     }
 
     fun actionOnItem(todoItem: TodoItem, resId: Int) {
