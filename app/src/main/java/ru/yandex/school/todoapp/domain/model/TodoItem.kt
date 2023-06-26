@@ -2,6 +2,7 @@ package ru.yandex.school.todoapp.domain.model
 
 import ru.yandex.school.todoapp.R
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class TodoItem(
     val id: String,
@@ -10,7 +11,7 @@ data class TodoItem(
     val isCompleted: Boolean,
     val createAt: LocalDate? = null,
     val deadline: LocalDate? = null,
-    val modifiedAt: LocalDate? = null
+    val modifiedAt: LocalDateTime? = null
 ) {
 
     fun getIndicatorColorRes(): Int {

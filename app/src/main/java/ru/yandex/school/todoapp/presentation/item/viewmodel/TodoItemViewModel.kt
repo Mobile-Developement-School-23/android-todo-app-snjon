@@ -12,6 +12,7 @@ import ru.yandex.school.todoapp.presentation.item.viewmodel.mapper.TodoItemDateM
 import ru.yandex.school.todoapp.presentation.navigation.AppNavigator
 import ru.yandex.school.todoapp.presentation.util.toDate
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.UUID
 
 class TodoItemViewModel(
@@ -81,12 +82,13 @@ class TodoItemViewModel(
     fun saveTodoItem() {
         val isCreating = todoItemId == null
         val currentDate = LocalDate.now()
+        val currentDateTime = LocalDateTime.now()
 
         repository.saveTodoItem(
             todoItem.copy(
                 id = todoItemId ?: UUID.randomUUID().toString(),
                 createAt = if (isCreating) currentDate else todoItem.createAt,
-                modifiedAt = currentDate
+                modifiedAt = currentDateTime
             )
         )
         navigator.openTodoList()
