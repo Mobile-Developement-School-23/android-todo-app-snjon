@@ -42,11 +42,12 @@ class TodoItemViewModel(
 
     fun updateTodoItemText(text: String) {
         todoItem = todoItem.copy(text = text)
+        todoItemScreenState.update { it.copy(text = text) }
     }
 
     fun updateTodoItemPriority(priority: TodoItemPriority) {
         todoItem = todoItem.copy(priority = priority)
-        todoItemScreenState.update { it.copy() }
+        todoItemScreenState.update { it.copy(priorityRes = priority.titleRes) }
     }
 
     fun updateDeadlineDate(dateTimeModel: DateTimeModel) {

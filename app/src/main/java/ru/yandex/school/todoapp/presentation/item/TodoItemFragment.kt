@@ -3,6 +3,7 @@ package ru.yandex.school.todoapp.presentation.item
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
@@ -33,7 +34,7 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
         )
     }
 
-    private val editText by bind<TextView>(R.id.todo_item_text)
+    private val editText by bind<EditText>(R.id.todo_item_text)
     private val saveButton by bind<TextView>(R.id.todo_item_save)
 
     private val priorityCard by bind<LinearLayout>(R.id.todo_item_priority_item)
@@ -63,8 +64,11 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
     }
 
     private fun showContent(content: TodoItemScreenState) {
+        if (content.text != editText.text.toString()) {
+            editText.setText(content.text)
+            editText.setSelection(editText.text.length)
+        }
 
-        editText.text = content.text
         saveButton.isEnabled = editText.text.isNotEmpty()
 
         priority.text = getString(content.priorityRes)
