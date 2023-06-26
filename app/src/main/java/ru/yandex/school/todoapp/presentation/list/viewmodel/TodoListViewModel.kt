@@ -31,8 +31,6 @@ class TodoListViewModel(
                 val shouldShowCompleted = previousState.isCompletedShowed
 
                 val items = repository.getTodoItems()
-                    .value
-                    .map { it.value }
                     .also { completedCount = it.filter { it.isCompleted }.size }
                     .filter { item -> filterVisibleItem(shouldShowCompleted, item) }
                     .map { todoListItemMapper.map(it) }

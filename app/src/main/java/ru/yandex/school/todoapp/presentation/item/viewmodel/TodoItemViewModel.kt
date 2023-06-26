@@ -1,8 +1,11 @@
 package ru.yandex.school.todoapp.presentation.item.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import ru.yandex.school.todoapp.domain.model.TodoItem
 import ru.yandex.school.todoapp.domain.model.TodoItemPriority
 import ru.yandex.school.todoapp.domain.repository.TodoItemsRepository
@@ -24,7 +27,7 @@ class TodoItemViewModel(
 
     val todoItemScreenState = MutableStateFlow(TodoItemScreenState())
 
-    private var todoItem: TodoItem = loadTodoItem()
+    private var todoItem: TodoItem = runBlocking { loadTodoItem() }
 
     init {
         loadContent()
@@ -71,7 +74,7 @@ class TodoItemViewModel(
         }
     }
 
-    private fun loadTodoItem(): TodoItem {
+    private suspend fun loadTodoItem(): TodoItem {
         return if (todoItemId == null) {
             TodoItem.empty
         } else {
@@ -84,14 +87,16 @@ class TodoItemViewModel(
         val currentDate = LocalDate.now()
         val currentDateTime = LocalDateTime.now()
 
-        repository.saveTodoItem(
-            todoItem.copy(
-                id = todoItemId ?: UUID.randomUUID().toString(),
-                createAt = if (isCreating) currentDate else todoItem.createAt,
-                modifiedAt = currentDateTime
+        viewModelScope.launch {
+            repository.saveTodoItem(
+                todoItem.copy(
+                    id = todoItemId ?: UUID.randomUUID().toString(),
+                    createAt = if (isCreating) currentDate else todoItem.createAt,
+                    modifiedAt = currentDateTime
+                )
             )
-        )
-        navigator.openTodoList()
+        }
+        closeTodoItem()
     }
 
 
@@ -100,6 +105,8 @@ class TodoItemViewModel(
     }
 
     fun deleteTodoItem() {
-        repository.deleteTodoItem(todoItem)
+        viewModelScope.launch {
+            repository.deleteTodoItem(todoItem)
+        }
     }
 }
