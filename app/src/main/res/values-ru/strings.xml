@@ -22,4 +22,10 @@
     <string name="todo_list_action_delete">Удалить</string>
     <string name="todo_list_date_before">до %s</string>
     <string name="todo_item_view_date_pattern">d MMMM yyyy</string>
+    <string name="authorization_view_sign_in">Войти</string>
+    <string name="authorization_view_login_hint">Логин</string>
+    <string name="authorization_view_password_hint">Пароль</string>
+    <string name="authorization_view_continue">Продолжить без авторизации</string>
+    <string name="authorization_view_mandatory_field">Обязательное поле</string>
+    <string name="authorization_view_authorization">Авторизация</string>
 </resources>

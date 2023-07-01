@@ -22,4 +22,10 @@
     <string name="todo_list_action_delete">Delete</string>
     <string name="todo_list_date_before">before %s</string>
     <string name="todo_item_view_date_pattern">MMMM d, yyyy</string>
+    <string name="authorization_view_sign_in">Sign in</string>
+    <string name="authorization_view_login_hint">Login</string>
+    <string name="authorization_view_password_hint">Password</string>
+    <string name="authorization_view_continue">Continue without authorization</string>
+    <string name="authorization_view_mandatory_field">Mandatory field</string>
+    <string name="authorization_view_authorization">Authorization</string>
 </resources>

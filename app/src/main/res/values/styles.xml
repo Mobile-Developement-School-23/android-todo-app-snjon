@@ -71,4 +71,17 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="SignInButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:textColor">@color/label_primary</item>
+        <item name="backgroundTint">@color/color_blue</item>
+        <item name="rippleColor">@drawable/button_ripple_color_selector</item>
+        <item name="android:textAppearance">@style/SignInTextAppearance</item>
+    </style>
+
+    <style name="SignInTextAppearance" parent="TextAppearance.MaterialComponents.Button">
+        <item name="textAllCaps">true</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
 </resources>
