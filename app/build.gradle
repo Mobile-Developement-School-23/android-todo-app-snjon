@@ -17,10 +17,18 @@ android {
 
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            buildConfigField "String", "BASE_URL", '"https://beta.mrdekk.ru/todobackend/"'
+        }
+        debug {
+            buildConfigField "String", "BASE_URL", '"https://beta.mrdekk.ru/todobackend/"'
         }
     }
     compileOptions {
@@ -44,6 +52,8 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:2.6.0"
     implementation "androidx.navigation:navigation-runtime-ktx:2.6.0"
     implementation "androidx.navigation:navigation-ui-ktx:2.6.0"
+
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
     implementation "androidx.room:room-runtime:2.5.2"
     implementation "androidx.room:room-ktx:2.5.2"
