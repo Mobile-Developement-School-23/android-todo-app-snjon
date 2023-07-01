@@ -1,22 +1,40 @@
 package ru.yandex.school.todoapp.presentation.list.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import ru.yandex.school.todoapp.R
+import ru.yandex.school.todoapp.data.model.error.ApiError
+import ru.yandex.school.todoapp.data.model.error.DbError
+import ru.yandex.school.todoapp.data.model.error.NetworkError
+import ru.yandex.school.todoapp.data.model.error.UnknownHostException
 import ru.yandex.school.todoapp.domain.model.TodoItem
+import ru.yandex.school.todoapp.domain.repository.AuthRepository
 import ru.yandex.school.todoapp.domain.repository.TodoItemsRepository
+import ru.yandex.school.todoapp.presentation.base.BaseViewModel
 import ru.yandex.school.todoapp.presentation.list.model.TodoListScreenState
 import ru.yandex.school.todoapp.presentation.list.viewmodel.mapper.TodoListItemMapper
 import ru.yandex.school.todoapp.presentation.navigation.AppNavigator
 
 class TodoListViewModel(
     private val repository: TodoItemsRepository,
+    private val authRepository: AuthRepository,
     private val todoListItemMapper: TodoListItemMapper,
     private val navigator: AppNavigator
-) : ViewModel() {
+) : BaseViewModel() {
+
+    init {
+        loadTodos()
+    }
+
+    private val _errorLiveData = MutableLiveData<String>()
+
+    val errorLiveData: LiveData<String> = _errorLiveData
+
+    private val _todosLoadedEvent = MutableLiveData<Unit>()
+    val todosLoadedEvent: LiveData<Unit>
+        get() = _todosLoadedEvent
 
     val todoItemsFlow = repository.todoItemsFlow
 
@@ -25,7 +43,7 @@ class TodoListViewModel(
 
     fun refreshList(items: List<TodoItem>) {
         todoItems = items
-        viewModelScope.launch {
+        launchJob {
             todoListItemsState.update { previousState ->
                 val completedCount: Int
                 val shouldShowCompleted = previousState.isCompletedShowed
@@ -41,6 +59,18 @@ class TodoListViewModel(
                     isCompletedShowed = previousState.isCompletedShowed
                 )
             }
+        }
+    }
+
+
+    fun loadTodos() {
+        launchJob(
+            onError = {
+                handleAppError(it)
+            }
+        ) {
+            repository.loadFromServer()
+            _todosLoadedEvent.postValue(Unit)
         }
     }
 
@@ -62,13 +92,17 @@ class TodoListViewModel(
 
     fun checkTodoItem(todoItem: TodoItem) {
         val checkedItem = todoItem.copy(isCompleted = todoItem.isCompleted.not())
-        viewModelScope.launch {
-            repository.saveTodoItem(checkedItem)
+        launchJob(
+            onError = { handleAppError(it) }
+        ) {
+            repository.updateTodoItem(checkedItem)
         }
     }
 
     fun deleteTodoItem(todoItem: TodoItem) {
-        viewModelScope.launch {
+        launchJob(
+            onError = { handleAppError(it) }
+        ) {
             repository.deleteTodoItem(todoItem)
         }
     }
@@ -93,5 +127,30 @@ class TodoListViewModel(
                 deleteTodoItem(todoItem)
             }
         }
+    }
+
+    fun getUserName(): String? {
+        return authRepository.getUserName()
+    }
+
+    fun isAuthorized(): Boolean {
+        return authRepository.isAuthorized()
+    }
+
+    fun logout() {
+        authRepository.logout()
+        navigator.openAuthorizationScreen()
+    }
+
+    private fun handleAppError(error: Throwable) {
+        val errorMessage = when (error) {
+            is NetworkError -> "Ошибка сети"
+            is UnknownHostException -> "Ошибка сети"
+            is DbError -> "Ошибка базы данных"
+            is ApiError -> "Ошибка API: ${error.status} ${error.code}"
+            else -> "Отсутствует соединение с интернетом"
+        }
+
+        _errorLiveData.postValue(errorMessage)
     }
 }
