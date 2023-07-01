@@ -24,7 +24,7 @@ val appModule = module {
 
     single { AppNavigator() }
 
-    single { AppDatabase.getInstance(androidContext()) }
+    single { DatabaseProvider().getInstance(androidContext()) }
     single { get<AppDatabase>().todoDao() }
 
     single<TodoItemsRepository> { TodoItemsRepositoryImpl(get(), get(), get()) }
