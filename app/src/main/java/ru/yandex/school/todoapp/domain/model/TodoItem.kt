@@ -9,9 +9,11 @@ data class TodoItem(
     val text: String,
     val priority: TodoItemPriority,
     val isCompleted: Boolean,
-    val createAt: LocalDate? = null,
+    val color: String? = null,
+    val createAt: LocalDate,
     val deadline: LocalDate? = null,
-    val modifiedAt: LocalDateTime? = null
+    val modifiedAt: LocalDateTime? = null,
+    val isSync: Boolean = false
 ) {
 
     fun getIndicatorColorRes(): Int {
@@ -30,7 +32,8 @@ data class TodoItem(
             id = "0",
             text = "",
             priority = TodoItemPriority.DEFAULT,
-            isCompleted = false
+            isCompleted = false,
+            createAt = LocalDate.now()
         )
     }
 }

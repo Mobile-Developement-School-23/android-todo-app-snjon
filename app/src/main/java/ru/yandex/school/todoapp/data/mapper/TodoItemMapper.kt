@@ -13,7 +13,8 @@ class TodoItemMapper {
             isCompleted = item.isCompleted,
             createAt = item.createAt,
             deadline = item.deadline,
-            modifiedAt = item.modifiedAt
+            modifiedAt = item.modifiedAt,
+            isSync = item.isSync
         )
     }
 

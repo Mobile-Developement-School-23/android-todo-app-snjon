@@ -1,6 +1,6 @@
 package ru.yandex.school.todoapp.data.mapper
 
-import ru.yandex.school.todoapp.data.model.TodoEntity
+import ru.yandex.school.todoapp.data.model.database.TodoEntity
 import ru.yandex.school.todoapp.domain.model.TodoItem
 
 class TodoEntityMapper {
@@ -13,7 +13,8 @@ class TodoEntityMapper {
             isCompleted = entity.isCompleted,
             createAt = entity.createAt,
             deadline = entity.deadline,
-            modifiedAt = entity.modifiedAt
+            modifiedAt = entity.modifiedAt,
+            isSync = entity.isSync
         )
     }
 
