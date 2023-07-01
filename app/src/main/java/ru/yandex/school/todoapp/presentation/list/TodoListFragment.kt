@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -25,6 +26,7 @@ import ru.yandex.school.todoapp.presentation.util.makeVisible
 import ru.yandex.school.todoapp.presentation.util.repeatOnCreated
 import ru.yandex.school.todoapp.presentation.util.repeatOnResumed
 import ru.yandex.school.todoapp.presentation.util.setRecyclerViewItemTouchListener
+import ru.yandex.school.todoapp.presentation.util.showToast
 import ru.yandex.school.todoapp.presentation.util.visibleOrGone
 import ru.yandex.school.todoapp.presentation.util.visibleOrInvisible
 
@@ -42,6 +44,8 @@ class TodoListFragment : Fragment(R.layout.fragment_todo_list) {
     private val addNewButton by bind<FloatingActionButton>(R.id.todo_list_add_new)
     private val showCompletedToolbarButton by bind<ImageView>(R.id.todo_list_toolbar_visibility)
     private val showCompletedAppBarButton by bind<ImageView>(R.id.todo_list_app_bar_visibility)
+    private val userTitle by bind<TextView>(R.id.todo_list_user)
+    private val swipeRefresh by bind<SwipeRefreshLayout>(R.id.todo_list_swipe_refresh)
 
     private val listAdapter by lazy { createAdapter() }
 
@@ -63,6 +67,8 @@ class TodoListFragment : Fragment(R.layout.fragment_todo_list) {
         addNewButton.setOnClickListener { viewModel.createNewTodo() }
         showCompletedAppBarButton.setOnClickListener { viewModel.changeCompletedTodosVisibility() }
         showCompletedToolbarButton.setOnClickListener { viewModel.changeCompletedTodosVisibility() }
+        swipeRefresh.setOnRefreshListener { viewModel.loadTodos() }
+        userTitle.setOnClickListener { viewModel.logout() }
     }
 
     private fun subscribeOnViewModel() {
@@ -71,6 +77,14 @@ class TodoListFragment : Fragment(R.layout.fragment_todo_list) {
         }
         viewModel.todoListItemsState.repeatOnCreated(this) {
             showContent(it)
+        }
+
+        viewModel.todosLoadedEvent.observe(viewLifecycleOwner) {
+            swipeRefresh.isRefreshing = false
+        }
+
+        viewModel.errorLiveData.observe(viewLifecycleOwner) { message ->
+            showToast(message)
         }
     }
 
@@ -82,6 +96,12 @@ class TodoListFragment : Fragment(R.layout.fragment_todo_list) {
     private fun populateAppBar(content: TodoListScreenState) {
         appBarSubtitle.visibleOrGone(content.completedCount > 0)
         appBarSubtitle.text = getString(R.string.todo_list_completed_count, content.completedCount)
+
+        if (viewModel.isAuthorized()) {
+            userTitle.text = viewModel.getUserName()
+        }
+
+        userTitle.visibleOrGone(viewModel.isAuthorized())
 
         val visibilityIcon = if (content.isCompletedShowed) {
             R.drawable.ic_visibility_off
