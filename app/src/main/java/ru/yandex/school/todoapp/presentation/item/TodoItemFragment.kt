@@ -24,6 +24,7 @@ import ru.yandex.school.todoapp.presentation.util.bind
 import ru.yandex.school.todoapp.presentation.util.repeatOnCreated
 import ru.yandex.school.todoapp.presentation.util.setButtonColor
 import ru.yandex.school.todoapp.presentation.util.show
+import ru.yandex.school.todoapp.presentation.util.showToast
 import ru.yandex.school.todoapp.presentation.util.visibleOrGone
 
 class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
@@ -61,6 +62,16 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
         viewModel.todoItemScreenState.repeatOnCreated(this) {
             showContent(it)
         }
+
+        viewModel.todoUpdatedLiveData.observe(viewLifecycleOwner) {
+            if (it == true) {
+                viewModel.closeTodoItem()
+            }
+        }
+
+        viewModel.errorLiveData.observe(viewLifecycleOwner) { message ->
+            showToast(message)
+        }
     }
 
     private fun showContent(content: TodoItemScreenState) {
@@ -73,9 +84,9 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
 
         priority.text = getString(content.priorityRes)
 
-        content.createDate.let { createDate ->
-            deleteButton.isEnabled = createDate.isNullOrBlank().not()
-            deleteButton.setButtonColor(createDate.isNullOrEmpty().not())
+        content.modifiedDate.let { modifiedDate ->
+            deleteButton.isEnabled = modifiedDate.isNullOrBlank().not()
+            deleteButton.setButtonColor(modifiedDate.isNullOrBlank().not())
         }
 
         content.deadlineDate?.let { deadline ->
@@ -87,7 +98,7 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
 
     private fun bindViews() {
 
-        saveButton.setOnClickListener { viewModel.saveTodoItem() }
+        saveButton.setOnClickListener { viewModel.addTodoItem() }
 
         editText.doOnTextChanged { text, _, _, _ ->
             val newText = text.toString()
