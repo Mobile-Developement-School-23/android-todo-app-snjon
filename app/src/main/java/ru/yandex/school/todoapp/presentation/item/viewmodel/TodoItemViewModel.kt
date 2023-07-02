@@ -120,7 +120,8 @@ class TodoItemViewModel(
                 Log.e("todo", "changing")
                 repository.updateTodoItem(
                     todoItem.copy(
-                        modifiedAt = currentDateTime
+                        modifiedAt = currentDateTime,
+                        isSync = false
                     )
                 )
             }

@@ -16,7 +16,7 @@ interface TodoDao {
     @Query("SELECT * FROM TodoEntity ORDER BY modifiedAt DESC")
     fun getTodoItems(): List<TodoEntity>
 
-    @Query("SELECT EXISTS(SELECT 1 FROM TodoEntity WHERE isSync = 1 LIMIT 1)")
+    @Query("SELECT EXISTS(SELECT 1 FROM TodoEntity WHERE isSync = 0 LIMIT 1)")
     fun isUnsynchronized(): Boolean
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
