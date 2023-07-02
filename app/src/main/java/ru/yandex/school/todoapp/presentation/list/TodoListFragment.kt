@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -69,6 +70,12 @@ class TodoListFragment : Fragment(R.layout.fragment_todo_list) {
         showCompletedToolbarButton.setOnClickListener { viewModel.changeCompletedTodosVisibility() }
         swipeRefresh.setOnRefreshListener { viewModel.loadTodos() }
         userTitle.setOnClickListener { viewModel.logout() }
+
+        if (viewModel.isAuthorized()) {
+            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+                requireActivity().moveTaskToBack(true)
+            }
+        }
     }
 
     private fun subscribeOnViewModel() {
