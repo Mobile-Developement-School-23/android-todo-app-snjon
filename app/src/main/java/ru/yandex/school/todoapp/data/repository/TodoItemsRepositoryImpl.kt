@@ -34,10 +34,9 @@ class TodoItemsRepositoryImpl(
 
     override suspend fun loadFromServer() {
 
-        if (todoDao.isUnsynchronized()) {
-            val items = todoDao.getTodoItems()
-            val test = entityMapper.map(items)
-            saveTodoItems(test)
+        if (todoDao.isUnsynchronized() && dataStorage.onlineMode) {
+            val items = entityMapper.map(todoDao.getTodoItems())
+            saveTodoItems(items)
         }
 
         if (dataStorage.onlineMode) {
