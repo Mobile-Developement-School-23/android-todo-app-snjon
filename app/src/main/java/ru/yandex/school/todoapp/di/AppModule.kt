@@ -63,4 +63,7 @@ val appModule = module {
 
     factory { TodoEntityMapper() }
     factory { TodoItemMapper() }
+    factory { AuthErrorMapper(get()) }
+    factory { ItemErrorMapper(get()) }
+    factory { ListErrorMapper(get()) }
 }
