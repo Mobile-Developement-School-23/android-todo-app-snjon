@@ -117,6 +117,8 @@ class TodoListFragment : Fragment(R.layout.fragment_todo_list) {
         }
         showCompletedAppBarButton.setImageResource(visibilityIcon)
         showCompletedToolbarButton.setImageResource(visibilityIcon)
+
+        swipeRefresh.isEnabled = viewModel.isAuthorized()
     }
 
     private fun populateTodoList(items: List<TodoItemListModel>) {
