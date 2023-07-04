@@ -1,10 +1,9 @@
 package ru.yandex.school.todoapp.presentation.authorization.viewmodel
 
-import android.util.Log
 import kotlinx.coroutines.delay
-import ru.yandex.school.todoapp.data.model.error.ApiError
 import ru.yandex.school.todoapp.domain.repository.AuthRepository
 import ru.yandex.school.todoapp.presentation.authorization.model.TodoAuthorizationModelState
+import ru.yandex.school.todoapp.presentation.authorization.viewmodel.mapper.AuthErrorMapper
 import ru.yandex.school.todoapp.presentation.base.BaseViewModel
 import ru.yandex.school.todoapp.presentation.navigation.AppNavigator
 import ru.yandex.school.todoapp.presentation.util.SingleLiveEvent
@@ -12,6 +11,7 @@ import ru.yandex.school.todoapp.presentation.util.SingleLiveEvent
 class TodoAuthorizationViewModel(
     private val repository: AuthRepository,
     private val navigator: AppNavigator,
+    private val authErrorMapper: AuthErrorMapper,
 ) : BaseViewModel() {
 
     init {
@@ -55,20 +55,15 @@ class TodoAuthorizationViewModel(
             _todoAuthorizationState.postValue(TodoAuthorizationModelState(isAuthorized = true))
             setInternetMode(true)
         }
-
     }
 
     fun openTodoList() {
-        Log.e("token", "auth->list")
         navigator.openTodoList()
     }
 
     private fun handleAppError(error: Throwable) {
-        val errorMessage = when (error) {
-            is ApiError -> "Неверный логин или пароль"
-            else -> "Отсутствует соединение с интернетом"
-        }
 
+        val errorMessage = authErrorMapper.map(error)
         _errorLiveData.postValue(errorMessage)
     }
 }

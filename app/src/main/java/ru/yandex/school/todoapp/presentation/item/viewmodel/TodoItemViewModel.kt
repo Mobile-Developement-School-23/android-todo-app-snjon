@@ -10,16 +10,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import ru.yandex.school.todoapp.data.model.error.ApiError
-import ru.yandex.school.todoapp.data.model.error.DbError
-import ru.yandex.school.todoapp.data.model.error.NetworkError
-import ru.yandex.school.todoapp.data.model.error.UnknownHostException
 import ru.yandex.school.todoapp.domain.model.TodoItem
 import ru.yandex.school.todoapp.domain.model.TodoItemPriority
 import ru.yandex.school.todoapp.domain.repository.TodoItemsRepository
 import ru.yandex.school.todoapp.presentation.base.BaseViewModel
 import ru.yandex.school.todoapp.presentation.datetime.model.DateTimeModel
 import ru.yandex.school.todoapp.presentation.item.model.TodoItemScreenState
+import ru.yandex.school.todoapp.presentation.item.viewmodel.mapper.ItemErrorMapper
 import ru.yandex.school.todoapp.presentation.item.viewmodel.mapper.TodoItemDateMapper
 import ru.yandex.school.todoapp.presentation.navigation.AppNavigator
 import ru.yandex.school.todoapp.presentation.util.SingleLiveEvent
@@ -32,7 +29,8 @@ class TodoItemViewModel(
     private val todoItemId: String?,
     private val navigator: AppNavigator,
     private val repository: TodoItemsRepository,
-    private val dateMapper: TodoItemDateMapper
+    private val dateMapper: TodoItemDateMapper,
+    private val itemErrorMapper: ItemErrorMapper
 ) : BaseViewModel() {
 
     val todoItemScreenState = MutableStateFlow(TodoItemScreenState())
@@ -147,21 +145,15 @@ class TodoItemViewModel(
 
     fun deleteTodoItem() {
         launchJob(
-            onError = { }
+            onError = { handleAppError(it) }
         ) {
             repository.deleteTodoItem(todoItem)
         }
     }
 
     private fun handleAppError(error: Throwable) {
-        val errorMessage = when (error) {
-            is NetworkError -> "Ошибка сети"
-            is UnknownHostException -> "Ошибка сети"
-            is DbError -> "Ошибка базы данных"
-            is ApiError -> "Ошибка API: ${error.status} ${error.code}"
-            else -> "Отсутствует соединение с интернетом"
-        }
 
+        val errorMessage = itemErrorMapper.map(error)
         _errorLiveData.postValue(errorMessage)
     }
 }

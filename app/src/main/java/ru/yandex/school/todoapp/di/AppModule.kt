@@ -21,17 +21,20 @@ import ru.yandex.school.todoapp.data.repository.TodoItemsRepositoryImpl
 import ru.yandex.school.todoapp.domain.repository.AuthRepository
 import ru.yandex.school.todoapp.domain.repository.TodoItemsRepository
 import ru.yandex.school.todoapp.presentation.authorization.viewmodel.TodoAuthorizationViewModel
+import ru.yandex.school.todoapp.presentation.authorization.viewmodel.mapper.AuthErrorMapper
 import ru.yandex.school.todoapp.presentation.item.viewmodel.TodoItemViewModel
+import ru.yandex.school.todoapp.presentation.item.viewmodel.mapper.ItemErrorMapper
 import ru.yandex.school.todoapp.presentation.item.viewmodel.mapper.TodoItemDateMapper
 import ru.yandex.school.todoapp.presentation.list.viewmodel.TodoListViewModel
+import ru.yandex.school.todoapp.presentation.list.viewmodel.mapper.ListErrorMapper
 import ru.yandex.school.todoapp.presentation.list.viewmodel.mapper.TodoListItemMapper
 import ru.yandex.school.todoapp.presentation.navigation.AppNavigator
 
 val appModule = module {
 
-    viewModel { (todoId: String) -> TodoItemViewModel(todoId, get(), get(), get()) }
-    viewModel { TodoListViewModel(get(), get(), get(), get()) }
-    viewModel { TodoAuthorizationViewModel(get(), get()) }
+    viewModel { (todoId: String) -> TodoItemViewModel(todoId, get(), get(), get(), get()) }
+    viewModel { TodoListViewModel(get(), get(), get(), get(), get()) }
+    viewModel { TodoAuthorizationViewModel(get(), get(), get()) }
 
     factory { TodoListItemMapper(androidContext(), get()) }
     factory { TodoItemDateMapper(get()) }

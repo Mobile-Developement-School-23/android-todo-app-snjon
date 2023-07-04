@@ -5,15 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import ru.yandex.school.todoapp.R
-import ru.yandex.school.todoapp.data.model.error.ApiError
-import ru.yandex.school.todoapp.data.model.error.DbError
-import ru.yandex.school.todoapp.data.model.error.NetworkError
-import ru.yandex.school.todoapp.data.model.error.UnknownHostException
 import ru.yandex.school.todoapp.domain.model.TodoItem
 import ru.yandex.school.todoapp.domain.repository.AuthRepository
 import ru.yandex.school.todoapp.domain.repository.TodoItemsRepository
 import ru.yandex.school.todoapp.presentation.base.BaseViewModel
 import ru.yandex.school.todoapp.presentation.list.model.TodoListScreenState
+import ru.yandex.school.todoapp.presentation.list.viewmodel.mapper.ListErrorMapper
 import ru.yandex.school.todoapp.presentation.list.viewmodel.mapper.TodoListItemMapper
 import ru.yandex.school.todoapp.presentation.navigation.AppNavigator
 
@@ -21,7 +18,8 @@ class TodoListViewModel(
     private val repository: TodoItemsRepository,
     private val authRepository: AuthRepository,
     private val todoListItemMapper: TodoListItemMapper,
-    private val navigator: AppNavigator
+    private val navigator: AppNavigator,
+    private val listErrorMapper: ListErrorMapper
 ) : BaseViewModel() {
 
     init {
@@ -143,14 +141,8 @@ class TodoListViewModel(
     }
 
     private fun handleAppError(error: Throwable) {
-        val errorMessage = when (error) {
-            is NetworkError -> "Ошибка сети"
-            is UnknownHostException -> "Ошибка сети"
-            is DbError -> "Ошибка базы данных"
-            is ApiError -> "Ошибка API: ${error.status} ${error.code}"
-            else -> "Отсутствует соединение с интернетом"
-        }
 
+        val errorMessage = listErrorMapper.map(error)
         _errorLiveData.postValue(errorMessage)
     }
 }
