@@ -60,7 +60,7 @@ class TodoItemsRepositoryImpl(
         }
     }
 
-    override suspend fun updateTodoItem(item: TodoItem) {
+    override suspend fun updateTodoItem(item: TodoItem): Boolean {
 
         todoDao.saveTodoItem(itemsMapper.map(item))
 
@@ -78,9 +78,10 @@ class TodoItemsRepositoryImpl(
             todoDao.saveTodoItem(itemsMapper.map(item.copy(isSync = true)))
             dataStorage.knownRevision = body.revision
         }
+        return true
     }
 
-    override suspend fun addTodoItem(item: TodoItem) {
+    override suspend fun addTodoItem(item: TodoItem): Boolean {
 
         todoDao.saveTodoItem(itemsMapper.map(item))
 
@@ -98,6 +99,7 @@ class TodoItemsRepositoryImpl(
             todoDao.saveTodoItem(itemsMapper.map(item.copy(isSync = true)))
             dataStorage.knownRevision = body.revision
         }
+        return true
     }
 
     override suspend fun saveTodoItems(items: List<TodoItem>) {

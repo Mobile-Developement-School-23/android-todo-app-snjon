@@ -1,14 +1,9 @@
 package ru.yandex.school.todoapp.presentation.item.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ru.yandex.school.todoapp.domain.model.TodoItem
 import ru.yandex.school.todoapp.domain.model.TodoItemPriority
@@ -101,40 +96,27 @@ class TodoItemViewModel(
         val currentDate = LocalDate.now()
         val currentDateTime = LocalDateTime.now()
 
-        val upsertJob = launchJob(
+        launchJob(
             onError = { handleAppError(it) }
         )
         {
             if (isCreating) {
-                Log.e("todo", "creating")
-                repository.addTodoItem(
+                val result = repository.addTodoItem(
                     todoItem.copy(
                         id = UUID.randomUUID().toString(),
                         createAt = currentDate,
                         modifiedAt = currentDateTime
                     )
                 )
+                _todoUpdatedLiveData.postValue(result)
             } else {
-                Log.e("todo", "changing")
-                repository.updateTodoItem(
+                val result = repository.updateTodoItem(
                     todoItem.copy(
                         modifiedAt = currentDateTime,
                         isSync = false
                     )
                 )
-            }
-        }
-        onWaitCompleteJob(upsertJob)
-    }
-
-    // Жёсткий костыль! Буду рад, если поможете исправить
-    // Проблема в том, что если вовзращаемся на TodoListFragment без ожидания, то запрос не успевает выполниться
-    // Если делаем в репозитории отдельную Job с join(), тогда падает приложение в случае Exception (например при отсутствии интернета)
-    private fun onWaitCompleteJob(job: Job) {
-        viewModelScope.launch {
-            while (true) {
-                delay(200)
-                _todoUpdatedLiveData.postValue(job.isCompleted)
+                _todoUpdatedLiveData.postValue(result)
             }
         }
     }

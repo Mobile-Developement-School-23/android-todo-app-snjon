@@ -9,9 +9,9 @@ interface TodoItemsRepository {
 
     suspend fun getTodoById(id: String): TodoItem?
 
-    suspend fun updateTodoItem(item: TodoItem)
+    suspend fun updateTodoItem(item: TodoItem): Boolean
 
-    suspend fun addTodoItem(item: TodoItem)
+    suspend fun addTodoItem(item: TodoItem) : Boolean
 
     suspend fun saveTodoItems(items: List<TodoItem>)
 
