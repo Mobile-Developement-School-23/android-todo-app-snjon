@@ -2,6 +2,7 @@ package ru.yandex.school.todoapp.data.model.error
 
 import android.database.SQLException
 import java.io.IOException
+import java.net.UnknownHostException
 import java.lang.RuntimeException
 
 sealed class AppError(var code: String) : RuntimeException() {
