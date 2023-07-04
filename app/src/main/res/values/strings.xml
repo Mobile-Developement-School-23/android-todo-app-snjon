@@ -28,4 +28,14 @@
     <string name="authorization_view_continue">Continue without authorization</string>
     <string name="authorization_view_mandatory_field">Mandatory field</string>
     <string name="authorization_view_authorization">Authorization</string>
+    <string name="exception_message_bad_request">Bad request: %s %s</string>
+    <string name="exception_message_server_error">Server error. Try later</string>
+    <string name="exception_message_token_error">Wrong login or password</string>
+    <string name="exception_message_unsync_error">Data is out of sync</string>
+    <string name="exception_message_duplicate_error">This task already exists</string>
+    <string name="exception_message_not_found_error">The task is missing from the server</string>
+    <string name="exception_message_auth_error">Invalid Authorization</string>
+    <string name="exception_message_network_error">No internet connection</string>
+    <string name="exception_message_unknown_error">Unknown error</string>
+    <string name="exception_message_bad_request_error">Bad request</string>
 </resources>
