@@ -18,4 +18,6 @@ interface TodoItemsRepository {
     suspend fun deleteTodoItem(item: TodoItem)
 
     suspend fun loadFromServer()
+
+    suspend fun getLastRevision()
 }
