@@ -9,7 +9,8 @@ private enum class KEYS {
     REV_KEY,
     MODE_KEY,
     TOKEN_KEY,
-    USER_KEY
+    USER_KEY,
+    SYNC_KEY
 }
 
 class DataStorage(private val preferences: SharedPreferences) {
@@ -26,6 +27,13 @@ class DataStorage(private val preferences: SharedPreferences) {
             saveToPreferences(value, KEYS.REV_KEY)
         }
         get() = preferences.getInt(KEYS.REV_KEY.name, 0)
+
+    var isSync: Boolean = false
+        set(value) {
+            field = value
+            saveToPreferences(value, KEYS.SYNC_KEY)
+        }
+        get() = preferences.getBoolean(KEYS.SYNC_KEY.name, false)
 
     var onlineMode: Boolean = false
         set(value) {
