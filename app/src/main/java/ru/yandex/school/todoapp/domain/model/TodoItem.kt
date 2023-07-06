@@ -16,6 +16,17 @@ data class TodoItem(
     val isSync: Boolean = false
 ) {
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is TodoItem) return false
+
+        return id == other.id
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
+    }
+
     fun getIndicatorColorRes(): Int {
         return when {
             isCompleted -> R.color.color_green
