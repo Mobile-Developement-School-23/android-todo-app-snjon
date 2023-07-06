@@ -94,7 +94,7 @@ class TodoItemViewModel(
     fun addTodoItem() {
         val isCreating = todoItemId == null
         val currentDate = LocalDate.now()
-        val currentDateTime = LocalDateTime.now()
+        val currentDateTime = LocalDateTime.now().withNano(0)
 
         launchJob(
             onError = { handleAppError(it) }

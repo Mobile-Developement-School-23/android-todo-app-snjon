@@ -7,7 +7,6 @@ import ru.yandex.school.todoapp.domain.model.TodoItemPriority
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.ZoneId
 import java.time.ZoneOffset
 
 class TodoItemMapper {
@@ -40,7 +39,7 @@ class TodoItemMapper {
             createAt = item.createAt.let { LocalDate.ofEpochDay(it) },
             modifiedAt = LocalDateTime.ofInstant(
                 Instant.ofEpochSecond(item.modifiedAt),
-                ZoneId.systemDefault().rules.getOffset(Instant.now())
+                ZoneOffset.UTC
             )
         )
     }
@@ -54,7 +53,8 @@ class TodoItemMapper {
             deadline = item.deadline?.toEpochDay(),
             color = item.color,
             createAt = item.createAt.toEpochDay(),
-            modifiedAt = item.modifiedAt?.toEpochSecond(ZoneOffset.UTC) ?: item.createAt.toEpochDay(),
+            modifiedAt = item.modifiedAt?.toEpochSecond(ZoneOffset.UTC)
+                ?: item.createAt.toEpochDay(),
             updatedBy = deviceId
         )
     }

@@ -13,6 +13,7 @@ import ru.yandex.school.todoapp.presentation.list.model.TodoListScreenState
 import ru.yandex.school.todoapp.presentation.list.viewmodel.mapper.ListErrorMapper
 import ru.yandex.school.todoapp.presentation.list.viewmodel.mapper.TodoListItemMapper
 import ru.yandex.school.todoapp.presentation.navigation.AppNavigator
+import java.time.LocalDateTime
 
 class TodoListViewModel(
     private val repository: TodoItemsRepository,
@@ -89,7 +90,7 @@ class TodoListViewModel(
     }
 
     fun checkTodoItem(todoItem: TodoItem) {
-        val checkedItem = todoItem.copy(isCompleted = todoItem.isCompleted.not())
+        val checkedItem = todoItem.copy(isCompleted = todoItem.isCompleted.not(), isSync = false, modifiedAt = LocalDateTime.now().withNano(0))
         launchJob(
             onError = { handleAppError(it) }
         ) {
