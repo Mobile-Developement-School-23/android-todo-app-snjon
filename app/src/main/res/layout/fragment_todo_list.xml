@@ -78,27 +78,51 @@
                 android:visibility="invisible"
                 app:layout_collapseMode="pin">
 
-                <TextView
-                    android:id="@+id/todo_list_toolbar_title"
-                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:gravity="start"
-                    android:text="@string/todo_list_title"
-                    android:textColor="@color/label_primary" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                <ImageView
-                    android:id="@+id/todo_list_toolbar_visibility"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:contentDescription="@string/todo_list_visibility_title"
-                    android:paddingHorizontal="16dp"
-                    android:src="@drawable/ic_visibility"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:tint="@color/color_blue" />
+                    <TextView
+                        android:id="@+id/todo_list_toolbar_title"
+                        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/todo_list_title"
+                        android:textColor="@color/label_primary"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/todo_list_user"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ripple_effect"
+                        android:drawablePadding="5dp"
+                        android:gravity="center_vertical"
+                        android:visibility="gone"
+                        app:drawableLeftCompat="@drawable/ic_person"
+                        app:drawableRightCompat="@drawable/ic_logout"
+                        app:layout_constraintBottom_toBottomOf="@id/todo_list_toolbar_title"
+                        app:layout_constraintEnd_toStartOf="@id/todo_list_toolbar_visibility"
+                        app:layout_constraintStart_toEndOf="@id/todo_list_toolbar_title"
+                        app:layout_constraintTop_toTopOf="@id/todo_list_toolbar_title" />
+
+
+                    <ImageView
+                        android:id="@+id/todo_list_toolbar_visibility"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:contentDescription="@string/todo_list_visibility_title"
+                        android:paddingHorizontal="16dp"
+                        android:src="@drawable/ic_visibility"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/color_blue" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.appcompat.widget.Toolbar>
 
@@ -120,34 +144,42 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
-    <androidx.core.widget.NestedScrollView
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/todo_list_swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
+        android:paddingTop="1dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.cardview.widget.CardView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:padding="8dp"
-            app:cardCornerRadius="8dp">
+            android:layout_height="match_parent">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/todo_list_recycler_view"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/back_elevated"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="5"
-                tools:listitem="@layout/view_todo_item" />
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:padding="8dp"
+                app:cardCornerRadius="8dp">
 
-        </androidx.cardview.widget.CardView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/todo_list_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/back_elevated"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="5"
+                    tools:listitem="@layout/view_todo_item" />
 
-    </androidx.core.widget.NestedScrollView>
+            </androidx.cardview.widget.CardView>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/todo_list_add_new"

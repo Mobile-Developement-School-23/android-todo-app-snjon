@@ -26,7 +26,15 @@ class AppNavigator {
         )
     }
 
+    fun backTodoList() {
+        appNavController?.navigateUp()
+    }
+
     fun openTodoList() {
+        appNavController?.navigate(R.id.open_todo_list)
+    }
+
+    fun openAuthorizationScreen() {
         appNavController?.navigateUp()
     }
 }

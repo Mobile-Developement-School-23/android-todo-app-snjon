@@ -3,6 +3,7 @@ package ru.yandex.school.todoapp.presentation.item
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
@@ -23,6 +24,7 @@ import ru.yandex.school.todoapp.presentation.util.bind
 import ru.yandex.school.todoapp.presentation.util.repeatOnCreated
 import ru.yandex.school.todoapp.presentation.util.setButtonColor
 import ru.yandex.school.todoapp.presentation.util.show
+import ru.yandex.school.todoapp.presentation.util.showToast
 import ru.yandex.school.todoapp.presentation.util.visibleOrGone
 
 class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
@@ -33,7 +35,7 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
         )
     }
 
-    private val editText by bind<TextView>(R.id.todo_item_text)
+    private val editText by bind<EditText>(R.id.todo_item_text)
     private val saveButton by bind<TextView>(R.id.todo_item_save)
 
     private val priorityCard by bind<LinearLayout>(R.id.todo_item_priority_item)
@@ -60,18 +62,31 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
         viewModel.todoItemScreenState.repeatOnCreated(this) {
             showContent(it)
         }
+
+        viewModel.todoUpdatedLiveData.observe(viewLifecycleOwner) {
+            if (it == true) {
+                viewModel.closeTodoItem()
+            }
+        }
+
+        viewModel.errorLiveData.observe(viewLifecycleOwner) { message ->
+            showToast(message)
+        }
     }
 
     private fun showContent(content: TodoItemScreenState) {
+        if (content.text != editText.text.toString()) {
+            editText.setText(content.text)
+            editText.setSelection(editText.text.length)
+        }
 
-        editText.text = content.text
         saveButton.isEnabled = editText.text.isNotEmpty()
 
         priority.text = getString(content.priorityRes)
 
-        content.createDate.let { createDate ->
-            deleteButton.isEnabled = createDate.isNullOrBlank().not()
-            deleteButton.setButtonColor(createDate.isNullOrEmpty().not())
+        content.modifiedDate.let { modifiedDate ->
+            deleteButton.isEnabled = modifiedDate.isNullOrBlank().not()
+            deleteButton.setButtonColor(modifiedDate.isNullOrBlank().not())
         }
 
         content.deadlineDate?.let { deadline ->
@@ -83,7 +98,7 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
 
     private fun bindViews() {
 
-        saveButton.setOnClickListener { viewModel.saveTodoItem() }
+        saveButton.setOnClickListener { viewModel.addTodoItem() }
 
         editText.doOnTextChanged { text, _, _, _ ->
             val newText = text.toString()

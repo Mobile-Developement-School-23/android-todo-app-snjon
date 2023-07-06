@@ -6,5 +6,5 @@ data class TodoItemScreenState(
     val text: String = "",
     val priorityRes: Int = R.string.todo_item_view_priority_default,
     val deadlineDate: String? = null,
-    val createDate: String? = null
+    val modifiedDate: String? = null
 )

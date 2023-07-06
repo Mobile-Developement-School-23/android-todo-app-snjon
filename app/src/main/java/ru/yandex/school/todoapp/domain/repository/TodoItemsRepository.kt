@@ -1,15 +1,23 @@
 package ru.yandex.school.todoapp.domain.repository
 
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 import ru.yandex.school.todoapp.domain.model.TodoItem
 
 interface TodoItemsRepository {
 
-    fun getTodoItems(): StateFlow<Map<String, TodoItem>>
+    val todoItemsFlow: Flow<List<TodoItem>>
 
-    fun getTodoById(id: String): TodoItem?
+    suspend fun getTodoById(id: String): TodoItem?
 
-    fun saveTodoItem(item: TodoItem)
+    suspend fun updateTodoItem(item: TodoItem): Boolean
 
-    fun deleteTodoItem(item: TodoItem)
+    suspend fun addTodoItem(item: TodoItem) : Boolean
+
+    suspend fun saveTodoItems(items: List<TodoItem>)
+
+    suspend fun deleteTodoItem(item: TodoItem)
+
+    suspend fun loadFromServer()
+
+    suspend fun getLastRevision()
 }

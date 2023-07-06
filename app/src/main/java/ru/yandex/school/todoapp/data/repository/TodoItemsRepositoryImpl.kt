@@ -1,95 +1,193 @@
 package ru.yandex.school.todoapp.data.repository
 
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.getAndUpdate
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import ru.yandex.school.todoapp.data.api.TodoApiService
+import ru.yandex.school.todoapp.data.database.dao.TodoDao
+import ru.yandex.school.todoapp.data.datastore.DataStorage
+import ru.yandex.school.todoapp.data.mapper.TodoEntityMapper
+import ru.yandex.school.todoapp.data.mapper.TodoItemMapper
+import ru.yandex.school.todoapp.data.model.error.ApiError
+import ru.yandex.school.todoapp.data.model.request.AddTodoListRequest
+import ru.yandex.school.todoapp.data.model.request.AddTodoRequest
 import ru.yandex.school.todoapp.domain.model.TodoItem
-import ru.yandex.school.todoapp.domain.model.TodoItemPriority
 import ru.yandex.school.todoapp.domain.repository.TodoItemsRepository
-import java.time.LocalDate
 
-class TodoItemsRepositoryImpl : TodoItemsRepository {
-    private var items = MutableStateFlow(
-        mutableMapOf(
-            "1" to TodoItem(
-                id = "1",
-                text = "Сделать что-то",
-                priority = TodoItemPriority.DEFAULT,
-                isCompleted = false,
-                createAt = LocalDate.of(2023, 5, 1)
-            ),
-            "2" to TodoItem(
-                id = "2",
-                text = "Купить что-то, где-то, зачем-то, но зачем не очень понятно, но точно чтобы показать как отображается текст нашего дела",
-                priority = TodoItemPriority.HIGH,
-                isCompleted = false,
-                deadline = LocalDate.of(2023, 6, 2),
-                createAt = LocalDate.of(2023, 5, 2)
-            ),
-            "3" to TodoItem(
-                id = "3",
-                text = "Сделать что-то",
-                priority = TodoItemPriority.DEFAULT,
-                isCompleted = false,
-                deadline = LocalDate.of(2023, 6, 1),
-                createAt = LocalDate.of(2023, 5, 3)
-            ),
-            "4" to TodoItem(
-                id = "4",
-                text = "Сделать что-то",
-                priority = TodoItemPriority.LOW,
-                isCompleted = false,
-                deadline = LocalDate.of(2023, 6, 5),
-                createAt = LocalDate.of(2023, 5, 4)
-            ),
-            "5" to TodoItem(
-                id = "5",
-                text = "Сделать что-то",
-                priority = TodoItemPriority.DEFAULT,
-                isCompleted = false,
-                deadline = LocalDate.of(2023, 6, 10),
-                createAt = LocalDate.of(2023, 5, 5)
-            ),
-            "6" to TodoItem(
-                id = "6",
-                text = "Сделать что-то",
-                priority = TodoItemPriority.DEFAULT,
-                isCompleted = true,
-                deadline = LocalDate.of(2023, 6, 10),
-                createAt = LocalDate.of(2023, 5, 6)
-            ),
-        )
-    )
+class TodoItemsRepositoryImpl(
+    private val todoDao: TodoDao,
+    private val todoApiService: TodoApiService,
+    private val dataStorage: DataStorage,
+    private val entityMapper: TodoEntityMapper,
+    private val itemsMapper: TodoItemMapper,
+) : TodoItemsRepository {
 
-    override fun getTodoItems(): StateFlow<Map<String, TodoItem>> {
-        return items.asStateFlow()
+    override val todoItemsFlow = todoDao.getAll()
+        .map { entityMapper.map(it) }
+        .flowOn(Dispatchers.Default)
+
+    override suspend fun getTodoById(id: String): TodoItem? {
+        val entity = todoDao.getTodoById(id) ?: return null
+
+        return entityMapper.map(entity)
     }
 
-    override fun saveTodoItem(item: TodoItem) {
+    override suspend fun loadFromServer() {
 
-        if (item.id == "0") {
-            val currentItems = items.value.toMutableMap()
-            val lastId = currentItems.values.lastOrNull()?.id ?: "0"
-            val nextId = (lastId.toInt() + 1).toString()
-            val postWithId = item.copy(id = nextId)
-            currentItems[nextId] = postWithId
-            items.value = currentItems
-            return
-        }
+        if (dataStorage.onlineMode) {
 
-        items.getAndUpdate {
-            it.apply { this[item.id] = item }
+            val response = todoApiService.getTodoList()
+            val body = response.body()
+
+            if (!response.isSuccessful || body == null) {
+                throw ApiError(response.code(), response.message())
+            }
+
+            dataStorage.knownRevision = body.revision
+
+            val remoteItems = body.data.map {
+                itemsMapper.mapFromResponse(it)
+            }
+
+            if (!dataStorage.isSync) {
+                val unsyncItems = entityMapper.map(todoDao.getUnsyncTodos())
+                val mergeItems = unsyncItems + remoteItems
+                saveTodoItems(mergeItems)
+            }
+
+            val localItems = entityMapper.map(todoDao.getTodoItems())
+            val removedItems = localItems.filterNot { remoteItems.contains(it) }
+            val addItems = remoteItems.filterNot { localItems.contains(it) }
+            val modifiedItems = remoteItems.filter { remoteItem ->
+                val matchingLocalItem = localItems.find { localItem ->
+                    localItem.id == remoteItem.id
+                }
+                matchingLocalItem?.modifiedAt != remoteItem.modifiedAt && matchingLocalItem != null
+            }
+
+            if (dataStorage.isSync) {
+                if (removedItems.isNotEmpty()) {
+                    todoDao.deleteTodoItems(itemsMapper.map(removedItems))
+                }
+
+                if (addItems.isNotEmpty()) {
+                    todoDao.saveTodoItems(itemsMapper.map(remoteItems.map {
+                        it.copy(isSync = true)
+                    }))
+                }
+
+                if (modifiedItems.isNotEmpty()) {
+                    todoDao.saveTodoItems(itemsMapper.map(modifiedItems.map {
+                        it.copy(isSync = true)
+                    }))
+                }
+            }
+
+            dataStorage.isSync = true
         }
     }
 
-    override fun deleteTodoItem(item: TodoItem) {
-        items.getAndUpdate {
-            it.apply { this.remove(item.id) }
+    override suspend fun updateTodoItem(item: TodoItem): Boolean {
+
+        todoDao.saveTodoItem(itemsMapper.map(item))
+        dataStorage.isSync = false
+
+        if (dataStorage.onlineMode) {
+            getLastRevision()
+
+            val request = AddTodoRequest(itemsMapper.mapToRequest(dataStorage.deviceId, item))
+            val response =
+                todoApiService.updateTodoItem(item.id, dataStorage.knownRevision, request)
+            val body = response.body()
+
+            if (!response.isSuccessful || body == null) {
+                throw ApiError(response.code(), response.message())
+            }
+
+            todoDao.saveTodoItem(itemsMapper.map(item.copy(isSync = true)))
+            dataStorage.isSync = true
+            dataStorage.knownRevision = body.revision
+        }
+        return true
+    }
+
+    override suspend fun addTodoItem(item: TodoItem): Boolean {
+
+        todoDao.saveTodoItem(itemsMapper.map(item))
+        dataStorage.isSync = false
+
+        if (dataStorage.onlineMode) {
+            getLastRevision()
+
+            val request = AddTodoRequest(itemsMapper.mapToRequest(dataStorage.deviceId, item))
+            val response = todoApiService.addTodoItem(dataStorage.knownRevision, request)
+            val body = response.body()
+
+            if (!response.isSuccessful || body == null) {
+                throw ApiError(response.code(), response.message())
+            }
+
+            todoDao.saveTodoItem(itemsMapper.map(item.copy(isSync = true)))
+            dataStorage.isSync = true
+            dataStorage.knownRevision = body.revision
+        }
+        return true
+    }
+
+    override suspend fun saveTodoItems(items: List<TodoItem>) {
+
+        val savedItems = items.map {
+            itemsMapper.mapToRequest(dataStorage.deviceId, it)
+        }
+
+        if (dataStorage.onlineMode) {
+            getLastRevision()
+
+            val request = AddTodoListRequest(savedItems)
+            val response = todoApiService.updateTodoList(dataStorage.knownRevision, request)
+            val body = response.body()
+
+            if (!response.isSuccessful || body == null) {
+                throw ApiError(response.code(), response.message())
+            }
+
+            val newItems = body.data.map {
+                itemsMapper.mapFromResponse(it)
+            }
+
+            todoDao.saveTodoItems(itemsMapper.map(newItems.map { it.copy(isSync = true) }))
+            dataStorage.knownRevision = body.revision
         }
     }
 
-    override fun getTodoById(id: String): TodoItem? {
-        return items.value[id]
+    override suspend fun deleteTodoItem(item: TodoItem) {
+
+        todoDao.deleteTodoItem(item.id)
+        dataStorage.isSync = false
+
+        if (dataStorage.onlineMode) {
+            getLastRevision()
+
+            val response = todoApiService.deleteTodoItem(dataStorage.knownRevision, item.id)
+            val body = response.body()
+
+            if (!response.isSuccessful || body == null) {
+                throw ApiError(response.code(), response.message())
+            }
+
+            dataStorage.knownRevision = body.revision
+            dataStorage.isSync = true
+        }
+    }
+
+    override suspend fun getLastRevision() {
+
+        val response = todoApiService.checkAuth("Bearer ${dataStorage.token}")
+
+        if (!response.isSuccessful) {
+            throw ApiError(response.code(), response.message())
+        } else {
+            dataStorage.knownRevision = response.body()?.revision ?: 0
+        }
     }
 }

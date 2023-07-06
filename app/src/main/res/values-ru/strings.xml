@@ -22,4 +22,20 @@
     <string name="todo_list_action_delete">Удалить</string>
     <string name="todo_list_date_before">до %s</string>
     <string name="todo_item_view_date_pattern">d MMMM yyyy</string>
+    <string name="authorization_view_sign_in">Войти</string>
+    <string name="authorization_view_login_hint">Логин</string>
+    <string name="authorization_view_password_hint">Пароль</string>
+    <string name="authorization_view_continue">Продолжить без авторизации</string>
+    <string name="authorization_view_mandatory_field">Обязательное поле</string>
+    <string name="authorization_view_authorization">Авторизация</string>
+    <string name="exception_message_bad_request">Неверный запрос: %s %s</string>
+    <string name="exception_message_server_error">Ошибка сервера. Попробуйте позже</string>
+    <string name="exception_message_token_error">Неверный логин или пароль</string>
+    <string name="exception_message_unsync_error">Данные не синхронизированы</string>
+    <string name="exception_message_duplicate_error">Такая задача уже существует</string>
+    <string name="exception_message_not_found_error">Задача отсутствует на сервере</string>
+    <string name="exception_message_auth_error">Неверная авторизация</string>
+    <string name="exception_message_network_error">Отсутствует соединение с интернетом</string>
+    <string name="exception_message_unknown_error">Неизвестная ошибка</string>
+    <string name="exception_message_bad_request_error">Неверный запрос</string>
 </resources>
