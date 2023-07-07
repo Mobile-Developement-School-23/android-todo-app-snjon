@@ -28,7 +28,8 @@ class TodoItemViewModel(
     private val itemErrorMapper: ItemErrorMapper
 ) : BaseViewModel() {
 
-    val todoItemScreenState = MutableStateFlow(TodoItemScreenState())
+    private val _todoItemScreenState = MutableStateFlow(TodoItemScreenState())
+    val todoItemScreenState = _todoItemScreenState
 
     private val _todoUpdatedLiveData = SingleLiveEvent<Boolean>()
     val todoUpdatedLiveData = _todoUpdatedLiveData
@@ -43,7 +44,7 @@ class TodoItemViewModel(
     }
 
     private fun loadContent() {
-        todoItemScreenState.update {
+        _todoItemScreenState.update {
             TodoItemScreenState(
                 text = todoItem.text,
                 priorityRes = todoItem.priority.titleRes,
@@ -55,19 +56,19 @@ class TodoItemViewModel(
 
     fun updateTodoItemText(text: String) {
         todoItem = todoItem.copy(text = text)
-        todoItemScreenState.update { it.copy(text = text) }
+        _todoItemScreenState.update { it.copy(text = text) }
     }
 
     fun updateTodoItemPriority(priority: TodoItemPriority) {
         todoItem = todoItem.copy(priority = priority)
-        todoItemScreenState.update { it.copy(priorityRes = priority.titleRes) }
+        _todoItemScreenState.update { it.copy(priorityRes = priority.titleRes) }
     }
 
     fun updateDeadlineDate(dateTimeModel: DateTimeModel) {
         val date = (dateTimeModel as? DateTimeModel.Date)?.toDate() ?: return
 
         todoItem = todoItem.copy(deadline = date)
-        todoItemScreenState.update { it.copy(deadlineDate = dateMapper.map(date)) }
+        _todoItemScreenState.update { it.copy(deadlineDate = dateMapper.map(date)) }
     }
 
     fun onDeadlineDateActivate(isActive: Boolean) {
@@ -76,10 +77,10 @@ class TodoItemViewModel(
             val deadlineDateUi = deadlineDate?.let { dateMapper.map(it) }
 
             todoItem = todoItem.copy(deadline = deadlineDate)
-            todoItemScreenState.update { it.copy(deadlineDate = deadlineDateUi) }
+            _todoItemScreenState.update { it.copy(deadlineDate = deadlineDateUi) }
         } else {
             todoItem = todoItem.copy(deadline = null)
-            todoItemScreenState.update { it.copy(deadlineDate = null) }
+            _todoItemScreenState.update { it.copy(deadlineDate = null) }
         }
     }
 
