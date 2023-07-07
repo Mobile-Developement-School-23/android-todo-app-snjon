@@ -36,4 +36,3 @@ abstract class BaseDateTimePickerDialog :
 
     abstract fun initDialog(context: Context): Dialog
 }
-
