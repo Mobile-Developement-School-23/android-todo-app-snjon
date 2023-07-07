@@ -1,6 +1,6 @@
 package ru.yandex.school.todoapp.data.repository
 
-import ru.yandex.school.todoapp.data.api.TodoApiService
+import ru.yandex.school.todoapp.data.network.TodoApiService
 import ru.yandex.school.todoapp.data.datastore.DataStorage
 import ru.yandex.school.todoapp.data.model.error.ApiError
 import ru.yandex.school.todoapp.domain.repository.AuthRepository

@@ -3,7 +3,7 @@ package ru.yandex.school.todoapp.data.repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import ru.yandex.school.todoapp.data.api.TodoApiService
+import ru.yandex.school.todoapp.data.network.TodoApiService
 import ru.yandex.school.todoapp.data.database.dao.TodoDao
 import ru.yandex.school.todoapp.data.datastore.DataStorage
 import ru.yandex.school.todoapp.data.mapper.TodoEntityMapper

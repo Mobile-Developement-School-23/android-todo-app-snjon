@@ -7,7 +7,7 @@ import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
-import ru.yandex.school.todoapp.data.api.workmanager.UploadTodosWork
+import ru.yandex.school.todoapp.data.network.workmanager.UploadTodosWork
 import ru.yandex.school.todoapp.di.appModule
 import java.util.concurrent.TimeUnit
 

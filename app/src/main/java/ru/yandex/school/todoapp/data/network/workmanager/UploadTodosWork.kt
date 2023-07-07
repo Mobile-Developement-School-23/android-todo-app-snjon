@@ -1,4 +1,4 @@
-package ru.yandex.school.todoapp.data.api.workmanager
+package ru.yandex.school.todoapp.data.network.workmanager
 
 import android.content.Context
 import androidx.work.Worker
@@ -7,7 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent
-import ru.yandex.school.todoapp.data.api.TodoApiService
+import ru.yandex.school.todoapp.data.network.TodoApiService
 import ru.yandex.school.todoapp.data.database.dao.TodoDao
 import ru.yandex.school.todoapp.data.datastore.DataStorage
 import ru.yandex.school.todoapp.data.mapper.TodoEntityMapper

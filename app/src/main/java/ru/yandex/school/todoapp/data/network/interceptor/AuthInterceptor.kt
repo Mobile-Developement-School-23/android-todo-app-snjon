@@ -1,4 +1,4 @@
-package ru.yandex.school.todoapp.data.api.interceptor
+package ru.yandex.school.todoapp.data.network.interceptor
 
 import android.util.Log
 import okhttp3.Interceptor

@@ -3,7 +3,7 @@ package ru.yandex.school.todoapp.data.provider
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import ru.yandex.school.todoapp.BuildConfig
-import ru.yandex.school.todoapp.data.api.interceptor.AuthInterceptor
+import ru.yandex.school.todoapp.data.network.interceptor.AuthInterceptor
 
 class OkHttpProvider(private val authInterceptor: AuthInterceptor) {
 

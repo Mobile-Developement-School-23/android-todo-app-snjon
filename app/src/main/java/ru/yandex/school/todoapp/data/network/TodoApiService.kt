@@ -1,4 +1,4 @@
-package ru.yandex.school.todoapp.data.api
+package ru.yandex.school.todoapp.data.network
 
 import retrofit2.Response
 import retrofit2.http.*
