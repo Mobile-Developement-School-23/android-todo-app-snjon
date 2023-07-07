@@ -8,6 +8,10 @@ import ru.yandex.school.todoapp.data.datastore.DataStorage
 private const val AUTH_HEADER_NAME = "Authorization"
 private const val AUTH_HEADER_VALUE_MASK = "Bearer %s"
 
+/**
+ * Interceptor class for adding authorization token to the request headers
+ * @property dataStorage The data storage for retrieving the authorization token
+ */
 class AuthInterceptor(
     private val dataStorage: DataStorage
 ) : Interceptor {

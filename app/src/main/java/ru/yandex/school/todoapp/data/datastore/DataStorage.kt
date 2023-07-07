@@ -15,6 +15,11 @@ private enum class KEYS {
 private const val RANDOM_UUID_SUBSEQUENCE_START = 0
 private const val RANDOM_UUID_SUBSEQUENCE_END = 6
 
+/**
+ * A class that stores data such as device id, last known version of data,
+ * flag application online mode, token, username and sync flag in SharedPreferences.
+ * Instance of @param preferences SharedPreferences
+ */
 class DataStorage(private val preferences: SharedPreferences) {
     val deviceId: String = preferences.getString(KEYS.ID_KEY.name, null) ?: run {
         val id = UUID.randomUUID().toString()

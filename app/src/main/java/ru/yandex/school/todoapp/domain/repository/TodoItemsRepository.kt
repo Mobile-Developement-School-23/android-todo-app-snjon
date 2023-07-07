@@ -3,6 +3,9 @@ package ru.yandex.school.todoapp.domain.repository
 import kotlinx.coroutines.flow.Flow
 import ru.yandex.school.todoapp.domain.model.TodoItem
 
+/**
+ * Repository interface for managing TodoItem
+ */
 interface TodoItemsRepository {
     val todoItemsFlow: Flow<List<TodoItem>>
 

@@ -11,6 +11,10 @@ private const val BAD_REQUEST_CODE = 400
 private const val UNAUTHORIZED_CODE = 401
 private const val INTERNAL_SERVER_ERROR_CODE = 500
 
+/**
+ * Mapper class for mapping authentication errors to user-friendly error messages
+ * @property context The context used for retrieving string resources
+ */
 class AuthErrorMapper(
     private val context: Context
 ) {

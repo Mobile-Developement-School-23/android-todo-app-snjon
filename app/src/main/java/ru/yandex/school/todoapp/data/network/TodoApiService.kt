@@ -8,34 +8,65 @@ import ru.yandex.school.todoapp.data.model.response.TodoItemResponse
 import ru.yandex.school.todoapp.data.model.response.TodoListResponse
 import ru.yandex.school.todoapp.domain.model.TodoItem
 
+/**
+ * Retrofit API interface
+ */
 interface TodoApiService {
-    // "Авторизация"
+
+    /**
+     * Checks the authorization status with the provided token
+     * @param token [String]
+     * @return [Response] containing [TodoListResponse]
+     */
     @GET("list")
     suspend fun checkAuth(@Header("Authorization") token: String): Response<TodoListResponse>
 
-    // Получить список с сервера v2
+    /**
+     * Retrieves the TodoList
+     * @return [Response] containing [TodoListResponse]
+     */
     @GET("list")
     suspend fun getTodoList(): Response<TodoListResponse>
 
-    // Обновить список на сервере
+    /**
+     * Updates the TodoList with the specified request
+     * @param revision [Int]
+     * @param request [AddTodoListRequest]
+     * @return [Response] containing [TodoListResponse]
+     */
     @PATCH("list")
     suspend fun updateTodoList(
         @Header("X-Last-Known-Revision") revision: Int,
         @Body request: AddTodoListRequest
     ): Response<TodoListResponse>
 
-    // Получить элемент списка
+    /**
+     * Retrieves the TodoItem with the specified ID
+     * @param id [String]
+     * @return [TodoItem]
+     */
     @GET("list/{id}")
     suspend fun getTodoItem(@Path("id") id: String): TodoItem
 
-    // Добавить элемент списка
+    /**
+     * Adds a new TodoItem to the TodoList
+     * @param revision [Int]
+     * @param request [AddTodoRequest]
+     * @return [Response] containing [TodoItemResponse]
+     */
     @POST("list")
     suspend fun addTodoItem(
         @Header("X-Last-Known-Revision") revision: Int,
         @Body request: AddTodoRequest
     ): Response<TodoItemResponse>
 
-    // Изменить элемент списка
+    /**
+     * Updates the TodoItem with the specified ID
+     * @param id [String]
+     * @param revision [Int]
+     * @param request [AddTodoRequest]
+     * @return [Response] containing [TodoItemResponse]
+     */
     @PUT("list/{id}")
     suspend fun updateTodoItem(
         @Path("id") id: String,
@@ -43,7 +74,12 @@ interface TodoApiService {
         @Body request: AddTodoRequest
     ): Response<TodoItemResponse>
 
-    // Удалить элемент списка
+    /**
+     * Deletes the TodoItem with the specified ID
+     * @param revision [Int]
+     * @param id [String]
+     * @return [Response] containing [TodoItemResponse]
+     */
     @DELETE("list/{id}")
     suspend fun deleteTodoItem(
         @Header("X-Last-Known-Revision") revision: Int,

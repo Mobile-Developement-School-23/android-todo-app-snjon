@@ -2,6 +2,9 @@ package ru.yandex.school.todoapp.data.model.request
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Data class representing a TodoItem in the remote API
+ */
 data class TodoItemRemote(
     @SerializedName("id")
     val id: String,

@@ -4,6 +4,9 @@ import ru.yandex.school.todoapp.R
 import java.time.LocalDate
 import java.time.LocalDateTime
 
+/**
+ * Data class representing a TodoItem
+ */
 data class TodoItem(
     val id: String,
     val text: String,

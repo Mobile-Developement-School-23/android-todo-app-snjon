@@ -9,6 +9,11 @@ import ru.yandex.school.todoapp.presentation.list.model.TodoItemListModel
 import ru.yandex.school.todoapp.presentation.util.getColorExt
 import ru.yandex.school.todoapp.presentation.util.getDrawableExt
 
+/**
+ * Mapper class for mapping TodoItem objects to TodoItemListModel objects for displaying in the list
+ * @param context The application context
+ * @param dataMapper The mapper for mapping date values
+ */
 class TodoListItemMapper(
     private val context: Context,
     private val dataMapper: TodoItemDateMapper

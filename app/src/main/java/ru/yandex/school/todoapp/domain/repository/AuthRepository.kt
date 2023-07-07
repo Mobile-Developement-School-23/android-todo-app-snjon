@@ -1,5 +1,8 @@
 package ru.yandex.school.todoapp.domain.repository
 
+/**
+ * Repository interface for authentication related operations
+ */
 interface AuthRepository {
 
     suspend fun checkAuth(credentials: Pair<String, String>)

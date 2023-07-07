@@ -2,6 +2,9 @@ package ru.yandex.school.todoapp.domain.model
 
 import ru.yandex.school.todoapp.R
 
+/**
+ * Enum class representing the priority of a TodoItem
+ */
 enum class TodoItemPriority(
     val titleRes: Int,
     val colorRes: Int = R.color.color_gray,

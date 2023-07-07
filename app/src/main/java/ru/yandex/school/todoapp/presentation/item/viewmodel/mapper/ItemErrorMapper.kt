@@ -13,6 +13,10 @@ private const val UNAUTHORIZED_CODE = 401
 private const val NOT_FOUND_CODE = 404
 private const val INTERNAL_SERVER_ERROR_CODE = 500
 
+/**
+ * Mapper class for mapping item fragment errors to user-friendly error messages
+ * @property context The context used for retrieving string resources
+ */
 class ItemErrorMapper(
     private val context: Context
 ) {

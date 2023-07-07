@@ -6,6 +6,9 @@ import ru.yandex.school.todoapp.data.database.AppDatabase.Companion.DATABASE_VER
 import ru.yandex.school.todoapp.data.database.dao.TodoDao
 import ru.yandex.school.todoapp.data.model.database.TodoEntity
 
+/**
+ * The Room Database that contains the todoItems table
+ */
 @Database(entities = [TodoEntity::class], version = DATABASE_VERSION)
 abstract class AppDatabase : RoomDatabase() {
 

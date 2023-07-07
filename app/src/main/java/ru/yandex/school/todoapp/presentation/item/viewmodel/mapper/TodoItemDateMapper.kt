@@ -7,6 +7,10 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
+/**
+ * Mapper for formatting TodoItem dates to strings
+ * @param context The context used for retrieving string resources
+ */
 class TodoItemDateMapper(private val context: Context) {
     private val dateFormatter by lazy { createFormatter() }
 

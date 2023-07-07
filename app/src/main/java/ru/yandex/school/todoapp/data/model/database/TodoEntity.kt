@@ -8,6 +8,9 @@ import ru.yandex.school.todoapp.domain.model.TodoItemPriority
 import java.time.LocalDate
 import java.time.LocalDateTime
 
+/**
+ * Entity class representing a TodoItem in the database
+ */
 @Entity
 @TypeConverters(LocalDateTypeConverter::class)
 data class TodoEntity(

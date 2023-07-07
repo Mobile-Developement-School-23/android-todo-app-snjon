@@ -14,6 +14,11 @@ import ru.yandex.school.todoapp.data.mapper.TodoEntityMapper
 import ru.yandex.school.todoapp.data.mapper.TodoItemMapper
 import ru.yandex.school.todoapp.data.model.request.AddTodoListRequest
 
+/**
+ * Worker class for uploading todos to the server
+ * @property context The application context
+ * @property workerParams The worker parameters
+ */
 class UploadTodosWork(
     context: Context,
     workerParams: WorkerParameters
