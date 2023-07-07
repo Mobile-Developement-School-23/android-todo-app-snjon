@@ -9,9 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 open class BaseViewModel : ViewModel() {
-
     open val error = MutableStateFlow<Throwable?>(null)
-
     open val loading = MutableStateFlow(false)
 
     private fun createExceptionHandler(

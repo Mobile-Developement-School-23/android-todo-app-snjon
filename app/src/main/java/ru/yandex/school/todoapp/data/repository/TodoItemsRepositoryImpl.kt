@@ -19,7 +19,7 @@ class TodoItemsRepositoryImpl(
     private val todoApiService: TodoApiService,
     private val dataStorage: DataStorage,
     private val entityMapper: TodoEntityMapper,
-    private val itemsMapper: TodoItemMapper,
+    private val itemsMapper: TodoItemMapper
 ) : TodoItemsRepository {
 
     override val todoItemsFlow = todoDao.getAll()
@@ -33,7 +33,6 @@ class TodoItemsRepositoryImpl(
     }
 
     override suspend fun loadFromServer() {
-
         if (dataStorage.onlineMode) {
 
             val response = todoApiService.getTodoList()
@@ -88,7 +87,6 @@ class TodoItemsRepositoryImpl(
     }
 
     override suspend fun updateTodoItem(item: TodoItem): Boolean {
-
         todoDao.saveTodoItem(itemsMapper.map(item))
         dataStorage.isSync = false
 
@@ -112,7 +110,6 @@ class TodoItemsRepositoryImpl(
     }
 
     override suspend fun addTodoItem(item: TodoItem): Boolean {
-
         todoDao.saveTodoItem(itemsMapper.map(item))
         dataStorage.isSync = false
 
@@ -135,7 +132,6 @@ class TodoItemsRepositoryImpl(
     }
 
     override suspend fun saveTodoItems(items: List<TodoItem>) {
-
         val savedItems = items.map {
             itemsMapper.mapToRequest(dataStorage.deviceId, it)
         }
@@ -161,7 +157,6 @@ class TodoItemsRepositoryImpl(
     }
 
     override suspend fun deleteTodoItem(item: TodoItem) {
-
         todoDao.deleteTodoItem(item.id)
         dataStorage.isSync = false
 
@@ -181,7 +176,6 @@ class TodoItemsRepositoryImpl(
     }
 
     override suspend fun getLastRevision() {
-
         val response = todoApiService.checkAuth("Bearer ${dataStorage.token}")
 
         if (!response.isSuccessful) {

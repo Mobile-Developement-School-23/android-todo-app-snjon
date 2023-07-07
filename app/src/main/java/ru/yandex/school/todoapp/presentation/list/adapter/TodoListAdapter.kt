@@ -26,7 +26,6 @@ class TodoListAdapter(
         )
     }
 
-
     override fun onBindViewHolder(holder: TodoItemViewHolder, position: Int) {
         holder.bind(getItem(position))
     }

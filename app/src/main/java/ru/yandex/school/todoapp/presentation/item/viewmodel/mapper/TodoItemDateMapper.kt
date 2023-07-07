@@ -8,7 +8,6 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 class TodoItemDateMapper(private val context: Context) {
-
     private val dateFormatter by lazy { createFormatter() }
 
     fun map(date: LocalDate): String {

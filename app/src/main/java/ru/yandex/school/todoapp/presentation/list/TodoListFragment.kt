@@ -32,21 +32,23 @@ import ru.yandex.school.todoapp.presentation.util.visibleOrGone
 import ru.yandex.school.todoapp.presentation.util.visibleOrInvisible
 
 class TodoListFragment : Fragment(R.layout.fragment_todo_list) {
-
     private val viewModel: TodoListViewModel by viewModel()
 
-    private val toolbar by bind<Toolbar>(R.id.todo_list_toolbar)
-    private val collapsingToolbar by bind<CollapsingToolbarLayout>(R.id.todo_list_collapsing_toolbar)
     private val appBar by bind<AppBarLayout>(R.id.todo_list_app_bar)
-    private val appBarSubtitle by bind<TextView>(R.id.todo_list_subtitle)
+    private val collapsingToolbar by bind<CollapsingToolbarLayout>(R.id.todo_list_collapsing_toolbar)
     private val expandedContainer by bind<ConstraintLayout>(R.id.todo_list_expanded_container)
-    private val recyclerView by bind<RecyclerView>(R.id.todo_list_recycler_view)
-    private val emptyView by bind<TextView>(R.id.todo_list_empty_view)
-    private val addNewButton by bind<FloatingActionButton>(R.id.todo_list_add_new)
-    private val showCompletedToolbarButton by bind<ImageView>(R.id.todo_list_toolbar_visibility)
+    private val appBarSubtitle by bind<TextView>(R.id.todo_list_subtitle)
     private val showCompletedAppBarButton by bind<ImageView>(R.id.todo_list_app_bar_visibility)
+    private val toolbar by bind<Toolbar>(R.id.todo_list_toolbar)
     private val userTitle by bind<TextView>(R.id.todo_list_user)
+    private val showCompletedToolbarButton by bind<ImageView>(R.id.todo_list_toolbar_visibility)
+
+    private val emptyView by bind<TextView>(R.id.todo_list_empty_view)
+
     private val swipeRefresh by bind<SwipeRefreshLayout>(R.id.todo_list_swipe_refresh)
+    private val recyclerView by bind<RecyclerView>(R.id.todo_list_recycler_view)
+
+    private val addNewButton by bind<FloatingActionButton>(R.id.todo_list_add_new)
 
     private val listAdapter by lazy { createAdapter() }
 

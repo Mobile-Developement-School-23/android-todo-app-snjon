@@ -134,7 +134,6 @@ class TodoItemViewModel(
     }
 
     private fun handleAppError(error: Throwable) {
-
         val errorMessage = itemErrorMapper.map(error)
         _errorLiveData.postValue(errorMessage)
     }

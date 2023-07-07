@@ -5,15 +5,12 @@ import ru.yandex.school.todoapp.data.datastore.DataStorage
 import ru.yandex.school.todoapp.data.model.error.ApiError
 import ru.yandex.school.todoapp.domain.repository.AuthRepository
 
-
 class AuthRepositoryImpl(
     private val todoApiService: TodoApiService,
-    private val dataStorage: DataStorage,
-
-    ) : AuthRepository {
+    private val dataStorage: DataStorage
+) : AuthRepository {
 
     override suspend fun getLastRevision() {
-
         val response = todoApiService.checkAuth("Bearer ${dataStorage.token}")
 
         if (!response.isSuccessful) {
@@ -32,7 +29,6 @@ class AuthRepositoryImpl(
     }
 
     override suspend fun checkAuth(credentials: Pair<String, String>) {
-
         val user = credentials.first
         val token = credentials.second
         val response = todoApiService.checkAuth("Bearer $token")

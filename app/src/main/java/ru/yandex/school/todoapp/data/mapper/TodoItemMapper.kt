@@ -10,6 +10,7 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 
 class TodoItemMapper {
+
     fun map(item: TodoItem): TodoEntity {
         return TodoEntity(
             id = item.id,
@@ -26,7 +27,6 @@ class TodoItemMapper {
     fun map(items: List<TodoItem>): List<TodoEntity> {
         return items.map { item -> map(item) }
     }
-
 
     fun mapFromResponse(item: TodoItemRemote): TodoItem {
         return TodoItem(

@@ -3,7 +3,6 @@ package ru.yandex.school.todoapp.data.datastore
 import android.content.SharedPreferences
 import java.util.UUID
 
-
 private enum class KEYS {
     ID_KEY,
     REV_KEY,
@@ -14,7 +13,6 @@ private enum class KEYS {
 }
 
 class DataStorage(private val preferences: SharedPreferences) {
-
     val deviceId: String = preferences.getString(KEYS.ID_KEY.name, null) ?: run {
         val id = UUID.randomUUID().toString().subSequence(0, 6).toString()
         saveToPreferences(id, KEYS.ID_KEY)
@@ -55,7 +53,6 @@ class DataStorage(private val preferences: SharedPreferences) {
             saveToPreferences(value, KEYS.TOKEN_KEY)
         }
         get() = preferences.getString(KEYS.TOKEN_KEY.name, null)
-
 
     private fun <T> saveToPreferences(value: T?, key: KEYS) {
         val editor: SharedPreferences.Editor = preferences.edit()

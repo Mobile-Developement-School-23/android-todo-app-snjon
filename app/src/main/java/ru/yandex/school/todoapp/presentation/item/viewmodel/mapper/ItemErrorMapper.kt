@@ -11,8 +11,8 @@ import ru.yandex.school.todoapp.data.model.error.UnknownHostException
 class ItemErrorMapper(
     private val context: Context
 ) {
-    fun map(error: Throwable): String {
 
+    fun map(error: Throwable): String {
         return if (error is ApiError) {
             when (error.status) {
                 400 -> when {

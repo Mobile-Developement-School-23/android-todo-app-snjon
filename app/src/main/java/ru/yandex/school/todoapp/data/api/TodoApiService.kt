@@ -9,7 +9,6 @@ import ru.yandex.school.todoapp.data.model.response.TodoListResponse
 import ru.yandex.school.todoapp.domain.model.TodoItem
 
 interface TodoApiService {
-
     // "Авторизация"
     @GET("list")
     suspend fun checkAuth(@Header("Authorization") token: String): Response<TodoListResponse>

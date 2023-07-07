@@ -23,8 +23,7 @@ class DatePickerDialog : BaseDateTimePickerDialog() {
         val month = calendar[Calendar.MONTH]
         val day = calendar[Calendar.DAY_OF_MONTH]
 
-        val dialog =
-            android.app.DatePickerDialog(context, R.style.DatePickerStyle, this, year, month, day)
+        val dialog = android.app.DatePickerDialog(context, R.style.DatePickerStyle, this, year, month, day)
 
         dialog.datePicker.minDate = calendar.timeInMillis
 

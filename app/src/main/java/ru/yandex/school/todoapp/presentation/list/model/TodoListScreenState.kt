@@ -5,9 +5,7 @@ data class TodoListScreenState(
     val completedCount: Int,
     val isCompletedShowed: Boolean
 ) {
-
     companion object {
-
         val empty = TodoListScreenState(
             listItems = emptyList(),
             completedCount = 0,

@@ -13,6 +13,7 @@ class TodoListItemMapper(
     private val context: Context,
     private val dataMapper: TodoItemDateMapper
 ) {
+
     fun map(todoItem: TodoItem): TodoItemListModel {
         return TodoItemListModel(
             text = todoItem.text,
@@ -33,5 +34,4 @@ class TodoListItemMapper(
             Paint.STRIKE_THRU_TEXT_FLAG.inv()
         }
     }
-
 }

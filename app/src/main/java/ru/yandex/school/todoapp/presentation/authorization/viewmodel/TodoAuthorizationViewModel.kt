@@ -28,7 +28,6 @@ class TodoAuthorizationViewModel(
     val errorLiveData = _errorLiveData
 
     private fun checkAuthorization() {
-
         val isAuthorized = repository.isAuthorized()
         if (isAuthorized) {
             launchJob(
@@ -62,7 +61,6 @@ class TodoAuthorizationViewModel(
     }
 
     private fun handleAppError(error: Throwable) {
-
         val errorMessage = authErrorMapper.map(error)
         _errorLiveData.postValue(errorMessage)
     }

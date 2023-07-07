@@ -13,7 +13,6 @@ class ListErrorMapper(
 ) {
 
     fun map(error: Throwable): String {
-
         return if (error is ApiError) {
             when (error.status) {
                 400 -> when {

@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TodoDao {
-
     @Query("SELECT * FROM TodoEntity ORDER BY modifiedAt DESC")
     fun getAll(): Flow<List<TodoEntity>>
 

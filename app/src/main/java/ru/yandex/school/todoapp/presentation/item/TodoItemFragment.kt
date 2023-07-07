@@ -35,21 +35,21 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
         )
     }
 
-    private val editText by bind<EditText>(R.id.todo_item_text)
+    private val toolbar by bind<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
     private val saveButton by bind<TextView>(R.id.todo_item_save)
+
+    private val editText by bind<EditText>(R.id.todo_item_text)
 
     private val priorityCard by bind<LinearLayout>(R.id.todo_item_priority_item)
     private val priority by bind<TextView>(R.id.todo_item_priority_subtitle)
+    private val priorityPopup by lazy { createPriorityPopup() }
 
     private val deadlineCard by bind<ConstraintLayout>(R.id.todo_item_deadline_item)
-    private val deadlineDate by bind<TextView>(R.id.todo_item_deadline_subtitle)
     private val deadlineSwitch by bind<SwitchMaterial>(R.id.todo_item_deadline_switch)
+    private val deadlineDate by bind<TextView>(R.id.todo_item_deadline_subtitle)
+    private val datePicker by lazy { createDatePicker() }
 
     private val deleteButton by bind<MaterialButton>(R.id.todo_item_delete_button)
-    private val toolbar by bind<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
-
-    private val datePicker by lazy { createDatePicker() }
-    private val priorityPopup by lazy { createPriorityPopup() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -81,7 +81,6 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
         }
 
         saveButton.isEnabled = editText.text.isNotEmpty()
-
         priority.text = getString(content.priorityRes)
 
         content.modifiedDate.let { modifiedDate ->
@@ -97,7 +96,6 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
 
 
     private fun bindViews() {
-
         saveButton.setOnClickListener { viewModel.addTodoItem() }
 
         editText.doOnTextChanged { text, _, _, _ ->

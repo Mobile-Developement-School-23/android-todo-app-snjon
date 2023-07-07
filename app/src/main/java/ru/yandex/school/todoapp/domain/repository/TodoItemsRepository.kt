@@ -4,7 +4,6 @@ import kotlinx.coroutines.flow.Flow
 import ru.yandex.school.todoapp.domain.model.TodoItem
 
 interface TodoItemsRepository {
-
     val todoItemsFlow: Flow<List<TodoItem>>
 
     suspend fun getTodoById(id: String): TodoItem?
