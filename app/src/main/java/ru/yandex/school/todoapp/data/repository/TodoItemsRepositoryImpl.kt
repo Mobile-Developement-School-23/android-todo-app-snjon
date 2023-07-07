@@ -196,8 +196,9 @@ class TodoItemsRepositoryImpl(
      * Deletes TodoItem
      * Deletes todoItem from local data source and pushes it to remote data source
      * @param item [TodoItem]
+     * @return [Boolean]
      */
-    override suspend fun deleteTodoItem(item: TodoItem) {
+    override suspend fun deleteTodoItem(item: TodoItem): Boolean {
         todoDao.deleteTodoItem(item.id)
         dataStorage.isSync = false
 
@@ -214,6 +215,7 @@ class TodoItemsRepositoryImpl(
             dataStorage.knownRevision = body.revision
             dataStorage.isSync = true
         }
+        return true
     }
 
     /**

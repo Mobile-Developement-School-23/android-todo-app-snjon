@@ -13,11 +13,11 @@ interface TodoItemsRepository {
 
     suspend fun updateTodoItem(item: TodoItem): Boolean
 
-    suspend fun addTodoItem(item: TodoItem) : Boolean
+    suspend fun addTodoItem(item: TodoItem): Boolean
 
     suspend fun saveTodoItems(items: List<TodoItem>)
 
-    suspend fun deleteTodoItem(item: TodoItem)
+    suspend fun deleteTodoItem(item: TodoItem): Boolean
 
     suspend fun loadFromServer()
 

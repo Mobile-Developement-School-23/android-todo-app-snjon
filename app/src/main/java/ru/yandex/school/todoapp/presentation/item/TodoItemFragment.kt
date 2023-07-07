@@ -119,7 +119,6 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
 
         deleteButton.setOnClickListener {
             viewModel.deleteTodoItem()
-            viewModel.closeTodoItem()
         }
     }
 

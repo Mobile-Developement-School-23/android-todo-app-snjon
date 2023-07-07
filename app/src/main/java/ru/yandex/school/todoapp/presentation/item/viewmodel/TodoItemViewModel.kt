@@ -130,7 +130,8 @@ class TodoItemViewModel(
         launchJob(
             onError = { handleAppError(it) }
         ) {
-            repository.deleteTodoItem(todoItem)
+            val result = repository.deleteTodoItem(todoItem)
+            _todoUpdatedLiveData.postValue(result)
         }
     }
 
