@@ -8,6 +8,8 @@ import ru.yandex.school.todoapp.presentation.base.BaseViewModel
 import ru.yandex.school.todoapp.presentation.navigation.AppNavigator
 import ru.yandex.school.todoapp.presentation.util.SingleLiveEvent
 
+private const val INITIAL_DELAY_MS = 100L
+
 class TodoAuthorizationViewModel(
     private val repository: AuthRepository,
     private val navigator: AppNavigator,
@@ -16,7 +18,7 @@ class TodoAuthorizationViewModel(
 
     init {
         launchJob {
-            delay(100)
+            delay(INITIAL_DELAY_MS)
             checkAuthorization()
         }
     }

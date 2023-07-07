@@ -12,9 +12,13 @@ private enum class KEYS {
     SYNC_KEY
 }
 
+private const val RANDOM_UUID_SUBSEQUENCE_START = 0
+private const val RANDOM_UUID_SUBSEQUENCE_END = 6
+
 class DataStorage(private val preferences: SharedPreferences) {
     val deviceId: String = preferences.getString(KEYS.ID_KEY.name, null) ?: run {
-        val id = UUID.randomUUID().toString().subSequence(0, 6).toString()
+        val id = UUID.randomUUID().toString()
+            .subSequence(RANDOM_UUID_SUBSEQUENCE_START, RANDOM_UUID_SUBSEQUENCE_END).toString()
         saveToPreferences(id, KEYS.ID_KEY)
         id
     }
