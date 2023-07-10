@@ -63,12 +63,6 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
             showContent(it)
         }
 
-        viewModel.todoUpdatedLiveData.observe(viewLifecycleOwner) {
-            if (it == true) {
-                viewModel.closeTodoItem()
-            }
-        }
-
         viewModel.errorLiveData.observe(viewLifecycleOwner) { message ->
             showToast(message)
         }

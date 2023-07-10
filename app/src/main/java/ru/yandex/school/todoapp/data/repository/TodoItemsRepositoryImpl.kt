@@ -111,7 +111,7 @@ class TodoItemsRepositoryImpl(
      * @param item [TodoItem]
      * @return [Boolean]
      */
-    override suspend fun updateTodoItem(item: TodoItem): Boolean {
+    override suspend fun updateTodoItem(item: TodoItem) {
         todoDao.saveTodoItem(itemsMapper.map(item))
         dataStorage.isSync = false
 
@@ -131,7 +131,6 @@ class TodoItemsRepositoryImpl(
             dataStorage.isSync = true
             dataStorage.knownRevision = body.revision
         }
-        return true
     }
 
     /**
@@ -140,7 +139,7 @@ class TodoItemsRepositoryImpl(
      * @param item [TodoItem]
      * @return [Boolean]
      */
-    override suspend fun addTodoItem(item: TodoItem): Boolean {
+    override suspend fun addTodoItem(item: TodoItem) {
         todoDao.saveTodoItem(itemsMapper.map(item))
         dataStorage.isSync = false
 
@@ -159,7 +158,6 @@ class TodoItemsRepositoryImpl(
             dataStorage.isSync = true
             dataStorage.knownRevision = body.revision
         }
-        return true
     }
 
     /**
@@ -198,7 +196,7 @@ class TodoItemsRepositoryImpl(
      * @param item [TodoItem]
      * @return [Boolean]
      */
-    override suspend fun deleteTodoItem(item: TodoItem): Boolean {
+    override suspend fun deleteTodoItem(item: TodoItem) {
         todoDao.deleteTodoItem(item.id)
         dataStorage.isSync = false
 
@@ -215,7 +213,6 @@ class TodoItemsRepositoryImpl(
             dataStorage.knownRevision = body.revision
             dataStorage.isSync = true
         }
-        return true
     }
 
     /**
