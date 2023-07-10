@@ -223,7 +223,7 @@ class TodoItemsRepositoryImpl(
      * Receives last knownRevision from remote data source and pushes it to local data source
      */
     override suspend fun getLastRevision() {
-        val response = todoApiService.checkAuth("Bearer ${dataStorage.token}")
+        val response = todoApiService.getTodoList()
 
         if (!response.isSuccessful) {
             throw ApiError(response.code(), response.message())

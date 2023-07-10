@@ -20,7 +20,7 @@ class AuthRepositoryImpl(
      * @throws ApiError if the API response is not successful
      */
     override suspend fun getLastRevision() {
-        val response = todoApiService.checkAuth("Bearer ${dataStorage.token}")
+        val response = todoApiService.getTodoList()
 
         if (!response.isSuccessful) {
             throw ApiError(response.code(), response.message())
