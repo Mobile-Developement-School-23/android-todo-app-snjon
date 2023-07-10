@@ -38,13 +38,8 @@ class TodoAuthorizationViewModel(
                 _todoAuthorizationState.postValue(TodoAuthorizationModelState(loading = true))
                 repository.getLastRevision()
                 _todoAuthorizationState.postValue(TodoAuthorizationModelState(isAuthorized = true))
-                setInternetMode(true)
             }
         }
-    }
-
-    fun setInternetMode(mode: Boolean) {
-        repository.setAppMode(mode)
     }
 
     fun authorization(credentials: Pair<String, String>) {
@@ -52,9 +47,8 @@ class TodoAuthorizationViewModel(
             onError = { handleAppError(it) }
         ) {
             _todoAuthorizationState.postValue(TodoAuthorizationModelState(loading = true))
-            repository.checkAuth(credentials)
+            repository.login(credentials)
             _todoAuthorizationState.postValue(TodoAuthorizationModelState(isAuthorized = true))
-            setInternetMode(true)
         }
     }
 

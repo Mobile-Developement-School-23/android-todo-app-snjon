@@ -38,19 +38,11 @@ class AuthRepositoryImpl(
     }
 
     /**
-     * Set the app mode
-     * @param mode [Boolean]
-     */
-    override fun setAppMode(mode: Boolean) {
-        dataStorage.onlineMode = mode
-    }
-
-    /**
      * Check the authentication credentials
      * @param credentials [Pair<String>]
      * @throws ApiError if the API response is not successful
      */
-    override suspend fun checkAuth(credentials: Pair<String, String>) {
+    override suspend fun login(credentials: Pair<String, String>) {
         val user = credentials.first
         val token = credentials.second
         val response = todoApiService.checkAuth("Bearer $token")
@@ -60,6 +52,7 @@ class AuthRepositoryImpl(
         } else {
             dataStorage.token = token
             dataStorage.user = user
+            dataStorage.onlineMode = true
             dataStorage.knownRevision = response.body()?.revision ?: 0
         }
     }

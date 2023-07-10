@@ -38,7 +38,6 @@ class TodoAuthorizationFragment : Fragment(R.layout.fragment_authorization) {
 
     private fun bindViews() {
         continueButton.setOnClickListener {
-            viewModel.setInternetMode(false)
             viewModel.openTodoList()
         }
 
