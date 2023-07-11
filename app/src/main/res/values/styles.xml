@@ -30,6 +30,10 @@
         <item name="colorSecondary">@color/color_blue</item>
     </style>
 
+    <style name="CollapsingToolbar" parent="Theme.MaterialComponents.Light">
+        <item name="android:background">@color/back_primary</item>
+    </style>
+
     <style name="DatePickerStyle" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/color_blue</item>
         <item name="colorSecondary">@color/color_blue</item>
@@ -59,8 +63,6 @@
         <item name="iconTint">@color/color_red</item>
         <item name="iconSize">24dp</item>
         <item name="iconPadding">4dp</item>
-        <item name="backgroundTint">@drawable/button_bg_color_selector</item>
-        <item name="rippleColor">@drawable/button_ripple_color_selector</item>
         <item name="android:textAppearance">@style/DeleteButtonTextAppearance</item>
     </style>
 
