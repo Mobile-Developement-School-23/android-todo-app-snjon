@@ -3,7 +3,7 @@ package ru.yandex.school.todoapp.data.repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import ru.yandex.school.todoapp.data.api.TodoApiService
+import ru.yandex.school.todoapp.data.network.TodoApiService
 import ru.yandex.school.todoapp.data.database.dao.TodoDao
 import ru.yandex.school.todoapp.data.datastore.DataStorage
 import ru.yandex.school.todoapp.data.mapper.TodoEntityMapper
@@ -14,26 +14,44 @@ import ru.yandex.school.todoapp.data.model.request.AddTodoRequest
 import ru.yandex.school.todoapp.domain.model.TodoItem
 import ru.yandex.school.todoapp.domain.repository.TodoItemsRepository
 
+/**
+ * Todo repository implementation
+ * @property todoDao [TodoDao]
+ * @property todoApiService [TodoApiService]
+ * @property dataStorage [DataStorage]
+ * @property entityMapper [TodoEntityMapper]
+ * @property itemsMapper [TodoItemMapper]
+ */
 class TodoItemsRepositoryImpl(
     private val todoDao: TodoDao,
     private val todoApiService: TodoApiService,
     private val dataStorage: DataStorage,
     private val entityMapper: TodoEntityMapper,
-    private val itemsMapper: TodoItemMapper,
+    private val itemsMapper: TodoItemMapper
 ) : TodoItemsRepository {
 
     override val todoItemsFlow = todoDao.getAll()
         .map { entityMapper.map(it) }
         .flowOn(Dispatchers.Default)
 
+    /**
+     * Receives TodoItem
+     * Receives todoItem from local data source
+     * @param id [String]
+     * @return [TodoItem?]
+     */
     override suspend fun getTodoById(id: String): TodoItem? {
         val entity = todoDao.getTodoById(id) ?: return null
 
         return entityMapper.map(entity)
     }
 
+    /**
+     * Synchronizes list of TodoItem
+     * Fetches todoItems from remote data source and pushes them to local data source
+     * Then pushes merged local todoItems to remote data source
+     */
     override suspend fun loadFromServer() {
-
         if (dataStorage.onlineMode) {
 
             val response = todoApiService.getTodoList()
@@ -87,8 +105,13 @@ class TodoItemsRepositoryImpl(
         }
     }
 
-    override suspend fun updateTodoItem(item: TodoItem): Boolean {
-
+    /**
+     * Updates TodoItem
+     * Updates TodoItem from local data source and pushes it to remote data source
+     * @param item [TodoItem]
+     * @return [Boolean]
+     */
+    override suspend fun updateTodoItem(item: TodoItem) {
         todoDao.saveTodoItem(itemsMapper.map(item))
         dataStorage.isSync = false
 
@@ -108,11 +131,15 @@ class TodoItemsRepositoryImpl(
             dataStorage.isSync = true
             dataStorage.knownRevision = body.revision
         }
-        return true
     }
 
-    override suspend fun addTodoItem(item: TodoItem): Boolean {
-
+    /**
+     * Add TodoItem
+     * Adds TodoItem to local data source and pushes it to remote data source
+     * @param item [TodoItem]
+     * @return [Boolean]
+     */
+    override suspend fun addTodoItem(item: TodoItem) {
         todoDao.saveTodoItem(itemsMapper.map(item))
         dataStorage.isSync = false
 
@@ -131,11 +158,14 @@ class TodoItemsRepositoryImpl(
             dataStorage.isSync = true
             dataStorage.knownRevision = body.revision
         }
-        return true
     }
 
+    /**
+     * Saves list of TodoItem
+     * Saves todoItems from local data source and pushes it to remote data source
+     * @param items [List<TodoItem>]
+     */
     override suspend fun saveTodoItems(items: List<TodoItem>) {
-
         val savedItems = items.map {
             itemsMapper.mapToRequest(dataStorage.deviceId, it)
         }
@@ -160,8 +190,13 @@ class TodoItemsRepositoryImpl(
         }
     }
 
+    /**
+     * Deletes TodoItem
+     * Deletes todoItem from local data source and pushes it to remote data source
+     * @param item [TodoItem]
+     * @return [Boolean]
+     */
     override suspend fun deleteTodoItem(item: TodoItem) {
-
         todoDao.deleteTodoItem(item.id)
         dataStorage.isSync = false
 
@@ -180,9 +215,12 @@ class TodoItemsRepositoryImpl(
         }
     }
 
+    /**
+     * Receives knownRevision
+     * Receives last knownRevision from remote data source and pushes it to local data source
+     */
     override suspend fun getLastRevision() {
-
-        val response = todoApiService.checkAuth("Bearer ${dataStorage.token}")
+        val response = todoApiService.getTodoList()
 
         if (!response.isSuccessful) {
             throw ApiError(response.code(), response.message())

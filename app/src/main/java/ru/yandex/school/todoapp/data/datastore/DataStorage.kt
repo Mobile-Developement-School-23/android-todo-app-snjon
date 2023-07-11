@@ -3,7 +3,6 @@ package ru.yandex.school.todoapp.data.datastore
 import android.content.SharedPreferences
 import java.util.UUID
 
-
 private enum class KEYS {
     ID_KEY,
     REV_KEY,
@@ -13,10 +12,18 @@ private enum class KEYS {
     SYNC_KEY
 }
 
-class DataStorage(private val preferences: SharedPreferences) {
+private const val RANDOM_UUID_SUBSEQUENCE_START = 0
+private const val RANDOM_UUID_SUBSEQUENCE_END = 6
 
+/**
+ * A class that stores data such as device id, last known version of data,
+ * flag application online mode, token, username and sync flag in SharedPreferences.
+ * Instance of @param preferences SharedPreferences
+ */
+class DataStorage(private val preferences: SharedPreferences) {
     val deviceId: String = preferences.getString(KEYS.ID_KEY.name, null) ?: run {
-        val id = UUID.randomUUID().toString().subSequence(0, 6).toString()
+        val id = UUID.randomUUID().toString()
+            .subSequence(RANDOM_UUID_SUBSEQUENCE_START, RANDOM_UUID_SUBSEQUENCE_END).toString()
         saveToPreferences(id, KEYS.ID_KEY)
         id
     }
@@ -55,7 +62,6 @@ class DataStorage(private val preferences: SharedPreferences) {
             saveToPreferences(value, KEYS.TOKEN_KEY)
         }
         get() = preferences.getString(KEYS.TOKEN_KEY.name, null)
-
 
     private fun <T> saveToPreferences(value: T?, key: KEYS) {
         val editor: SharedPreferences.Editor = preferences.edit()

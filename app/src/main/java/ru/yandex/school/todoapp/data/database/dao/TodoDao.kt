@@ -8,9 +8,11 @@ import androidx.room.Query
 import ru.yandex.school.todoapp.data.model.database.TodoEntity
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Data Access Object for the SQLite todoItems table
+ */
 @Dao
 interface TodoDao {
-
     @Query("SELECT * FROM TodoEntity ORDER BY modifiedAt DESC")
     fun getAll(): Flow<List<TodoEntity>>
 

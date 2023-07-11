@@ -7,9 +7,11 @@ import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
-import ru.yandex.school.todoapp.data.api.workmanager.UploadTodosWork
+import ru.yandex.school.todoapp.data.network.workmanager.UploadTodosWork
 import ru.yandex.school.todoapp.di.appModule
 import java.util.concurrent.TimeUnit
+
+private const val UPLOAD_WORK_INTERVAL_HOURS = 8L
 
 class TodoAppApplication : Application() {
 
@@ -28,7 +30,11 @@ class TodoAppApplication : Application() {
             .build()
 
         val periodicWorkRequest =
-            PeriodicWorkRequest.Builder(UploadTodosWork::class.java, 8, TimeUnit.HOURS)
+            PeriodicWorkRequest.Builder(
+                UploadTodosWork::class.java,
+                UPLOAD_WORK_INTERVAL_HOURS,
+                TimeUnit.HOURS
+            )
                 .setConstraints(constraints)
                 .build()
 

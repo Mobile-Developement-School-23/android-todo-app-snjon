@@ -5,6 +5,11 @@ import ru.yandex.school.todoapp.domain.model.TodoItem
 
 class TodoEntityMapper {
 
+    /**
+     * Mapper from TodoEntity to TodoItem
+     * @param entity [TodoEntity]
+     * @return [TodoItem]
+     */
     fun map(entity: TodoEntity): TodoItem {
         return TodoItem(
             id = entity.id,
@@ -18,6 +23,11 @@ class TodoEntityMapper {
         )
     }
 
+    /**
+     * Mapper from list TodoEntity to list TodoItem
+     * @param entities [List<TodoEntity>]
+     * @return [TodoItem]
+     */
     fun map(entities: List<TodoEntity>): List<TodoItem> {
         return entities.map { entity -> map(entity) }
     }

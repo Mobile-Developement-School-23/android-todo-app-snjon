@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.max
 import kotlin.math.min
 
+private const val SWIPE_THRESHOLD_OFFSET = 0.1f
+
 fun RecyclerView.setRecyclerViewItemTouchListener(
     swipeDirections: Int = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT,
     swipeThreshold: Float = 0.3f
@@ -27,7 +29,7 @@ fun RecyclerView.setRecyclerViewItemTouchListener(
             isCurrentlyActive: Boolean
         ) {
             if (viewHolder !is Swipeable) return
-            val maxRange = viewHolder.itemView.width * (swipeThreshold - 0.1f)
+            val maxRange = viewHolder.itemView.width * (swipeThreshold - SWIPE_THRESHOLD_OFFSET)
             val x = if (dX < 0) {
                 max(dX, -maxRange)
             } else {

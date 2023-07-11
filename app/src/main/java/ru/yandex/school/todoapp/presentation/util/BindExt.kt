@@ -49,7 +49,6 @@ class FragmentFindViewDelegate<T : View>(private val id: Int) : ReadOnlyProperty
     }
 
     private inner class PropertyLifecycleObserver : DefaultLifecycleObserver {
-
         private var _lifecycle: Lifecycle? = null
 
         fun attach(lifecycle: Lifecycle) {

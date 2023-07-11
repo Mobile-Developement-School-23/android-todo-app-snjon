@@ -1,7 +1,6 @@
 package ru.yandex.school.todoapp.presentation.authorization
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -17,18 +16,18 @@ import ru.yandex.school.todoapp.presentation.util.bind
 import ru.yandex.school.todoapp.presentation.util.showToast
 
 class TodoAuthorizationFragment : Fragment(R.layout.fragment_authorization) {
-
     private val viewModel: TodoAuthorizationViewModel by viewModel()
 
-    private val continueButton by bind<TextView>(R.id.authorization_continue_button)
-    private val signInButton by bind<MaterialButton>(R.id.authorization_sign_in_button)
-    private val loginText by bind<EditText>(R.id.authorization_login_edit_text)
-    private val passwordText by bind<EditText>(R.id.authorization_password_edit_text)
-
     private val progressBar by bind<LinearLayout>(R.id.authorization_progress_linear)
+
+    private val loginText by bind<EditText>(R.id.authorization_login_edit_text)
     private val loginObligatoryText by bind<TextView>(R.id.authorization_login_obligatory_text)
+
+    private val passwordText by bind<EditText>(R.id.authorization_password_edit_text)
     private val passwordObligatoryText by bind<TextView>(R.id.authorization_password_obligatory_text)
 
+    private val signInButton by bind<MaterialButton>(R.id.authorization_sign_in_button)
+    private val continueButton by bind<TextView>(R.id.authorization_continue_button)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,9 +37,7 @@ class TodoAuthorizationFragment : Fragment(R.layout.fragment_authorization) {
     }
 
     private fun bindViews() {
-
         continueButton.setOnClickListener {
-            viewModel.setInternetMode(false)
             viewModel.openTodoList()
         }
 
@@ -72,7 +69,6 @@ class TodoAuthorizationFragment : Fragment(R.layout.fragment_authorization) {
     }
 
     private fun subscribeOnViewModel() {
-
         viewModel.todoAuthorizationState.observe(viewLifecycleOwner) { state ->
             if (state == null) return@observe
             when {
@@ -80,7 +76,6 @@ class TodoAuthorizationFragment : Fragment(R.layout.fragment_authorization) {
 
                 state.loading -> {
                     progressBar.isVisible = true
-                    Log.e("token", "loading")
                 }
             }
         }

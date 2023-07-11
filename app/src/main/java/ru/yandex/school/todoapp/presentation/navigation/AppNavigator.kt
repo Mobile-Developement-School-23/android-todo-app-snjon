@@ -8,7 +8,6 @@ import ru.yandex.school.todoapp.domain.model.TodoItem
 const val KEY_TODO_ITEM_ID = "KEY_TODO_ID"
 
 class AppNavigator {
-
     private var appNavController: NavController? = null
 
     fun attach(navController: NavController) {

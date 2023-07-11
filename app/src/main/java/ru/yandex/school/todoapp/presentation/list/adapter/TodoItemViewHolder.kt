@@ -28,7 +28,6 @@ class TodoItemViewHolder(
 
     private val card by bind<ConstraintLayout>(R.id.todo_item_card)
     private val checkbox by bind<CheckBox>(R.id.todo_item_check)
-    private val text by bind<TextView>(R.id.todo_item_text)
     private val priority by bind<ImageView>(R.id.todo_item_priority_subtitle)
     private val itemText by bind<TextView>(R.id.todo_item_text)
     private val deadline by bind<TextView>(R.id.deadline_date)
@@ -43,7 +42,7 @@ class TodoItemViewHolder(
         card.translationX = 0f
         item = todoItem
 
-        text.apply {
+        itemText.apply {
             text = todoItem.text
             setTextColor(todoItem.textColor)
             paintFlags = if (todoItem.isChecked) {

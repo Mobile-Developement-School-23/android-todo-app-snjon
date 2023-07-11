@@ -14,7 +14,6 @@ import ru.yandex.school.todoapp.presentation.item.model.TodoItemScreenState
 import ru.yandex.school.todoapp.presentation.item.viewmodel.mapper.ItemErrorMapper
 import ru.yandex.school.todoapp.presentation.item.viewmodel.mapper.TodoItemDateMapper
 import ru.yandex.school.todoapp.presentation.navigation.AppNavigator
-import ru.yandex.school.todoapp.presentation.util.SingleLiveEvent
 import ru.yandex.school.todoapp.presentation.util.toDate
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -28,10 +27,8 @@ class TodoItemViewModel(
     private val itemErrorMapper: ItemErrorMapper
 ) : BaseViewModel() {
 
-    val todoItemScreenState = MutableStateFlow(TodoItemScreenState())
-
-    private val _todoUpdatedLiveData = SingleLiveEvent<Boolean>()
-    val todoUpdatedLiveData = _todoUpdatedLiveData
+    private val _todoItemScreenState = MutableStateFlow(TodoItemScreenState())
+    val todoItemScreenState = _todoItemScreenState
 
     private val _errorLiveData = MutableLiveData<String>()
     val errorLiveData: LiveData<String> = _errorLiveData
@@ -43,7 +40,7 @@ class TodoItemViewModel(
     }
 
     private fun loadContent() {
-        todoItemScreenState.update {
+        _todoItemScreenState.update {
             TodoItemScreenState(
                 text = todoItem.text,
                 priorityRes = todoItem.priority.titleRes,
@@ -55,19 +52,19 @@ class TodoItemViewModel(
 
     fun updateTodoItemText(text: String) {
         todoItem = todoItem.copy(text = text)
-        todoItemScreenState.update { it.copy(text = text) }
+        _todoItemScreenState.update { it.copy(text = text) }
     }
 
     fun updateTodoItemPriority(priority: TodoItemPriority) {
         todoItem = todoItem.copy(priority = priority)
-        todoItemScreenState.update { it.copy(priorityRes = priority.titleRes) }
+        _todoItemScreenState.update { it.copy(priorityRes = priority.titleRes) }
     }
 
     fun updateDeadlineDate(dateTimeModel: DateTimeModel) {
         val date = (dateTimeModel as? DateTimeModel.Date)?.toDate() ?: return
 
         todoItem = todoItem.copy(deadline = date)
-        todoItemScreenState.update { it.copy(deadlineDate = dateMapper.map(date)) }
+        _todoItemScreenState.update { it.copy(deadlineDate = dateMapper.map(date)) }
     }
 
     fun onDeadlineDateActivate(isActive: Boolean) {
@@ -76,10 +73,10 @@ class TodoItemViewModel(
             val deadlineDateUi = deadlineDate?.let { dateMapper.map(it) }
 
             todoItem = todoItem.copy(deadline = deadlineDate)
-            todoItemScreenState.update { it.copy(deadlineDate = deadlineDateUi) }
+            _todoItemScreenState.update { it.copy(deadlineDate = deadlineDateUi) }
         } else {
             todoItem = todoItem.copy(deadline = null)
-            todoItemScreenState.update { it.copy(deadlineDate = null) }
+            _todoItemScreenState.update { it.copy(deadlineDate = null) }
         }
     }
 
@@ -97,28 +94,28 @@ class TodoItemViewModel(
         val currentDateTime = LocalDateTime.now().withNano(0)
 
         launchJob(
-            onError = { handleAppError(it) }
+            onError = { handleAppError(it) },
+            isGlobalJob = true
         )
         {
             if (isCreating) {
-                val result = repository.addTodoItem(
+                repository.addTodoItem(
                     todoItem.copy(
                         id = UUID.randomUUID().toString(),
                         createAt = currentDate,
                         modifiedAt = currentDateTime
                     )
                 )
-                _todoUpdatedLiveData.postValue(result)
             } else {
-                val result = repository.updateTodoItem(
+                repository.updateTodoItem(
                     todoItem.copy(
                         modifiedAt = currentDateTime,
                         isSync = false
                     )
                 )
-                _todoUpdatedLiveData.postValue(result)
             }
         }
+        closeTodoItem()
     }
 
     fun closeTodoItem() {
@@ -127,14 +124,15 @@ class TodoItemViewModel(
 
     fun deleteTodoItem() {
         launchJob(
-            onError = { handleAppError(it) }
+            onError = { handleAppError(it) },
+            isGlobalJob = true
         ) {
             repository.deleteTodoItem(todoItem)
         }
+        closeTodoItem()
     }
 
     private fun handleAppError(error: Throwable) {
-
         val errorMessage = itemErrorMapper.map(error)
         _errorLiveData.postValue(errorMessage)
     }

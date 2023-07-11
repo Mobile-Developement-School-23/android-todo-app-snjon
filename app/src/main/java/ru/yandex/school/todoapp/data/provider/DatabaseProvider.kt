@@ -5,6 +5,9 @@ import androidx.room.Room
 import ru.yandex.school.todoapp.data.database.AppDatabase
 import ru.yandex.school.todoapp.data.database.AppDatabase.Companion.DATABASE_NAME
 
+/**
+ * DatabaseProvider class for providing an instance of the AppDatabase
+ */
 class DatabaseProvider {
 
     fun getInstance(context: Context): AppDatabase {

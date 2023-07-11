@@ -10,6 +10,12 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 
 class TodoItemMapper {
+
+    /**
+     * Mapper from TodoItem to TodoEntity
+     * @param item [TodoItem]
+     * @return [TodoEntity]
+     */
     fun map(item: TodoItem): TodoEntity {
         return TodoEntity(
             id = item.id,
@@ -23,11 +29,20 @@ class TodoItemMapper {
         )
     }
 
+    /**
+     * Mapper from list TodoItem to list TodoEntity
+     * @param items [List<TodoItem>]
+     * @return [List<TodoEntity>]
+     */
     fun map(items: List<TodoItem>): List<TodoEntity> {
         return items.map { item -> map(item) }
     }
 
-
+    /**
+     * Mapper from TodoItemRemote to TodoItem
+     * @param item [TodoItemRemote]
+     * @return [TodoItem]
+     */
     fun mapFromResponse(item: TodoItemRemote): TodoItem {
         return TodoItem(
             id = item.id,
@@ -44,6 +59,12 @@ class TodoItemMapper {
         )
     }
 
+    /**
+     * Mapper from TodoItem to TodoItemRemote
+     * @param deviceId [String]
+     * @param item [TodoItem]
+     * @return [TodoItemRemote]
+     */
     fun mapToRequest(deviceId: String, item: TodoItem): TodoItemRemote {
         return TodoItemRemote(
             id = item.id,
@@ -59,6 +80,11 @@ class TodoItemMapper {
         )
     }
 
+    /**
+     * Mapper from TodoItemPriority to String representation of priority
+     * @param priority [TodoItemPriority]
+     * @return [String]
+     */
     private fun mapPriorityToString(priority: TodoItemPriority): String {
         return when (priority) {
             TodoItemPriority.LOW -> "low"
@@ -67,6 +93,11 @@ class TodoItemMapper {
         }
     }
 
+    /**
+     * Mapper from String representation of priority to TodoItemPriority
+     * @param priorityString [String]
+     * @return [TodoItemPriority]
+     */
     private fun mapStringToPriority(priorityString: String): TodoItemPriority {
         return when (priorityString) {
             "low" -> TodoItemPriority.LOW

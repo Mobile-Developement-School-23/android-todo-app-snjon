@@ -8,8 +8,8 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.yandex.school.todoapp.BuildConfig
-import ru.yandex.school.todoapp.data.api.TodoApiService
-import ru.yandex.school.todoapp.data.api.interceptor.AuthInterceptor
+import ru.yandex.school.todoapp.data.network.TodoApiService
+import ru.yandex.school.todoapp.data.network.interceptor.AuthInterceptor
 import ru.yandex.school.todoapp.data.database.AppDatabase
 import ru.yandex.school.todoapp.data.datastore.DataStorage
 import ru.yandex.school.todoapp.data.mapper.TodoEntityMapper

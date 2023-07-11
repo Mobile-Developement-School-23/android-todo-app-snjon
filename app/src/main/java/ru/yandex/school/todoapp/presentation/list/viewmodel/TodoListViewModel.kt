@@ -28,16 +28,14 @@ class TodoListViewModel(
     }
 
     private val _errorLiveData = MutableLiveData<String>()
-
     val errorLiveData: LiveData<String> = _errorLiveData
 
     private val _todosLoadedEvent = MutableLiveData<Unit>()
-    val todosLoadedEvent: LiveData<Unit>
-        get() = _todosLoadedEvent
+    val todosLoadedEvent: LiveData<Unit> = _todosLoadedEvent
 
     val todoItemsFlow = repository.todoItemsFlow
-
     val todoListItemsState = MutableStateFlow(TodoListScreenState.empty)
+
     private var todoItems: List<TodoItem> = emptyList()
 
     fun refreshList(items: List<TodoItem>) {
@@ -60,7 +58,6 @@ class TodoListViewModel(
             }
         }
     }
-
 
     fun loadTodos() {
         launchJob(
@@ -90,7 +87,11 @@ class TodoListViewModel(
     }
 
     fun checkTodoItem(todoItem: TodoItem) {
-        val checkedItem = todoItem.copy(isCompleted = todoItem.isCompleted.not(), isSync = false, modifiedAt = LocalDateTime.now().withNano(0))
+        val checkedItem = todoItem.copy(
+            isCompleted = todoItem.isCompleted.not(),
+            isSync = false,
+            modifiedAt = LocalDateTime.now().withNano(0)
+        )
         launchJob(
             onError = { handleAppError(it) }
         ) {
@@ -112,7 +113,6 @@ class TodoListViewModel(
     }
 
     fun actionOnItem(todoItem: TodoItem, resId: Int) {
-
         when (resId) {
             R.id.menu_action_completed -> {
                 checkTodoItem(todoItem)
@@ -142,7 +142,6 @@ class TodoListViewModel(
     }
 
     private fun handleAppError(error: Throwable) {
-
         val errorMessage = listErrorMapper.map(error)
         _errorLiveData.postValue(errorMessage)
     }

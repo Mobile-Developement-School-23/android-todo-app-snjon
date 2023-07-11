@@ -4,6 +4,9 @@ import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import ru.yandex.school.todoapp.domain.model.TodoItem
 
+/**
+ * Model class representing an item in the TodoItem list
+ */
 data class TodoItemListModel(
     val text: String,
     val textColor: Int,

@@ -8,6 +8,8 @@ import ru.yandex.school.todoapp.presentation.base.BaseViewModel
 import ru.yandex.school.todoapp.presentation.navigation.AppNavigator
 import ru.yandex.school.todoapp.presentation.util.SingleLiveEvent
 
+private const val INITIAL_DELAY_MS = 100L
+
 class TodoAuthorizationViewModel(
     private val repository: AuthRepository,
     private val navigator: AppNavigator,
@@ -16,7 +18,7 @@ class TodoAuthorizationViewModel(
 
     init {
         launchJob {
-            delay(100)
+            delay(INITIAL_DELAY_MS)
             checkAuthorization()
         }
     }
@@ -28,7 +30,6 @@ class TodoAuthorizationViewModel(
     val errorLiveData = _errorLiveData
 
     private fun checkAuthorization() {
-
         val isAuthorized = repository.isAuthorized()
         if (isAuthorized) {
             launchJob(
@@ -37,13 +38,8 @@ class TodoAuthorizationViewModel(
                 _todoAuthorizationState.postValue(TodoAuthorizationModelState(loading = true))
                 repository.getLastRevision()
                 _todoAuthorizationState.postValue(TodoAuthorizationModelState(isAuthorized = true))
-                setInternetMode(true)
             }
         }
-    }
-
-    fun setInternetMode(mode: Boolean) {
-        repository.setAppMode(mode)
     }
 
     fun authorization(credentials: Pair<String, String>) {
@@ -51,9 +47,8 @@ class TodoAuthorizationViewModel(
             onError = { handleAppError(it) }
         ) {
             _todoAuthorizationState.postValue(TodoAuthorizationModelState(loading = true))
-            repository.checkAuth(credentials)
+            repository.login(credentials)
             _todoAuthorizationState.postValue(TodoAuthorizationModelState(isAuthorized = true))
-            setInternetMode(true)
         }
     }
 
@@ -62,7 +57,6 @@ class TodoAuthorizationViewModel(
     }
 
     private fun handleAppError(error: Throwable) {
-
         val errorMessage = authErrorMapper.map(error)
         _errorLiveData.postValue(errorMessage)
     }

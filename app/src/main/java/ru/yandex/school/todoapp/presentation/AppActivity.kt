@@ -7,7 +7,6 @@ import ru.yandex.school.todoapp.R
 import ru.yandex.school.todoapp.presentation.navigation.AppNavigator
 
 class AppActivity : AppCompatActivity(R.layout.activity_app) {
-
     private val appNavigator: AppNavigator by inject()
 
     override fun onStart() {
