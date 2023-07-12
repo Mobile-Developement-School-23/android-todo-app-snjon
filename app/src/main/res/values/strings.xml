@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">ToDo App</string>
-
     <string name="todo_list_title">Todos</string>
     <string name="todo_list_no_todos_title">No active todos</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
@@ -38,4 +37,6 @@
     <string name="exception_message_network_error">No internet connection</string>
     <string name="exception_message_unknown_error">Unknown error</string>
     <string name="exception_message_bad_request_error">Bad request</string>
+    <string name="snackbar_text_cancel">Cancel</string>
+    <string name="snackbar_text">Delete %s (%d sec)</string>
 </resources>

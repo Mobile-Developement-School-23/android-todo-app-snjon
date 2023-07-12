@@ -47,6 +47,16 @@ class TodoItemsRepositoryImpl(
     }
 
     /**
+     * Retrieves a hidden TodoItem from the database
+     * @return [TodoItem?]
+     */
+    override suspend fun getHiddenTodo(): TodoItem? {
+        val entity = todoDao.getHiddenTodoItem() ?: return null
+
+        return entityMapper.map(entity)
+    }
+
+    /**
      * Synchronizes list of TodoItem
      * Fetches todoItems from remote data source and pushes them to local data source
      * Then pushes merged local todoItems to remote data source
@@ -227,5 +237,14 @@ class TodoItemsRepositoryImpl(
         } else {
             dataStorage.knownRevision = response.body()?.revision ?: 0
         }
+    }
+
+    /**
+     * Updates the hidden status of a TodoItem in the database
+     * @param id [String]
+     * @param hidden [Boolean]
+     */
+    override suspend fun updateTodoItemHiddenStatus(id: String, hidden: Boolean) {
+        todoDao.updateTodoItemHiddenStatus(id, hidden)
     }
 }

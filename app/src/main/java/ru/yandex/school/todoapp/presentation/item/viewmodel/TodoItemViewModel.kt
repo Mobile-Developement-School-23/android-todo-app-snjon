@@ -124,10 +124,9 @@ class TodoItemViewModel(
 
     fun deleteTodoItem() {
         launchJob(
-            onError = { handleAppError(it) },
-            isGlobalJob = true
+            onError = { handleAppError(it) }
         ) {
-            repository.deleteTodoItem(todoItem)
+            repository.updateTodoItemHiddenStatus(todoItem.id, true)
         }
         closeTodoItem()
     }

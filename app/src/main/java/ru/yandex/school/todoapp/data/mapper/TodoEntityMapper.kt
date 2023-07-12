@@ -19,7 +19,8 @@ class TodoEntityMapper {
             createAt = entity.createAt,
             deadline = entity.deadline,
             modifiedAt = entity.modifiedAt,
-            isSync = entity.isSync
+            isSync = entity.isSync,
+            hidden = entity.hidden
         )
     }
 

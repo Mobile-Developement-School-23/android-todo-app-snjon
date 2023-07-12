@@ -29,17 +29,19 @@ import ru.yandex.school.todoapp.presentation.list.viewmodel.TodoListViewModel
 import ru.yandex.school.todoapp.presentation.list.viewmodel.mapper.ListErrorMapper
 import ru.yandex.school.todoapp.presentation.list.viewmodel.mapper.TodoListItemMapper
 import ru.yandex.school.todoapp.presentation.navigation.AppNavigator
+import ru.yandex.school.todoapp.presentation.snackbar.SnackbarHost
 
 val appModule = module {
 
     viewModel { (todoId: String) -> TodoItemViewModel(todoId, get(), get(), get(), get()) }
-    viewModel { TodoListViewModel(get(), get(), get(), get(), get()) }
+    viewModel { TodoListViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { TodoAuthorizationViewModel(get(), get(), get()) }
 
     factory { TodoListItemMapper(androidContext(), get()) }
     factory { TodoItemDateMapper(get()) }
 
     single { AppNavigator() }
+    single { SnackbarHost() }
 
     single { DatabaseProvider().getInstance(androidContext()) }
     single { get<AppDatabase>().todoDao() }

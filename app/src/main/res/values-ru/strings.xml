@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">ToDo App</string>
-
     <string name="todo_list_title">Мои дела</string>
     <string name="todo_list_no_todos_title">Нет активных дел</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
@@ -38,4 +37,6 @@
     <string name="exception_message_network_error">Отсутствует соединение с интернетом</string>
     <string name="exception_message_unknown_error">Неизвестная ошибка</string>
     <string name="exception_message_bad_request_error">Неверный запрос</string>
+    <string name="snackbar_text_cancel">Отменить</string>
+    <string name="snackbar_text">Удалить %s (%d сек)</string>
 </resources>

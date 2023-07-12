@@ -13,6 +13,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.yandex.school.todoapp.R
 import ru.yandex.school.todoapp.domain.model.TodoItem
@@ -20,6 +21,7 @@ import ru.yandex.school.todoapp.presentation.list.adapter.TodoListAdapter
 import ru.yandex.school.todoapp.presentation.list.model.TodoItemListModel
 import ru.yandex.school.todoapp.presentation.list.model.TodoListScreenState
 import ru.yandex.school.todoapp.presentation.list.viewmodel.TodoListViewModel
+import ru.yandex.school.todoapp.presentation.snackbar.SnackbarHost
 import ru.yandex.school.todoapp.presentation.util.bind
 import ru.yandex.school.todoapp.presentation.util.elevationOrNot
 import ru.yandex.school.todoapp.presentation.util.makeGone
@@ -52,11 +54,20 @@ class TodoListFragment : Fragment(R.layout.fragment_todo_list) {
 
     private val listAdapter by lazy { createAdapter() }
 
+    private val snackbarHost: SnackbarHost by inject()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        snackbarHost.attach(this)
         bindViews()
         subscribeOnViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.checkDeleteTodo()
     }
 
     private fun bindViews() {
@@ -94,6 +105,12 @@ class TodoListFragment : Fragment(R.layout.fragment_todo_list) {
 
         viewModel.errorLiveData.observe(viewLifecycleOwner) { message ->
             showToast(message)
+        }
+
+        viewModel.todoDeletedEvent.observe(viewLifecycleOwner) { todoItem ->
+            if (todoItem != null) {
+                viewModel.deleteTodoItem(todoItem)
+            }
         }
     }
 
@@ -145,5 +162,10 @@ class TodoListFragment : Fragment(R.layout.fragment_todo_list) {
             collapsingToolbar.elevationOrNot(shouldShowToolbar)
             expandedContainer.visibleOrInvisible(shouldShowToolbar.not())
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        snackbarHost.detach()
     }
 }

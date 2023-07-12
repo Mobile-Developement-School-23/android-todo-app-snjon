@@ -16,7 +16,8 @@ data class TodoItem(
     val createAt: LocalDate,
     val deadline: LocalDate? = null,
     val modifiedAt: LocalDateTime? = null,
-    val isSync: Boolean = false
+    val isSync: Boolean = false,
+    val hidden: Boolean = false
 ) {
 
     override fun equals(other: Any?): Boolean {
