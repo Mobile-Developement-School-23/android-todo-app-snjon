@@ -34,7 +34,7 @@ class TodoItemFragment : Fragment(R.layout.fragment_todo_item) {
         )
     }
 
-    private val toolbar by bind<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+    private val toolbar by bind<androidx.appcompat.widget.Toolbar>(R.id.todo_item_toolbar)
     private val saveButton by bind<TextView>(R.id.todo_item_save)
 
     private val editText by bind<EditText>(R.id.todo_item_text)

@@ -1,8 +1,8 @@
 package ru.yandex.school.todoapp.data.repository
 
-import ru.yandex.school.todoapp.data.network.TodoApiService
 import ru.yandex.school.todoapp.data.datastore.DataStorage
 import ru.yandex.school.todoapp.data.model.error.ApiError
+import ru.yandex.school.todoapp.data.network.TodoApiService
 import ru.yandex.school.todoapp.domain.repository.AuthRepository
 
 /**
@@ -33,8 +33,15 @@ class AuthRepositoryImpl(
      * Get the username
      * @return [String?]
      */
-    override fun getUserName(): String? {
+    override fun getUsername(): String? {
         return dataStorage.user
+    }
+
+    /**
+     * Change the username
+     */
+    override fun changeUsername(username: String) {
+        dataStorage.user = username
     }
 
     /**

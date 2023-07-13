@@ -160,16 +160,15 @@ class TodoListViewModel(
     }
 
     fun getUserName(): String? {
-        return authRepository.getUserName()
+        return authRepository.getUsername()
     }
 
     fun isAuthorized(): Boolean {
         return authRepository.isAuthorized()
     }
 
-    fun logout() {
-        authRepository.logout()
-        navigator.openAuthorizationScreen()
+    fun openSettings() {
+        navigator.openSettings()
     }
 
     private fun handleAppError(error: Throwable) {

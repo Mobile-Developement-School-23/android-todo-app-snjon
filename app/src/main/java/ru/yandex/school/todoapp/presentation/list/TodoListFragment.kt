@@ -82,7 +82,7 @@ class TodoListFragment : Fragment(R.layout.fragment_todo_list) {
         showCompletedAppBarButton.setOnClickListener { viewModel.changeCompletedTodosVisibility() }
         showCompletedToolbarButton.setOnClickListener { viewModel.changeCompletedTodosVisibility() }
         swipeRefresh.setOnRefreshListener { viewModel.loadTodos() }
-        userTitle.setOnClickListener { viewModel.logout() }
+        userTitle.setOnClickListener { viewModel.openSettings() }
 
         if (viewModel.isAuthorized()) {
             requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {

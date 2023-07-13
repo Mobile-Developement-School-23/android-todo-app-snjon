@@ -9,7 +9,8 @@ private enum class KEYS {
     MODE_KEY,
     TOKEN_KEY,
     USER_KEY,
-    SYNC_KEY
+    SYNC_KEY,
+    THEME_KEY
 }
 
 private const val RANDOM_UUID_SUBSEQUENCE_START = 0
@@ -62,6 +63,13 @@ class DataStorage(private val preferences: SharedPreferences) {
             saveToPreferences(value, KEYS.TOKEN_KEY)
         }
         get() = preferences.getString(KEYS.TOKEN_KEY.name, null)
+
+    var theme: String = "SYSTEM"
+        set(value) {
+            field = value
+            saveToPreferences(value, KEYS.THEME_KEY)
+        }
+        get() = preferences.getString(KEYS.THEME_KEY.name, "SYSTEM") ?: "SYSTEM"
 
     private fun <T> saveToPreferences(value: T?, key: KEYS) {
         val editor: SharedPreferences.Editor = preferences.edit()

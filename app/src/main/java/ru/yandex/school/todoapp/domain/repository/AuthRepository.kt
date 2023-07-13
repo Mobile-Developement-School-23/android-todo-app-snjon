@@ -9,7 +9,9 @@ interface AuthRepository {
 
     suspend fun getLastRevision()
 
-    fun getUserName() : String?
+    fun getUsername(): String?
+
+    fun changeUsername(username: String)
 
     fun isAuthorized(): Boolean
 

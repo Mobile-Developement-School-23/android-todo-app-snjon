@@ -8,7 +8,7 @@
     tools:context="presentation.AppActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/todo_item_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="4dp"

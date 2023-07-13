@@ -24,6 +24,20 @@
         <action
             android:id="@+id/open_todo_item"
             app:destination="@id/item" />
+        <action
+            android:id="@+id/open_settings"
+            app:destination="@id/settings" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/settings"
+        android:name="ru.yandex.school.todoapp.presentation.settings.TodoSettingsFragment"
+        tools:layout="@layout/fragment_settings">
+
+        <action
+            android:id="@+id/return_to_authorization"
+            app:destination="@id/authorization" />
+
     </fragment>
 
     <fragment

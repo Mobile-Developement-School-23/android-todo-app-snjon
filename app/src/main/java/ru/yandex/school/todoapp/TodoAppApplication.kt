@@ -5,8 +5,10 @@ import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
+import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
+import ru.yandex.school.todoapp.data.manager.ThemeManager
 import ru.yandex.school.todoapp.data.network.workmanager.UploadTodosWork
 import ru.yandex.school.todoapp.di.appModule
 import java.util.concurrent.TimeUnit
@@ -14,6 +16,8 @@ import java.util.concurrent.TimeUnit
 private const val UPLOAD_WORK_INTERVAL_HOURS = 8L
 
 class TodoAppApplication : Application() {
+
+    private val themeManager: ThemeManager by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -39,5 +43,6 @@ class TodoAppApplication : Application() {
                 .build()
 
         WorkManager.getInstance(this).enqueue(periodicWorkRequest)
+        themeManager.applyTheme()
     }
 }
