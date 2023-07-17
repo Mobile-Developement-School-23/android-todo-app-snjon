@@ -47,7 +47,8 @@ fun TodoItemScreen(
     )
 }
 
-@Preview
+@Preview(uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES, name = "DARK")
+@Preview(uiMode = android.content.res.Configuration.UI_MODE_NIGHT_NO, name = "LIGHT")
 @Composable
 private fun TodoItemContent(
     uiState: TodoItemScreenState = TodoItemScreenState(),
