@@ -25,7 +25,8 @@ class TodoItemMapper {
             createAt = item.createAt,
             deadline = item.deadline,
             modifiedAt = item.modifiedAt,
-            isSync = item.isSync
+            isSync = item.isSync,
+            hidden = item.hidden
         )
     }
 

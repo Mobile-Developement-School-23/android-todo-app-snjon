@@ -11,6 +11,8 @@ interface TodoItemsRepository {
 
     suspend fun getTodoById(id: String): TodoItem?
 
+    suspend fun getHiddenTodo(): TodoItem?
+
     suspend fun updateTodoItem(item: TodoItem)
 
     suspend fun addTodoItem(item: TodoItem)
@@ -22,4 +24,6 @@ interface TodoItemsRepository {
     suspend fun loadFromServer()
 
     suspend fun getLastRevision()
+
+    suspend fun updateTodoItemHiddenStatus(id: String, hidden: Boolean)
 }

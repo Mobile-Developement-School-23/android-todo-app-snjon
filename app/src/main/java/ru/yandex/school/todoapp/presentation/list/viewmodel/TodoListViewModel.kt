@@ -13,6 +13,9 @@ import ru.yandex.school.todoapp.presentation.list.model.TodoListScreenState
 import ru.yandex.school.todoapp.presentation.list.viewmodel.mapper.ListErrorMapper
 import ru.yandex.school.todoapp.presentation.list.viewmodel.mapper.TodoListItemMapper
 import ru.yandex.school.todoapp.presentation.navigation.AppNavigator
+import ru.yandex.school.todoapp.presentation.snackbar.SnackbarHost
+import ru.yandex.school.todoapp.presentation.snackbar.model.SnackbarAction
+import ru.yandex.school.todoapp.presentation.snackbar.model.SnackbarModel
 import java.time.LocalDateTime
 
 class TodoListViewModel(
@@ -20,7 +23,8 @@ class TodoListViewModel(
     private val authRepository: AuthRepository,
     private val todoListItemMapper: TodoListItemMapper,
     private val navigator: AppNavigator,
-    private val listErrorMapper: ListErrorMapper
+    private val listErrorMapper: ListErrorMapper,
+    private val snackbarHost: SnackbarHost
 ) : BaseViewModel() {
 
     init {
@@ -32,6 +36,9 @@ class TodoListViewModel(
 
     private val _todosLoadedEvent = MutableLiveData<Unit>()
     val todosLoadedEvent: LiveData<Unit> = _todosLoadedEvent
+
+    private val _todoDeletedEvent = MutableLiveData<TodoItem?>()
+    val todoDeletedEvent = _todoDeletedEvent
 
     val todoItemsFlow = repository.todoItemsFlow
     val todoListItemsState = MutableStateFlow(TodoListScreenState.empty)
@@ -70,6 +77,17 @@ class TodoListViewModel(
         }
     }
 
+    fun checkDeleteTodo() {
+        launchJob(
+            onError = { handleAppError(it) }
+        ) {
+            val todoItem = repository.getHiddenTodo()
+            if (todoItem != null) {
+                _todoDeletedEvent.postValue(todoItem)
+            }
+        }
+    }
+
     private fun filterVisibleItem(shouldShowCompleted: Boolean, item: TodoItem): Boolean {
         return if (shouldShowCompleted) {
             true
@@ -100,10 +118,31 @@ class TodoListViewModel(
     }
 
     fun deleteTodoItem(todoItem: TodoItem) {
+        _todoDeletedEvent.value = null
+        changeTodoItemHiddenStatus(todoItem.id, true)
+
+        snackbarHost.showSnackbar(
+            SnackbarModel(
+                message = todoItem.text,
+                action = SnackbarAction(
+                    onCancelled = {
+                        changeTodoItemHiddenStatus(todoItem.id, false)
+                    },
+                    onFinished = {
+                        launchJob {
+                            repository.deleteTodoItem(todoItem)
+                        }
+                    }
+                )
+            )
+        )
+    }
+
+    private fun changeTodoItemHiddenStatus(id: String, status: Boolean) {
         launchJob(
             onError = { handleAppError(it) }
         ) {
-            repository.deleteTodoItem(todoItem)
+            repository.updateTodoItemHiddenStatus(id, status)
         }
     }
 
@@ -114,31 +153,22 @@ class TodoListViewModel(
 
     fun actionOnItem(todoItem: TodoItem, resId: Int) {
         when (resId) {
-            R.id.menu_action_completed -> {
-                checkTodoItem(todoItem)
-            }
-
-            R.id.menu_action_edit -> {
-                openTodoItemInfo(todoItem)
-            }
-
-            R.id.menu_action_delete -> {
-                deleteTodoItem(todoItem)
-            }
+            R.id.menu_action_completed -> checkTodoItem(todoItem)
+            R.id.menu_action_edit -> openTodoItemInfo(todoItem)
+            R.id.menu_action_delete -> deleteTodoItem(todoItem)
         }
     }
 
     fun getUserName(): String? {
-        return authRepository.getUserName()
+        return authRepository.getUsername()
     }
 
     fun isAuthorized(): Boolean {
         return authRepository.isAuthorized()
     }
 
-    fun logout() {
-        authRepository.logout()
-        navigator.openAuthorizationScreen()
+    fun openSettings() {
+        navigator.openSettings()
     }
 
     private fun handleAppError(error: Throwable) {

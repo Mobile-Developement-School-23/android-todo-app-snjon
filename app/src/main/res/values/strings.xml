@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">ToDo App</string>
-
     <string name="todo_list_title">Todos</string>
     <string name="todo_list_no_todos_title">No active todos</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
@@ -38,4 +37,18 @@
     <string name="exception_message_network_error">No internet connection</string>
     <string name="exception_message_unknown_error">Unknown error</string>
     <string name="exception_message_bad_request_error">Bad request</string>
+    <string name="snackbar_text_cancel">Cancel</string>
+    <string name="snackbar_text">Delete %s (%d sec)</string>
+    <string name="settings_theme_system">How to system</string>
+    <string name="settings_theme_light">Always light</string>
+    <string name="settings_theme_dark">Always dark</string>
+    <string name="settings_toast_message_empty">Username cannot be empty</string>
+    <string name="settings_toast_message_few">Username must be 4–14 characters long</string>
+    <string name="settings_toast_message_success">Username successfully changed</string>
+    <string name="settings_title_text">Settings</string>
+    <string name="settings_username_text">Username</string>
+    <string name="settings_theme_text">Theme</string>
+    <string name="settings_change_button_text">Change</string>
+    <string name="settings_logout_button_text">Sing out</string>
+
 </resources>

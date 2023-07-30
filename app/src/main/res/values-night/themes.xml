@@ -2,5 +2,17 @@
     <!-- Base application theme. -->
     <style name="Theme.ToDoApp" parent="Base.Theme.ToDoApp">
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">false</item>
+        <item name="colorPrimary">@color/back_primary</item>
+        <item name="colorPrimaryDark">@color/back_primary</item>
+        <item name="colorAccent">@color/back_primary</item>
+        <item name="colorSecondary">@color/back_primary</item>
+        <item name="backgroundColor">@color/back_primary</item>
+        <item name="android:windowBackground">@color/back_primary</item>
+        <item name="android:textColor">@color/label_primary</item>
+        <item name="android:textColorSecondary">@color/label_secondary</item>
+        <item name="android:textColorTertiary">@color/label_tertiary</item>
+        <item name="android:textColorHint">@color/label_tertiary</item>
+        <item name="dividerColor">@color/support_separator</item>
+        <item name="colorControlActivated">@color/label_tertiary</item>
     </style>
 </resources>

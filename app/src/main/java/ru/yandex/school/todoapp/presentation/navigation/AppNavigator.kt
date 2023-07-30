@@ -34,6 +34,10 @@ class AppNavigator {
     }
 
     fun openAuthorizationScreen() {
-        appNavController?.navigateUp()
+        appNavController?.navigate(R.id.return_to_authorization)
+    }
+
+    fun openSettings() {
+        appNavController?.navigate(R.id.open_settings)
     }
 }

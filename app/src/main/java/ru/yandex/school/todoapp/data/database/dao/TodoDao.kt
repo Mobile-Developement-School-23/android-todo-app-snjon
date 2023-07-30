@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
  */
 @Dao
 interface TodoDao {
-    @Query("SELECT * FROM TodoEntity ORDER BY modifiedAt DESC")
+    @Query("SELECT * FROM TodoEntity WHERE hidden = 0 ORDER BY modifiedAt DESC")
     fun getAll(): Flow<List<TodoEntity>>
 
     @Query("SELECT * FROM TodoEntity ORDER BY modifiedAt DESC")
@@ -39,4 +39,10 @@ interface TodoDao {
 
     @Query("SELECT * FROM TodoEntity WHERE id = :id")
     suspend fun getTodoById(id: String): TodoEntity?
+
+    @Query("UPDATE TodoEntity SET hidden = :hidden WHERE id = :id")
+    suspend fun updateTodoItemHiddenStatus(id: String, hidden: Boolean)
+
+    @Query("SELECT * FROM TodoEntity WHERE hidden = 1 LIMIT 1")
+    suspend fun getHiddenTodoItem(): TodoEntity?
 }

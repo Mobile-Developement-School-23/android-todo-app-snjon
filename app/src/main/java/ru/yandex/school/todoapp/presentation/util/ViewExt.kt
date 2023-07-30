@@ -1,6 +1,8 @@
 package ru.yandex.school.todoapp.presentation.util
 
+import android.content.Context
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -58,4 +60,9 @@ fun MaterialButton.setButtonColor(condition: Boolean) {
 
     this.setTextColor(textColor)
     this.iconTint = iconTint
+}
+
+fun View.hideKeyboard() {
+    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(windowToken, 0)
 }

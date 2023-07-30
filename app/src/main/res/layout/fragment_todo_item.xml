@@ -8,10 +8,9 @@
     tools:context="presentation.AppActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/todo_item_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/back_primary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:navigationIcon="@drawable/ic_close">
@@ -184,6 +183,7 @@
                 android:text="@string/todo_item_view_delete"
                 app:icon="@drawable/ic_delete"
                 app:layout_constraintStart_toStartOf="parent"
+                android:background="@drawable/ripple_effect"
                 app:layout_constraintTop_toBottomOf="@id/todo_item_separator_down"
                 tools:text="Удалить" />
 

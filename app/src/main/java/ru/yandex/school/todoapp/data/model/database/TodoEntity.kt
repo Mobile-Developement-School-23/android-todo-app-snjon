@@ -22,5 +22,6 @@ data class TodoEntity(
     val createAt: LocalDate,
     val deadline: LocalDate? = null,
     val modifiedAt: LocalDateTime? = null,
-    val isSync: Boolean
+    val isSync: Boolean,
+    val hidden: Boolean
 )
