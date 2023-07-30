@@ -84,15 +84,12 @@ private fun TodoItemContent(
                     onPriorityClicked = onPriorityClicked
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                Column(
+                Divider(
                     modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                ) {
-                    Divider(
-                        modifier = Modifier.fillMaxWidth(),
-                        color = MaterialTheme.colorScheme.outline
-                    )
-                }
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    color = MaterialTheme.colorScheme.outline
+                )
                 Spacer(modifier = Modifier.height(16.dp))
                 TodoItemDateBefore(
                     itemDeadlineDate = uiState.deadlineDate,
