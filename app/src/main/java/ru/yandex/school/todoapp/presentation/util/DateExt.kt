@@ -10,5 +10,5 @@ fun BaseDateTimePickerDialog.show(fragment: Fragment) {
 }
 
 fun DateTimeModel.Date.toDate(): LocalDate {
-    return LocalDate.of(year, month, day)
+    return LocalDate.of(year, month + 1, day)
 }
