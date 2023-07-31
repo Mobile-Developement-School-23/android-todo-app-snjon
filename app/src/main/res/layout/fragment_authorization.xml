@@ -18,16 +18,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ProgressBar
+            android:id="@+id/authorization_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/common_spacing"
+            android:indeterminateTint="@color/color_blue" />
+
         <TextView
             android:id="@+id/authorization_progress_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/authorization_view_authorization" />
-
-        <ProgressBar
-            android:id="@+id/authorization_progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
@@ -57,9 +59,9 @@
         android:drawableStart="@drawable/ic_person"
         android:drawablePadding="5dp"
         android:hint="@string/authorization_view_login_hint"
+        android:inputType="text|textCapSentences"
         android:maxLength="14"
         android:maxLines="1"
-        android:inputType="text|textCapSentences"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
