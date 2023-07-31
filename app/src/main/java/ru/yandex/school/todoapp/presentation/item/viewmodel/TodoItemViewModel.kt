@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.runBlocking
 import ru.yandex.school.todoapp.domain.model.TodoItem
 import ru.yandex.school.todoapp.domain.model.TodoItemPriority
 import ru.yandex.school.todoapp.domain.repository.TodoItemsRepository
@@ -27,21 +26,24 @@ class TodoItemViewModel(
     private val itemErrorMapper: ItemErrorMapper
 ) : BaseViewModel() {
 
-    private val _todoItemScreenState = MutableStateFlow(TodoItemScreenState())
+    private val _todoItemScreenState = MutableStateFlow<TodoItemScreenState>(TodoItemScreenState.Loading)
     val todoItemScreenState = _todoItemScreenState
 
     private val _errorLiveData = MutableLiveData<String>()
     val errorLiveData: LiveData<String> = _errorLiveData
 
-    private var todoItem: TodoItem = runBlocking { loadTodoItem() }
+    private var todoItem: TodoItem = TodoItem.empty
 
     init {
-        loadContent()
+        launchJob {
+            todoItem = loadTodoItem()
+            loadContent()
+        }
     }
 
     private fun loadContent() {
         _todoItemScreenState.update {
-            TodoItemScreenState(
+            TodoItemScreenState.Content(
                 text = todoItem.text,
                 priorityRes = todoItem.priority.titleRes,
                 deadlineDate = todoItem.deadline?.let { dateMapper.map(it) },
@@ -51,32 +53,39 @@ class TodoItemViewModel(
     }
 
     fun updateTodoItemText(text: String) {
+        val state = _todoItemScreenState.value.asContentOrNull() ?: return
+
         todoItem = todoItem.copy(text = text)
-        _todoItemScreenState.update { it.copy(text = text) }
+        _todoItemScreenState.update { state.copy(text = text) }
     }
 
     fun updateTodoItemPriority(priority: TodoItemPriority) {
+        val state = _todoItemScreenState.value.asContentOrNull() ?: return
+
         todoItem = todoItem.copy(priority = priority)
-        _todoItemScreenState.update { it.copy(priorityRes = priority.titleRes) }
+        _todoItemScreenState.update { state.copy(priorityRes = priority.titleRes) }
     }
 
     fun updateDeadlineDate(dateTimeModel: DateTimeModel) {
+        val state = _todoItemScreenState.value.asContentOrNull() ?: return
         val date = (dateTimeModel as? DateTimeModel.Date)?.toDate() ?: return
 
         todoItem = todoItem.copy(deadline = date)
-        _todoItemScreenState.update { it.copy(deadlineDate = dateMapper.map(date)) }
+        _todoItemScreenState.update { state.copy(deadlineDate = dateMapper.map(date)) }
     }
 
     fun onDeadlineDateActivate(isActive: Boolean) {
+        val state = _todoItemScreenState.value.asContentOrNull() ?: return
+
         if (isActive) {
             val deadlineDate = todoItem.deadline ?: LocalDate.now()
             val deadlineDateUi = deadlineDate?.let { dateMapper.map(it) }
 
             todoItem = todoItem.copy(deadline = deadlineDate)
-            _todoItemScreenState.update { it.copy(deadlineDate = deadlineDateUi) }
+            _todoItemScreenState.update { state.copy(deadlineDate = deadlineDateUi) }
         } else {
             todoItem = todoItem.copy(deadline = null)
-            _todoItemScreenState.update { it.copy(deadlineDate = null) }
+            _todoItemScreenState.update { state.copy(deadlineDate = null) }
         }
     }
 
@@ -129,6 +138,12 @@ class TodoItemViewModel(
             repository.updateTodoItemHiddenStatus(todoItem.id, true)
         }
         closeTodoItem()
+    }
+
+    fun onLoading(isLoading: Boolean) {
+        if (isLoading.not()) return
+
+        _todoItemScreenState.update { TodoItemScreenState.Loading }
     }
 
     private fun handleAppError(error: Throwable) {

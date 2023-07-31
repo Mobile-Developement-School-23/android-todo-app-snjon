@@ -14,6 +14,7 @@ import ru.yandex.school.todoapp.presentation.item.priority.PriorityBottomSheet
 import ru.yandex.school.todoapp.presentation.item.view.TodoItemScreen
 import ru.yandex.school.todoapp.presentation.item.viewmodel.TodoItemViewModel
 import ru.yandex.school.todoapp.presentation.navigation.KEY_TODO_ITEM_ID
+import ru.yandex.school.todoapp.presentation.util.repeatOnResumed
 import ru.yandex.school.todoapp.presentation.util.showToast
 
 class TodoItemFragment : Fragment() {
@@ -54,6 +55,10 @@ class TodoItemFragment : Fragment() {
     private fun subscribeOnViewModel() {
         viewModel.errorLiveData.observe(viewLifecycleOwner) { message ->
             showToast(message)
+        }
+
+        viewModel.loading.repeatOnResumed(this) {
+            viewModel.onLoading(it)
         }
     }
 

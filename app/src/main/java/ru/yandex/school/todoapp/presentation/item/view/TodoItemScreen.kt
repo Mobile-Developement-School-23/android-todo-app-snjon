@@ -1,6 +1,8 @@
 package ru.yandex.school.todoapp.presentation.item.view
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,12 +11,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,23 +39,45 @@ fun TodoItemScreen(
 ) {
     val uiState by todoItemStateFlow.collectAsState()
 
-    TodoItemContent(
-        uiState = uiState,
-        onBackClicked = onBackClicked,
-        onSaveClicked = onSaveClicked,
-        onTextChanged = onTextChanged,
-        onPriorityClicked = onPriorityClicked,
-        onSwitchChanged = onSwitchChanged,
-        onDateBeforeClicked = onDateBeforeClicked,
-        onDeleteClicked = onDeleteClicked
-    )
+    when (uiState) {
+        is TodoItemScreenState.Content -> {
+            TodoItemContent(
+                uiState = uiState as TodoItemScreenState.Content,
+                onBackClicked = onBackClicked,
+                onSaveClicked = onSaveClicked,
+                onTextChanged = onTextChanged,
+                onPriorityClicked = onPriorityClicked,
+                onSwitchChanged = onSwitchChanged,
+                onDateBeforeClicked = onDateBeforeClicked,
+                onDeleteClicked = onDeleteClicked
+            )
+        }
+
+        is TodoItemScreenState.Loading -> TodoItemLoading()
+    }
 }
 
-@Preview(uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES, name = "DARK")
-@Preview(uiMode = android.content.res.Configuration.UI_MODE_NIGHT_NO, name = "LIGHT")
+@Composable
+fun TodoItemLoading() {
+    AppTheme {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator(
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "DARK")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, name = "LIGHT")
 @Composable
 private fun TodoItemContent(
-    uiState: TodoItemScreenState = TodoItemScreenState(),
+    uiState: TodoItemScreenState.Content = TodoItemScreenState.Content(),
     onBackClicked: () -> Unit = {},
     onSaveClicked: () -> Unit = {},
     onTextChanged: (String) -> Unit = {},
