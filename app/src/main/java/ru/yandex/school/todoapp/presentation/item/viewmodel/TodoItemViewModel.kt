@@ -1,7 +1,5 @@
 package ru.yandex.school.todoapp.presentation.item.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import ru.yandex.school.todoapp.domain.model.TodoItem
@@ -13,6 +11,7 @@ import ru.yandex.school.todoapp.presentation.item.model.TodoItemScreenState
 import ru.yandex.school.todoapp.presentation.item.viewmodel.mapper.ItemErrorMapper
 import ru.yandex.school.todoapp.presentation.item.viewmodel.mapper.TodoItemDateMapper
 import ru.yandex.school.todoapp.presentation.navigation.AppNavigator
+import ru.yandex.school.todoapp.presentation.util.SingleLiveEvent
 import ru.yandex.school.todoapp.presentation.util.toDate
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -29,8 +28,8 @@ class TodoItemViewModel(
     private val _todoItemScreenState = MutableStateFlow<TodoItemScreenState>(TodoItemScreenState.Loading)
     val todoItemScreenState = _todoItemScreenState
 
-    private val _errorLiveData = MutableLiveData<String>()
-    val errorLiveData: LiveData<String> = _errorLiveData
+    private val _errorLiveData = SingleLiveEvent<String>()
+    val errorLiveData = _errorLiveData
 
     private var todoItem: TodoItem = TodoItem.empty
 

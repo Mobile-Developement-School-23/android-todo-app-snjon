@@ -54,7 +54,9 @@ class TodoItemFragment : Fragment() {
 
     private fun subscribeOnViewModel() {
         viewModel.errorLiveData.observe(viewLifecycleOwner) { message ->
-            showToast(message)
+            if (message != null) {
+                showToast(message)
+            }
         }
 
         viewModel.loading.repeatOnResumed(this) {

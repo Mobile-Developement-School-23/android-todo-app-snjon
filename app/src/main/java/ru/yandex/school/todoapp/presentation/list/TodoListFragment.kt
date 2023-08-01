@@ -104,7 +104,9 @@ class TodoListFragment : Fragment(R.layout.fragment_todo_list) {
         }
 
         viewModel.errorLiveData.observe(viewLifecycleOwner) { message ->
-            showToast(message)
+            if (message != null) {
+                showToast(message)
+            }
         }
 
         viewModel.todoDeletedEvent.observe(viewLifecycleOwner) { todoItem ->

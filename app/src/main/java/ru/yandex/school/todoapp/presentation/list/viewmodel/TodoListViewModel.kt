@@ -1,7 +1,5 @@
 package ru.yandex.school.todoapp.presentation.list.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import ru.yandex.school.todoapp.R
@@ -16,6 +14,7 @@ import ru.yandex.school.todoapp.presentation.navigation.AppNavigator
 import ru.yandex.school.todoapp.presentation.snackbar.SnackbarHost
 import ru.yandex.school.todoapp.presentation.snackbar.model.SnackbarAction
 import ru.yandex.school.todoapp.presentation.snackbar.model.SnackbarModel
+import ru.yandex.school.todoapp.presentation.util.SingleLiveEvent
 import java.time.LocalDateTime
 
 class TodoListViewModel(
@@ -31,13 +30,13 @@ class TodoListViewModel(
         loadTodos()
     }
 
-    private val _errorLiveData = MutableLiveData<String>()
-    val errorLiveData: LiveData<String> = _errorLiveData
+    private val _errorLiveData = SingleLiveEvent<String>()
+    val errorLiveData = _errorLiveData
 
-    private val _todosLoadedEvent = MutableLiveData<Unit>()
-    val todosLoadedEvent: LiveData<Unit> = _todosLoadedEvent
+    private val _todosLoadedEvent = SingleLiveEvent<Unit>()
+    val todosLoadedEvent = _todosLoadedEvent
 
-    private val _todoDeletedEvent = MutableLiveData<TodoItem?>()
+    private val _todoDeletedEvent = SingleLiveEvent<TodoItem?>()
     val todoDeletedEvent = _todoDeletedEvent
 
     val todoItemsFlow = repository.todoItemsFlow
